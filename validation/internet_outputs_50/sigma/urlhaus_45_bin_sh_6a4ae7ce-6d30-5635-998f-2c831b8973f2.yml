@@ -1,0 +1,59 @@
+title: HTTP connection observed http //222.141.47.94 48327/bin.sh
+description: 'HTTP connection observed: http://222.141.47.94:48327/bin.sh'
+logsource:
+  category: network_connection
+  product: windows
+detection:
+  selection:
+    DestinationIp: 222.141.47.94
+  condition: selection
+level: medium
+status: experimental
+author: malware-behavior-detection-generator
+tags:
+- attack.t1071.001
+- attack.t1571
+references:
+- generated-by:malware-behavior-detection-generator
+- source:cuckoo
+falsepositives:
+- Unknown
+fields:
+- DestinationIp
+metadata:
+  tool: malware-behavior-detection-generator
+  behavior_category: network
+  platform_context: windows
+  trace:
+    source_behavior_category: network
+    source_behavior_description: 'HTTP connection observed: http://222.141.47.94:48327/bin.sh'
+    source_behavior_evidence:
+    - uri: http://222.141.47.94:48327/bin.sh
+      host: 222.141.47.94
+      ip: 222.141.47.94
+      host_is_ip: true
+      port: 48327
+    source_behavior_tags:
+    - http_connection
+    - non_standard_port
+    platform_context: windows
+    attack_technique_ids:
+    - T1071.001
+    - T1571
+    attack_tags:
+    - attack.t1071.001
+    - attack.t1571
+    selector_reason: 'Network selector chosen for windows telemetry from observed
+      IP evidence using: DestinationIp.'
+  review:
+    status: unreviewed
+    reviewer: ''
+    notes: ''
+  version:
+    tool_name: malware-behavior-detection-generator
+    tool_version: 0.1.0
+    rule_version: 1.0.0
+    generated_at: '2026-07-01T10:00:18+00:00'
+    source_report_hash: null
+    content_hash: 05ca822dcaf52048ad24ce3d367e12d7c79f009709a7baf7c36dee8bf5624bd8
+id: 6a4ae7ce-6d30-5635-998f-2c831b8973f2

@@ -1,0 +1,46 @@
+[
+  {
+    "confidence": 0.7,
+    "context": {
+      "raw": {
+        "domain": "jim-s.com"
+      },
+      "source_section": "network"
+    },
+    "source": "cuckoo",
+    "tags": [
+      "network"
+    ],
+    "type": "domain",
+    "value": "jim-s.com"
+  },
+  {
+    "confidence": 0.7,
+    "context": {
+      "raw": {
+        "host": "jim-s.com",
+        "uri": "https://jim-s.com/ab/Zoom_meeting/Meeting%20Invite%20HTML/downloads/windows/aboki/Zoom%2015.vbs"
+      },
+      "source_section": "network"
+    },
+    "source": "cuckoo",
+    "tags": [
+      "network"
+    ],
+    "type": "url",
+    "value": "https://jim-s.com/ab/Zoom_meeting/Meeting%20Invite%20HTML/downloads/windows/aboki/Zoom%2015.vbs"
+  },
+  {
+    "confidence": 0.6,
+    "context": {
+      "raw": "C:\\Users\\Public\\Downloads\\urlhaus_08_Zoom 15.vbs",
+      "source_section": "files"
+    },
+    "source": "cuckoo",
+    "tags": [
+      "filesystem"
+    ],
+    "type": "file_path",
+    "value": "C:\\Users\\Public\\Downloads\\urlhaus_08_Zoom 15.vbs"
+  }
+]

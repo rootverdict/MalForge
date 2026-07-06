@@ -1,0 +1,52 @@
+title: File dropped to user-accessible path C \Users\Public\Downloads\urlhaus_45_bin.sh
+description: 'File dropped to user-accessible path: C:\Users\Public\Downloads\urlhaus_45_bin.sh'
+logsource:
+  category: file_event
+  product: windows
+detection:
+  selection:
+    TargetFilename|contains: C:\Users\Public\Downloads\urlhaus_45_bin.sh
+  condition: selection
+level: high
+status: experimental
+author: malware-behavior-detection-generator
+tags:
+- attack.t1105
+references:
+- generated-by:malware-behavior-detection-generator
+- source:cuckoo
+falsepositives:
+- Unknown
+fields:
+- TargetFilename
+metadata:
+  tool: malware-behavior-detection-generator
+  behavior_category: file
+  platform_context: windows
+  trace:
+    source_behavior_category: file
+    source_behavior_description: 'File dropped to user-accessible path: C:\Users\Public\Downloads\urlhaus_45_bin.sh'
+    source_behavior_evidence:
+    - path: C:\Users\Public\Downloads\urlhaus_45_bin.sh
+      raw: C:\Users\Public\Downloads\urlhaus_45_bin.sh
+    source_behavior_tags:
+    - file_drop
+    platform_context: windows
+    attack_technique_ids:
+    - T1105
+    attack_tags:
+    - attack.t1105
+    selector_reason: 'File selector chosen for windows telemetry from observed file
+      path evidence using: TargetFilename|contains.'
+  review:
+    status: unreviewed
+    reviewer: ''
+    notes: ''
+  version:
+    tool_name: malware-behavior-detection-generator
+    tool_version: 0.1.0
+    rule_version: 1.0.0
+    generated_at: '2026-07-01T10:00:18+00:00'
+    source_report_hash: null
+    content_hash: a92848f41840d71f1c6fa43714c43dd087c1c864c7bcca911d5ef624e4638374
+id: e736691e-eb6d-5b5c-b9bf-4e26a094d72d

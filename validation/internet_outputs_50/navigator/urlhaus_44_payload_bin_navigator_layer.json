@@ -1,0 +1,66 @@
+{
+  "description": "Rule-based ATT&CK mappings derived from extracted sandbox behaviors.",
+  "domain": "enterprise-attack",
+  "hideDisabled": false,
+  "layout": {
+    "aggregateFunction": "average",
+    "layout": "side",
+    "showID": false,
+    "showName": true
+  },
+  "legendItems": [
+    {
+      "color": "#d32f2f",
+      "label": "High confidence"
+    },
+    {
+      "color": "#f9a825",
+      "label": "Medium confidence"
+    },
+    {
+      "color": "#1976d2",
+      "label": "Low confidence"
+    }
+  ],
+  "name": "urlhaus_44_payload.bin ATT&CK Layer",
+  "sorting": 0,
+  "techniques": [
+    {
+      "color": "#f9a825",
+      "comment": "Process created: urlhaus_44_payload.bin (urlhaus_44_payload.bin --urlhaus-validation)",
+      "enabled": true,
+      "score": 60,
+      "tactic": "execution",
+      "techniqueID": "T1059"
+    },
+    {
+      "color": "#d32f2f",
+      "comment": "HTTP connection observed: https://squvbf6p.btyek.one/?ublib=3ad123de-3852-4784-9864-dc443665a2e0",
+      "enabled": true,
+      "score": 90,
+      "tactic": "command-and-control",
+      "techniqueID": "T1071.001"
+    },
+    {
+      "color": "#d32f2f",
+      "comment": "DNS lookup observed: squvbf6p.btyek.one",
+      "enabled": true,
+      "score": 90,
+      "tactic": "command-and-control",
+      "techniqueID": "T1071.004"
+    },
+    {
+      "color": "#f9a825",
+      "comment": "File dropped to user-accessible path: C:\\Users\\Public\\Downloads\\urlhaus_44_payload.bin",
+      "enabled": true,
+      "score": 60,
+      "tactic": "command-and-control",
+      "techniqueID": "T1105"
+    }
+  ],
+  "versions": {
+    "attack": "16.1",
+    "layer": "4.5",
+    "navigator": "4.9"
+  }
+}

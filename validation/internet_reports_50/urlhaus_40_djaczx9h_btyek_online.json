@@ -1,0 +1,77 @@
+﻿{
+    "info":  {
+                 "id":  70040,
+                 "score":  5,
+                 "machine":  "internet-validation-urlhaus",
+                 "source":  "URLhaus recent CSV",
+                 "source_url":  "https://urlhaus.abuse.ch/downloads/csv_recent/",
+                 "urlhaus_id":  "3878806",
+                 "dateadded":  "2026-07-01 07:38:21",
+                 "threat":  "malware_download",
+                 "url_status":  "offline",
+                 "urlhaus_link":  "https://urlhaus.abuse.ch/url/3878806/",
+                 "tags":  [
+                              "ClearFake",
+                              "mac-0x76c7",
+                              "macOS"
+                          ]
+             },
+    "target":  {
+                   "file":  {
+                                "name":  "urlhaus_40_payload.bin",
+                                "md5":  "",
+                                "sha1":  "",
+                                "sha256":  ""
+                            }
+               },
+    "behavior":  {
+                     "processes":  [
+                                       {
+                                           "process_name":  "urlhaus_40_payload.bin",
+                                           "pid":  9040,
+                                           "command_line":  "urlhaus_40_payload.bin --urlhaus-validation"
+                                       }
+                                   ],
+                     "summary":  {
+                                     "files":  [
+                                                   "C:\\Users\\Public\\Downloads\\urlhaus_40_payload.bin"
+                                               ],
+                                     "keys":  [
+
+                                              ],
+                                     "mutexes":  [
+
+                                                 ]
+                                 }
+                 },
+    "network":  {
+                    "hosts":  [
+
+                              ],
+                    "domains":  [
+                                    {
+                                        "domain":  "djaczx9h.btyek.online"
+                                    }
+                                ],
+                    "http":  [
+                                 {
+                                     "uri":  "https://djaczx9h.btyek.online/?ublib=c4993d64-c456-4f4f-aca9-b1e039bcffb1",
+                                     "host":  "djaczx9h.btyek.online"
+                                 }
+                             ]
+                },
+    "signatures":  [
+                       {
+                           "name":  "urlhaus_tag_ClearFake",
+                           "description":  "URLhaus tag: ClearFake"
+                       },
+                       {
+                           "name":  "urlhaus_tag_mac_0x76c7",
+                           "description":  "URLhaus tag: mac-0x76c7"
+                       },
+                       {
+                           "name":  "urlhaus_tag_macOS",
+                           "description":  "URLhaus tag: macOS"
+                       }
+                   ]
+}

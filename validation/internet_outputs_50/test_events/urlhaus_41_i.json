@@ -1,0 +1,136 @@
+{
+  "sigma": {
+    "638cd98f-15e2-51ec-bf74-51ae7882582c": {
+      "negative": [
+        {
+          "DestinationIp": "127.0.0.1",
+          "event_type": "network_connection"
+        }
+      ],
+      "positive": [
+        {
+          "DestinationIp": "222.141.47.94",
+          "event_type": "network_connection"
+        }
+      ]
+    },
+    "6a683bce-b97f-5f02-be0e-0ba862e1f152": {
+      "negative": [
+        {
+          "DestinationIp": "127.0.0.1",
+          "event_type": "network_connection"
+        }
+      ],
+      "positive": [
+        {
+          "DestinationIp": "222.141.47.94",
+          "event_type": "network_connection"
+        }
+      ]
+    },
+    "7dca569e-c6df-54eb-acb3-7179cbeeb873": {
+      "negative": [
+        {
+          "CommandLine": "notepad.exe C:\\notes.txt",
+          "Image": "notepad.exe",
+          "event_type": "process_creation"
+        }
+      ],
+      "positive": [
+        {
+          "CommandLine": "urlhaus_41_i --urlhaus-validation",
+          "Image": "urlhaus_41_i",
+          "event_type": "process_creation"
+        }
+      ]
+    },
+    "acd5db0c-6115-5036-b348-8f204ce45313": {
+      "negative": [
+        {
+          "TargetFilename": "C:\\Users\\Public\\notes.txt",
+          "event_type": "file_event"
+        }
+      ],
+      "positive": [
+        {
+          "TargetFilename": "C:\\Users\\Public\\Downloads\\urlhaus_41_i",
+          "event_type": "file_event"
+        }
+      ]
+    }
+  },
+  "wazuh": {
+    "102373": {
+      "negative": [
+        {
+          "decoder": "json",
+          "group": "sysmon,file_event,",
+          "win.eventdata.targetFilename": "C:\\Users\\Public\\notes.txt",
+          "win.system.eventID": "benign-value"
+        }
+      ],
+      "positive": [
+        {
+          "decoder": "json",
+          "group": "sysmon,file_event,",
+          "win.eventdata.targetFilename": "C:\\Users\\Public\\Downloads\\urlhaus_41_i",
+          "win.system.eventID": "11"
+        }
+      ]
+    },
+    "107795": {
+      "negative": [
+        {
+          "decoder": "",
+          "group": "sysmon,process_creation,",
+          "win.eventdata.commandLine": "notepad.exe C:\\notes.txt",
+          "win.eventdata.image": "notepad.exe"
+        }
+      ],
+      "positive": [
+        {
+          "decoder": "",
+          "group": "sysmon,process_creation,",
+          "win.eventdata.commandLine": "urlhaus_41_i --urlhaus-validation",
+          "win.eventdata.image": "urlhaus_41_i"
+        }
+      ]
+    },
+    "108909": {
+      "negative": [
+        {
+          "decoder": "json",
+          "group": "sysmon,network_connection,",
+          "win.eventdata.destinationIp": "127.0.0.1",
+          "win.system.eventID": "benign-value"
+        }
+      ],
+      "positive": [
+        {
+          "decoder": "json",
+          "group": "sysmon,network_connection,",
+          "win.eventdata.destinationIp": "222.141.47.94",
+          "win.system.eventID": "3"
+        }
+      ]
+    },
+    "110583": {
+      "negative": [
+        {
+          "decoder": "json",
+          "group": "sysmon,network_connection,",
+          "win.eventdata.destinationIp": "127.0.0.1",
+          "win.system.eventID": "benign-value"
+        }
+      ],
+      "positive": [
+        {
+          "decoder": "json",
+          "group": "sysmon,network_connection,",
+          "win.eventdata.destinationIp": "222.141.47.94",
+          "win.system.eventID": "3"
+        }
+      ]
+    }
+  }
+}

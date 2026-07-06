@@ -1,0 +1,66 @@
+title: HTTP connection observed http //14.0.131.161 38465/i
+description: 'HTTP connection observed: http://14.0.131.161:38465/i'
+logsource:
+  category: network_connection
+  product: linux
+detection:
+  selection:
+    url|contains: http://14.0.131.161:38465/i
+    destination.ip: 14.0.131.161
+  condition: selection
+level: medium
+status: experimental
+author: malware-behavior-detection-generator
+tags:
+- attack.t1071.001
+- attack.t1571
+references:
+- generated-by:malware-behavior-detection-generator
+- source:cuckoo
+falsepositives:
+- Unknown
+fields:
+- url|contains
+- destination.ip
+metadata:
+  tool: malware-behavior-detection-generator
+  behavior_category: network
+  platform_context: linux_or_iot
+  trace:
+    source_behavior_category: network
+    source_behavior_description: 'HTTP connection observed: http://14.0.131.161:38465/i'
+    source_behavior_evidence:
+    - uri: http://14.0.131.161:38465/i
+      host: 14.0.131.161
+      ip: 14.0.131.161
+      host_is_ip: true
+      port: 38465
+    source_behavior_tags:
+    - http_connection
+    - non_standard_port
+    - arch_mips
+    - family_mozi
+    - format_elf
+    - platform_linux_or_iot
+    - platform_non_windows
+    platform_context: linux_or_iot
+    attack_technique_ids:
+    - T1071.001
+    - T1571
+    attack_tags:
+    - attack.t1071.001
+    - attack.t1571
+    selector_reason: 'Network selector chosen for linux_or_iot telemetry from observed
+      IP evidence using: destination.ip, url|contains.'
+  review:
+    status: unreviewed
+    reviewer: ''
+    notes: ''
+  version:
+    tool_name: malware-behavior-detection-generator
+    tool_version: 0.1.0
+    rule_version: 1.0.0
+    generated_at: '2026-07-01T10:00:18+00:00'
+    source_report_hash: null
+    content_hash: e2c26c755641a6509e10f9e20f1ca2980b5159441bb555f652e83a2603c7b54a
+id: 3ec22d8b-edbe-5029-ae47-9759641603f1

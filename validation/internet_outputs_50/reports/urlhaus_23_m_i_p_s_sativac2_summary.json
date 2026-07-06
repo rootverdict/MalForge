@@ -1,0 +1,344 @@
+{
+  "artifacts": {
+    "attack_techniques": [
+      "T1059",
+      "T1071",
+      "T1071.001",
+      "T1105",
+      "T1571"
+    ],
+    "ioc_values": [
+      {
+        "type": "ipv4",
+        "value": "85.204.125.67"
+      },
+      {
+        "type": "url",
+        "value": "http://85.204.125.67:8080/m-i.p-s.SativaC2"
+      },
+      {
+        "type": "file_path",
+        "value": "/tmp/urlhaus_23_m-i.p-s.SativaC2"
+      }
+    ],
+    "navigator_technique_count": 5,
+    "review_states": [
+      "unreviewed"
+    ],
+    "sigma_rule_ids": [
+      "c0c3202d-a912-5fc2-9644-4d4a00c7769d",
+      "0952089b-e07c-5cbb-bdeb-d27bd15f6bf8",
+      "7ad1782e-d8eb-5e18-9c16-b4ea64b90454",
+      "32485a0b-72b8-5234-96eb-d788a7ebc24f"
+    ],
+    "sigma_rule_traces": [
+      {
+        "rule_id": "c0c3202d-a912-5fc2-9644-4d4a00c7769d",
+        "title": "Process created urlhaus_23_m-i.p-s.SativaC2",
+        "trace": {
+          "attack_tags": [
+            "attack.t1059"
+          ],
+          "attack_technique_ids": [
+            "T1059"
+          ],
+          "platform_context": "non_windows",
+          "selector_reason": "Process selector chosen for non_windows telemetry from executable and command line evidence using: cmdline|contains, exe|endswith.",
+          "source_behavior_category": "process",
+          "source_behavior_description": "Process created: urlhaus_23_m-i.p-s.SativaC2 (urlhaus_23_m-i.p-s.SativaC2 --urlhaus-validation)",
+          "source_behavior_evidence": [
+            {
+              "command_line": "urlhaus_23_m-i.p-s.SativaC2 --urlhaus-validation",
+              "pid": 9023,
+              "process_name": "urlhaus_23_m-i.p-s.SativaC2"
+            }
+          ],
+          "source_behavior_tags": [
+            "process_create",
+            "platform_linux_or_iot",
+            "platform_non_windows"
+          ]
+        }
+      },
+      {
+        "rule_id": "0952089b-e07c-5cbb-bdeb-d27bd15f6bf8",
+        "title": "File dropped to user-accessible path /tmp/urlhaus_23_m-i.p-s.SativaC2",
+        "trace": {
+          "attack_tags": [
+            "attack.t1105"
+          ],
+          "attack_technique_ids": [
+            "T1105"
+          ],
+          "platform_context": "non_windows",
+          "selector_reason": "File selector chosen for non_windows telemetry from observed file path evidence using: file.path|contains.",
+          "source_behavior_category": "file",
+          "source_behavior_description": "File dropped to user-accessible path: /tmp/urlhaus_23_m-i.p-s.SativaC2",
+          "source_behavior_evidence": [
+            {
+              "path": "/tmp/urlhaus_23_m-i.p-s.SativaC2",
+              "raw": "/tmp/urlhaus_23_m-i.p-s.SativaC2"
+            }
+          ],
+          "source_behavior_tags": [
+            "file_drop",
+            "platform_linux_or_iot",
+            "platform_non_windows"
+          ]
+        }
+      },
+      {
+        "rule_id": "7ad1782e-d8eb-5e18-9c16-b4ea64b90454",
+        "title": "IP connection observed 85.204.125.67",
+        "trace": {
+          "attack_tags": [
+            "attack.t1071"
+          ],
+          "attack_technique_ids": [
+            "T1071"
+          ],
+          "platform_context": "non_windows",
+          "selector_reason": "Network selector chosen for non_windows telemetry from observed IP evidence using: destination.ip.",
+          "source_behavior_category": "network",
+          "source_behavior_description": "IP connection observed: 85.204.125.67",
+          "source_behavior_evidence": [
+            {
+              "domain": "85.204.125.67",
+              "ip": "85.204.125.67",
+              "source_field": "domain"
+            }
+          ],
+          "source_behavior_tags": [
+            "ip_connection",
+            "platform_linux_or_iot",
+            "platform_non_windows"
+          ]
+        }
+      },
+      {
+        "rule_id": "32485a0b-72b8-5234-96eb-d788a7ebc24f",
+        "title": "HTTP connection observed http //85.204.125.67 8080/m-i.p-s.SativaC2",
+        "trace": {
+          "attack_tags": [
+            "attack.t1071.001",
+            "attack.t1571"
+          ],
+          "attack_technique_ids": [
+            "T1071.001",
+            "T1571"
+          ],
+          "platform_context": "non_windows",
+          "selector_reason": "Network selector chosen for non_windows telemetry from observed IP evidence using: destination.ip, url|contains.",
+          "source_behavior_category": "network",
+          "source_behavior_description": "HTTP connection observed: http://85.204.125.67:8080/m-i.p-s.SativaC2",
+          "source_behavior_evidence": [
+            {
+              "host": "85.204.125.67",
+              "host_is_ip": true,
+              "ip": "85.204.125.67",
+              "port": 8080,
+              "uri": "http://85.204.125.67:8080/m-i.p-s.SativaC2"
+            }
+          ],
+          "source_behavior_tags": [
+            "http_connection",
+            "non_standard_port",
+            "platform_linux_or_iot",
+            "platform_non_windows"
+          ]
+        }
+      }
+    ],
+    "wazuh_rule_ids": [
+      108764,
+      110128,
+      117321,
+      102534
+    ],
+    "wazuh_rule_traces": [
+      {
+        "rule_id": 108764,
+        "trace": {
+          "conversion_reason": "Rule converted using Linux/generic JSON field matching; no Windows Sysmon parent or win.eventdata fields are used.",
+          "source_sigma_rule_description": "Process created: urlhaus_23_m-i.p-s.SativaC2 (urlhaus_23_m-i.p-s.SativaC2 --urlhaus-validation)",
+          "source_sigma_rule_id": "c0c3202d-a912-5fc2-9644-4d4a00c7769d",
+          "source_sigma_rule_title": "Process created urlhaus_23_m-i.p-s.SativaC2",
+          "source_sigma_trace": {
+            "attack_tags": [
+              "attack.t1059"
+            ],
+            "attack_technique_ids": [
+              "T1059"
+            ],
+            "platform_context": "non_windows",
+            "selector_reason": "Process selector chosen for non_windows telemetry from executable and command line evidence using: cmdline|contains, exe|endswith.",
+            "source_behavior_category": "process",
+            "source_behavior_description": "Process created: urlhaus_23_m-i.p-s.SativaC2 (urlhaus_23_m-i.p-s.SativaC2 --urlhaus-validation)",
+            "source_behavior_evidence": [
+              {
+                "command_line": "urlhaus_23_m-i.p-s.SativaC2 --urlhaus-validation",
+                "pid": 9023,
+                "process_name": "urlhaus_23_m-i.p-s.SativaC2"
+              }
+            ],
+            "source_behavior_tags": [
+              "process_create",
+              "platform_linux_or_iot",
+              "platform_non_windows"
+            ]
+          }
+        }
+      },
+      {
+        "rule_id": 110128,
+        "trace": {
+          "conversion_reason": "Rule converted using Linux/generic JSON field matching; no Windows Sysmon parent or win.eventdata fields are used.",
+          "source_sigma_rule_description": "File dropped to user-accessible path: /tmp/urlhaus_23_m-i.p-s.SativaC2",
+          "source_sigma_rule_id": "0952089b-e07c-5cbb-bdeb-d27bd15f6bf8",
+          "source_sigma_rule_title": "File dropped to user-accessible path /tmp/urlhaus_23_m-i.p-s.SativaC2",
+          "source_sigma_trace": {
+            "attack_tags": [
+              "attack.t1105"
+            ],
+            "attack_technique_ids": [
+              "T1105"
+            ],
+            "platform_context": "non_windows",
+            "selector_reason": "File selector chosen for non_windows telemetry from observed file path evidence using: file.path|contains.",
+            "source_behavior_category": "file",
+            "source_behavior_description": "File dropped to user-accessible path: /tmp/urlhaus_23_m-i.p-s.SativaC2",
+            "source_behavior_evidence": [
+              {
+                "path": "/tmp/urlhaus_23_m-i.p-s.SativaC2",
+                "raw": "/tmp/urlhaus_23_m-i.p-s.SativaC2"
+              }
+            ],
+            "source_behavior_tags": [
+              "file_drop",
+              "platform_linux_or_iot",
+              "platform_non_windows"
+            ]
+          }
+        }
+      },
+      {
+        "rule_id": 117321,
+        "trace": {
+          "conversion_reason": "Rule converted using Linux/generic JSON field matching; no Windows Sysmon parent or win.eventdata fields are used.",
+          "source_sigma_rule_description": "IP connection observed: 85.204.125.67",
+          "source_sigma_rule_id": "7ad1782e-d8eb-5e18-9c16-b4ea64b90454",
+          "source_sigma_rule_title": "IP connection observed 85.204.125.67",
+          "source_sigma_trace": {
+            "attack_tags": [
+              "attack.t1071"
+            ],
+            "attack_technique_ids": [
+              "T1071"
+            ],
+            "platform_context": "non_windows",
+            "selector_reason": "Network selector chosen for non_windows telemetry from observed IP evidence using: destination.ip.",
+            "source_behavior_category": "network",
+            "source_behavior_description": "IP connection observed: 85.204.125.67",
+            "source_behavior_evidence": [
+              {
+                "domain": "85.204.125.67",
+                "ip": "85.204.125.67",
+                "source_field": "domain"
+              }
+            ],
+            "source_behavior_tags": [
+              "ip_connection",
+              "platform_linux_or_iot",
+              "platform_non_windows"
+            ]
+          }
+        }
+      },
+      {
+        "rule_id": 102534,
+        "trace": {
+          "conversion_reason": "Rule converted using Linux/generic JSON field matching; no Windows Sysmon parent or win.eventdata fields are used.",
+          "source_sigma_rule_description": "HTTP connection observed: http://85.204.125.67:8080/m-i.p-s.SativaC2",
+          "source_sigma_rule_id": "32485a0b-72b8-5234-96eb-d788a7ebc24f",
+          "source_sigma_rule_title": "HTTP connection observed http //85.204.125.67 8080/m-i.p-s.SativaC2",
+          "source_sigma_trace": {
+            "attack_tags": [
+              "attack.t1071.001",
+              "attack.t1571"
+            ],
+            "attack_technique_ids": [
+              "T1071.001",
+              "T1571"
+            ],
+            "platform_context": "non_windows",
+            "selector_reason": "Network selector chosen for non_windows telemetry from observed IP evidence using: destination.ip, url|contains.",
+            "source_behavior_category": "network",
+            "source_behavior_description": "HTTP connection observed: http://85.204.125.67:8080/m-i.p-s.SativaC2",
+            "source_behavior_evidence": [
+              {
+                "host": "85.204.125.67",
+                "host_is_ip": true,
+                "ip": "85.204.125.67",
+                "port": 8080,
+                "uri": "http://85.204.125.67:8080/m-i.p-s.SativaC2"
+              }
+            ],
+            "source_behavior_tags": [
+              "http_connection",
+              "non_standard_port",
+              "platform_linux_or_iot",
+              "platform_non_windows"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "averages": {
+    "attack_confidence": 0.74,
+    "risk_score": 62.75
+  },
+  "counts": {
+    "attack_technique_count": 5,
+    "behaviors_by_category": {
+      "file": 1,
+      "network": 2,
+      "process": 1
+    },
+    "iocs_by_type": {
+      "file_path": 1,
+      "ipv4": 1,
+      "url": 1
+    },
+    "sigma_rule_count": 4,
+    "validation": {
+      "failed": 0,
+      "passed": 8,
+      "warning_count": 0
+    },
+    "wazuh_rule_count": 4
+  },
+  "generated_at": "2026-07-01T10:00:18+00:00",
+  "sample": {
+    "hash_status": {
+      "complete": false,
+      "missing": [
+        "md5",
+        "sha1",
+        "sha256"
+      ],
+      "note": "Payload hashes unavailable from source report."
+    },
+    "hashes": {
+      "md5": "",
+      "sha1": "",
+      "sha256": ""
+    },
+    "name": "urlhaus_23_m-i.p-s.SativaC2",
+    "sandbox": "cuckoo"
+  },
+  "tool": {
+    "name": "malware-behavior-detection-generator",
+    "version": "0.1.0"
+  }
+}

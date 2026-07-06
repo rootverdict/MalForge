@@ -1,0 +1,57 @@
+title: Process created urlhaus_03_Zoom 11.vbs
+description: 'Process created: urlhaus_03_Zoom 11.vbs (urlhaus_03_Zoom 11.vbs --urlhaus-validation)'
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_image:
+    Image|endswith: urlhaus_03_Zoom 11.vbs
+  selection_cmdline:
+    CommandLine|contains: urlhaus_03_Zoom 11.vbs --urlhaus-validation
+  condition: all of them
+level: medium
+status: experimental
+author: malware-behavior-detection-generator
+tags:
+- attack.t1059
+references:
+- generated-by:malware-behavior-detection-generator
+- source:cuckoo
+falsepositives:
+- Unknown
+fields:
+- Image
+- CommandLine
+metadata:
+  tool: malware-behavior-detection-generator
+  behavior_category: process
+  platform_context: windows
+  trace:
+    source_behavior_category: process
+    source_behavior_description: 'Process created: urlhaus_03_Zoom 11.vbs (urlhaus_03_Zoom
+      11.vbs --urlhaus-validation)'
+    source_behavior_evidence:
+    - process_name: urlhaus_03_Zoom 11.vbs
+      pid: 9003
+      command_line: urlhaus_03_Zoom 11.vbs --urlhaus-validation
+    source_behavior_tags:
+    - process_create
+    platform_context: windows
+    attack_technique_ids:
+    - T1059
+    attack_tags:
+    - attack.t1059
+    selector_reason: 'Process selector chosen for windows telemetry from executable
+      and command line evidence using: CommandLine|contains, Image|endswith.'
+  review:
+    status: unreviewed
+    reviewer: ''
+    notes: ''
+  version:
+    tool_name: malware-behavior-detection-generator
+    tool_version: 0.1.0
+    rule_version: 1.0.0
+    generated_at: '2026-07-01T10:00:17+00:00'
+    source_report_hash: null
+    content_hash: 4d65b1ac051a1cecce81f9df1a53bd2ec595f9ab2eeab3f74034a2adda13e1fb
+id: 673158fe-4f78-50bd-bcb9-3f4d2477e11e

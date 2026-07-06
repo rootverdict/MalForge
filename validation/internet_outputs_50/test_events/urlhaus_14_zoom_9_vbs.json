@@ -1,0 +1,136 @@
+{
+  "sigma": {
+    "170390bc-bc71-5f6f-a95b-7169c86d4443": {
+      "negative": [
+        {
+          "DestinationHostname": "localhost.localdomain",
+          "event_type": "network_connection"
+        }
+      ],
+      "positive": [
+        {
+          "DestinationHostname": "jim-s.com",
+          "event_type": "network_connection"
+        }
+      ]
+    },
+    "2c5e4d3f-f0d8-52bc-8971-7500d6d0f951": {
+      "negative": [
+        {
+          "TargetFilename": "C:\\Users\\Public\\notes.txt",
+          "event_type": "file_event"
+        }
+      ],
+      "positive": [
+        {
+          "TargetFilename": "C:\\Users\\Public\\Downloads\\urlhaus_14_Zoom 9.vbs",
+          "event_type": "file_event"
+        }
+      ]
+    },
+    "57fe2415-fdc0-5175-8760-e956414af378": {
+      "negative": [
+        {
+          "QueryName": "localhost.localdomain",
+          "event_type": "dns_query"
+        }
+      ],
+      "positive": [
+        {
+          "QueryName": "jim-s.com",
+          "event_type": "dns_query"
+        }
+      ]
+    },
+    "f8cdece4-4dab-5795-b5b8-8156638f0563": {
+      "negative": [
+        {
+          "CommandLine": "notepad.exe C:\\notes.txt",
+          "Image": "notepad.exe",
+          "event_type": "process_creation"
+        }
+      ],
+      "positive": [
+        {
+          "CommandLine": "urlhaus_14_Zoom 9.vbs --urlhaus-validation",
+          "Image": "urlhaus_14_Zoom 9.vbs",
+          "event_type": "process_creation"
+        }
+      ]
+    }
+  },
+  "wazuh": {
+    "102320": {
+      "negative": [
+        {
+          "decoder": "json",
+          "group": "sysmon,file_event,",
+          "win.eventdata.targetFilename": "C:\\Users\\Public\\notes.txt",
+          "win.system.eventID": "benign-value"
+        }
+      ],
+      "positive": [
+        {
+          "decoder": "json",
+          "group": "sysmon,file_event,",
+          "win.eventdata.targetFilename": "C:\\Users\\Public\\Downloads\\urlhaus_14_Zoom 9.vbs",
+          "win.system.eventID": "11"
+        }
+      ]
+    },
+    "111459": {
+      "negative": [
+        {
+          "decoder": "",
+          "group": "sysmon,process_creation,",
+          "win.eventdata.commandLine": "notepad.exe C:\\notes.txt",
+          "win.eventdata.image": "notepad.exe"
+        }
+      ],
+      "positive": [
+        {
+          "decoder": "",
+          "group": "sysmon,process_creation,",
+          "win.eventdata.commandLine": "urlhaus_14_Zoom 9.vbs --urlhaus-validation",
+          "win.eventdata.image": "urlhaus_14_Zoom 9.vbs"
+        }
+      ]
+    },
+    "116462": {
+      "negative": [
+        {
+          "decoder": "json",
+          "group": "sysmon,network_connection,",
+          "win.eventdata.destinationHostname": "localhost.localdomain",
+          "win.system.eventID": "benign-value"
+        }
+      ],
+      "positive": [
+        {
+          "decoder": "json",
+          "group": "sysmon,network_connection,",
+          "win.eventdata.destinationHostname": "jim-s.com",
+          "win.system.eventID": "3"
+        }
+      ]
+    },
+    "119856": {
+      "negative": [
+        {
+          "decoder": "json",
+          "group": "sysmon,dns,",
+          "win.eventdata.queryName": "localhost.localdomain",
+          "win.system.eventID": "benign-value"
+        }
+      ],
+      "positive": [
+        {
+          "decoder": "json",
+          "group": "sysmon,dns,",
+          "win.eventdata.queryName": "jim-s.com",
+          "win.system.eventID": "22"
+        }
+      ]
+    }
+  }
+}

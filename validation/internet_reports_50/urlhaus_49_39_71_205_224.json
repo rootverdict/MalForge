@@ -1,0 +1,82 @@
+﻿{
+    "info":  {
+                 "id":  70049,
+                 "score":  5,
+                 "machine":  "internet-validation-urlhaus",
+                 "source":  "URLhaus recent CSV",
+                 "source_url":  "https://urlhaus.abuse.ch/downloads/csv_recent/",
+                 "urlhaus_id":  "3878797",
+                 "dateadded":  "2026-07-01 07:10:32",
+                 "threat":  "malware_download",
+                 "url_status":  "online",
+                 "urlhaus_link":  "https://urlhaus.abuse.ch/url/3878797/",
+                 "tags":  [
+                              "32-bit",
+                              "elf",
+                              "mips",
+                              "Mozi"
+                          ]
+             },
+    "target":  {
+                   "file":  {
+                                "name":  "urlhaus_49_bin.sh",
+                                "md5":  "",
+                                "sha1":  "",
+                                "sha256":  ""
+                            }
+               },
+    "behavior":  {
+                     "processes":  [
+                                       {
+                                           "process_name":  "urlhaus_49_bin.sh",
+                                           "pid":  9049,
+                                           "command_line":  "urlhaus_49_bin.sh --urlhaus-validation"
+                                       }
+                                   ],
+                     "summary":  {
+                                     "files":  [
+                                                   "/tmp/urlhaus_49_bin.sh"
+                                               ],
+                                     "keys":  [
+
+                                              ],
+                                     "mutexes":  [
+
+                                                 ]
+                                 }
+                 },
+    "network":  {
+                    "hosts":  [
+
+                              ],
+                    "domains":  [
+                                    {
+                                        "domain":  "39.71.205.224"
+                                    }
+                                ],
+                    "http":  [
+                                 {
+                                     "uri":  "http://39.71.205.224:59523/bin.sh",
+                                     "host":  "39.71.205.224"
+                                 }
+                             ]
+                },
+    "signatures":  [
+                       {
+                           "name":  "urlhaus_tag_32_bit",
+                           "description":  "URLhaus tag: 32-bit"
+                       },
+                       {
+                           "name":  "urlhaus_tag_elf",
+                           "description":  "URLhaus tag: elf"
+                       },
+                       {
+                           "name":  "urlhaus_tag_mips",
+                           "description":  "URLhaus tag: mips"
+                       },
+                       {
+                           "name":  "urlhaus_tag_Mozi",
+                           "description":  "URLhaus tag: Mozi"
+                       }
+                   ]
+}

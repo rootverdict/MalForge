@@ -1,0 +1,77 @@
+﻿{
+    "info":  {
+                 "id":  70036,
+                 "score":  5,
+                 "machine":  "internet-validation-urlhaus",
+                 "source":  "URLhaus recent CSV",
+                 "source_url":  "https://urlhaus.abuse.ch/downloads/csv_recent/",
+                 "urlhaus_id":  "3878810",
+                 "dateadded":  "2026-07-01 07:43:17",
+                 "threat":  "malware_download",
+                 "url_status":  "online",
+                 "urlhaus_link":  "https://urlhaus.abuse.ch/url/3878810/",
+                 "tags":  [
+                              "elf",
+                              "iot",
+                              "Mozi"
+                          ]
+             },
+    "target":  {
+                   "file":  {
+                                "name":  "urlhaus_36_Mozi.m",
+                                "md5":  "",
+                                "sha1":  "",
+                                "sha256":  ""
+                            }
+               },
+    "behavior":  {
+                     "processes":  [
+                                       {
+                                           "process_name":  "urlhaus_36_Mozi.m",
+                                           "pid":  9036,
+                                           "command_line":  "urlhaus_36_Mozi.m --urlhaus-validation"
+                                       }
+                                   ],
+                     "summary":  {
+                                     "files":  [
+                                                   "/tmp/urlhaus_36_Mozi.m"
+                                               ],
+                                     "keys":  [
+
+                                              ],
+                                     "mutexes":  [
+
+                                                 ]
+                                 }
+                 },
+    "network":  {
+                    "hosts":  [
+
+                              ],
+                    "domains":  [
+                                    {
+                                        "domain":  "112.27.10.150"
+                                    }
+                                ],
+                    "http":  [
+                                 {
+                                     "uri":  "http://112.27.10.150:34339/Mozi.m",
+                                     "host":  "112.27.10.150"
+                                 }
+                             ]
+                },
+    "signatures":  [
+                       {
+                           "name":  "urlhaus_tag_elf",
+                           "description":  "URLhaus tag: elf"
+                       },
+                       {
+                           "name":  "urlhaus_tag_iot",
+                           "description":  "URLhaus tag: iot"
+                       },
+                       {
+                           "name":  "urlhaus_tag_Mozi",
+                           "description":  "URLhaus tag: Mozi"
+                       }
+                   ]
+}

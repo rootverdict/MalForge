@@ -1,0 +1,67 @@
+﻿{
+    "info":  {
+                 "id":  70037,
+                 "score":  5,
+                 "machine":  "internet-validation-urlhaus",
+                 "source":  "URLhaus recent CSV",
+                 "source_url":  "https://urlhaus.abuse.ch/downloads/csv_recent/",
+                 "urlhaus_id":  "3878809",
+                 "dateadded":  "2026-07-01 07:43:10",
+                 "threat":  "malware_download",
+                 "url_status":  "online",
+                 "urlhaus_link":  "https://urlhaus.abuse.ch/url/3878809/",
+                 "tags":  [
+                              "NetSupport"
+                          ]
+             },
+    "target":  {
+                   "file":  {
+                                "name":  "urlhaus_37_NS2H.zip",
+                                "md5":  "",
+                                "sha1":  "",
+                                "sha256":  ""
+                            }
+               },
+    "behavior":  {
+                     "processes":  [
+                                       {
+                                           "process_name":  "urlhaus_37_NS2H.zip",
+                                           "pid":  9037,
+                                           "command_line":  "urlhaus_37_NS2H.zip --urlhaus-validation"
+                                       }
+                                   ],
+                     "summary":  {
+                                     "files":  [
+                                                   "C:\\Users\\Public\\Downloads\\urlhaus_37_NS2H.zip"
+                                               ],
+                                     "keys":  [
+
+                                              ],
+                                     "mutexes":  [
+
+                                                 ]
+                                 }
+                 },
+    "network":  {
+                    "hosts":  [
+
+                              ],
+                    "domains":  [
+                                    {
+                                        "domain":  "easyfiles.cc"
+                                    }
+                                ],
+                    "http":  [
+                                 {
+                                     "uri":  "https://easyfiles.cc/2026/6/ce0a3ffe-dc52-470b-8686-99cd20029255/NS2H.zip",
+                                     "host":  "easyfiles.cc"
+                                 }
+                             ]
+                },
+    "signatures":  [
+                       {
+                           "name":  "urlhaus_tag_NetSupport",
+                           "description":  "URLhaus tag: NetSupport"
+                       }
+                   ]
+}

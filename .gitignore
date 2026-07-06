@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+
+# Environment
+.env
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Generated project outputs
+output/sigma/*
+!output/sigma/.gitkeep
+output/wazuh/*
+!output/wazuh/.gitkeep
+output/test_events/*
+!output/test_events/.gitkeep
+output/reports/*
+!output/reports/.gitkeep
+output/iocs/*
+!output/iocs/.gitkeep
+output/navigator/*
+!output/navigator/.gitkeep

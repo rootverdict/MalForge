@@ -1,0 +1,134 @@
+{
+  "sigma": {
+    "27887604-0626-532b-8f00-0f1e7d1e361d": {
+      "negative": [
+        {
+          "event_type": "file_event",
+          "file.path": "benign-value"
+        }
+      ],
+      "positive": [
+        {
+          "event_type": "file_event",
+          "file.path": "urlhaus_36_Mozi.m"
+        }
+      ]
+    },
+    "a101fd5c-8b65-54ca-8fda-ff0a2fc4fd7f": {
+      "negative": [
+        {
+          "destination.ip": "benign-value",
+          "event_type": "network_connection"
+        }
+      ],
+      "positive": [
+        {
+          "destination.ip": "112.27.10.150",
+          "event_type": "network_connection"
+        }
+      ]
+    },
+    "a70fa687-730e-5562-addc-629faaebb2f3": {
+      "negative": [
+        {
+          "cmdline": "benign-value",
+          "event_type": "process_creation",
+          "exe": "benign-value"
+        }
+      ],
+      "positive": [
+        {
+          "cmdline": "urlhaus_36_Mozi.m --urlhaus-validation",
+          "event_type": "process_creation",
+          "exe": "urlhaus_36_Mozi.m"
+        }
+      ]
+    },
+    "f4d6d5b8-f0ba-52dc-a5a2-59c5978557af": {
+      "negative": [
+        {
+          "destination.ip": "benign-value",
+          "event_type": "network_connection",
+          "url": "benign-value"
+        }
+      ],
+      "positive": [
+        {
+          "destination.ip": "112.27.10.150",
+          "event_type": "network_connection",
+          "url": "http://112.27.10.150:34339/Mozi.m"
+        }
+      ]
+    }
+  },
+  "wazuh": {
+    "106281": {
+      "negative": [
+        {
+          "audit.file.path": "benign-value",
+          "decoder": "json",
+          "group": "linux,auditd,file_event,"
+        }
+      ],
+      "positive": [
+        {
+          "audit.file.path": "urlhaus_36_Mozi.m",
+          "decoder": "json",
+          "group": "linux,auditd,file_event,"
+        }
+      ]
+    },
+    "109636": {
+      "negative": [
+        {
+          "decoder": "json",
+          "dstip": "benign-value",
+          "group": "linux,network_connection,"
+        }
+      ],
+      "positive": [
+        {
+          "decoder": "json",
+          "dstip": "112.27.10.150",
+          "group": "linux,network_connection,"
+        }
+      ]
+    },
+    "115595": {
+      "negative": [
+        {
+          "decoder": "json",
+          "dstip": "benign-value",
+          "group": "linux,network_connection,",
+          "url": "benign-value"
+        }
+      ],
+      "positive": [
+        {
+          "decoder": "json",
+          "dstip": "112.27.10.150",
+          "group": "linux,network_connection,",
+          "url": "http://112.27.10.150:34339/Mozi.m"
+        }
+      ]
+    },
+    "116614": {
+      "negative": [
+        {
+          "audit.command": "benign-value",
+          "audit.exe": "benign-value",
+          "decoder": "json",
+          "group": "linux,auditd,process_creation,"
+        }
+      ],
+      "positive": [
+        {
+          "audit.command": "urlhaus_36_Mozi.m --urlhaus-validation",
+          "audit.exe": "urlhaus_36_Mozi.m",
+          "decoder": "json",
+          "group": "linux,auditd,process_creation,"
+        }
+      ]
+    }
+  }
+}

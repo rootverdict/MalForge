@@ -1,0 +1,352 @@
+{
+  "artifacts": {
+    "attack_techniques": [
+      "T1059",
+      "T1071",
+      "T1071.001",
+      "T1105",
+      "T1571"
+    ],
+    "ioc_values": [
+      {
+        "type": "ipv4",
+        "value": "125.41.133.47"
+      },
+      {
+        "type": "url",
+        "value": "http://125.41.133.47:43078/i"
+      },
+      {
+        "type": "file_path",
+        "value": "/tmp/urlhaus_43_i"
+      }
+    ],
+    "navigator_technique_count": 5,
+    "review_states": [
+      "unreviewed"
+    ],
+    "sigma_rule_ids": [
+      "37d2cdc8-e3bb-599c-91bf-c2d797969144",
+      "db2c4941-05d1-5d43-a771-5a6bb79ea4a0",
+      "3ab520bb-0a3c-5a0c-995f-14ac219585cf",
+      "033d9e68-99fe-5526-a833-4b65a2cc5ea8"
+    ],
+    "sigma_rule_traces": [
+      {
+        "rule_id": "37d2cdc8-e3bb-599c-91bf-c2d797969144",
+        "title": "Process created urlhaus_43_i",
+        "trace": {
+          "attack_tags": [
+            "attack.t1059"
+          ],
+          "attack_technique_ids": [
+            "T1059"
+          ],
+          "platform_context": "non_windows",
+          "selector_reason": "Process selector chosen for non_windows telemetry from executable and command line evidence using: cmdline|contains, exe|endswith.",
+          "source_behavior_category": "process",
+          "source_behavior_description": "Process created: urlhaus_43_i (urlhaus_43_i --urlhaus-validation)",
+          "source_behavior_evidence": [
+            {
+              "command_line": "urlhaus_43_i --urlhaus-validation",
+              "pid": 9043,
+              "process_name": "urlhaus_43_i"
+            }
+          ],
+          "source_behavior_tags": [
+            "process_create",
+            "family_mozi",
+            "platform_linux_or_iot",
+            "platform_non_windows"
+          ]
+        }
+      },
+      {
+        "rule_id": "db2c4941-05d1-5d43-a771-5a6bb79ea4a0",
+        "title": "File dropped to user-accessible path /tmp/urlhaus_43_i",
+        "trace": {
+          "attack_tags": [
+            "attack.t1105"
+          ],
+          "attack_technique_ids": [
+            "T1105"
+          ],
+          "platform_context": "non_windows",
+          "selector_reason": "File selector chosen for non_windows telemetry from observed file path evidence using: file.path|contains.",
+          "source_behavior_category": "file",
+          "source_behavior_description": "File dropped to user-accessible path: /tmp/urlhaus_43_i",
+          "source_behavior_evidence": [
+            {
+              "path": "/tmp/urlhaus_43_i",
+              "raw": "/tmp/urlhaus_43_i"
+            }
+          ],
+          "source_behavior_tags": [
+            "file_drop",
+            "family_mozi",
+            "platform_linux_or_iot",
+            "platform_non_windows"
+          ]
+        }
+      },
+      {
+        "rule_id": "3ab520bb-0a3c-5a0c-995f-14ac219585cf",
+        "title": "IP connection observed 125.41.133.47",
+        "trace": {
+          "attack_tags": [
+            "attack.t1071"
+          ],
+          "attack_technique_ids": [
+            "T1071"
+          ],
+          "platform_context": "non_windows",
+          "selector_reason": "Network selector chosen for non_windows telemetry from observed IP evidence using: destination.ip.",
+          "source_behavior_category": "network",
+          "source_behavior_description": "IP connection observed: 125.41.133.47",
+          "source_behavior_evidence": [
+            {
+              "domain": "125.41.133.47",
+              "ip": "125.41.133.47",
+              "source_field": "domain"
+            }
+          ],
+          "source_behavior_tags": [
+            "ip_connection",
+            "family_mozi",
+            "platform_linux_or_iot",
+            "platform_non_windows"
+          ]
+        }
+      },
+      {
+        "rule_id": "033d9e68-99fe-5526-a833-4b65a2cc5ea8",
+        "title": "HTTP connection observed http //125.41.133.47 43078/i",
+        "trace": {
+          "attack_tags": [
+            "attack.t1071.001",
+            "attack.t1571"
+          ],
+          "attack_technique_ids": [
+            "T1071.001",
+            "T1571"
+          ],
+          "platform_context": "non_windows",
+          "selector_reason": "Network selector chosen for non_windows telemetry from observed IP evidence using: destination.ip, url|contains.",
+          "source_behavior_category": "network",
+          "source_behavior_description": "HTTP connection observed: http://125.41.133.47:43078/i",
+          "source_behavior_evidence": [
+            {
+              "host": "125.41.133.47",
+              "host_is_ip": true,
+              "ip": "125.41.133.47",
+              "port": 43078,
+              "uri": "http://125.41.133.47:43078/i"
+            }
+          ],
+          "source_behavior_tags": [
+            "http_connection",
+            "non_standard_port",
+            "family_mozi",
+            "platform_linux_or_iot",
+            "platform_non_windows"
+          ]
+        }
+      }
+    ],
+    "wazuh_rule_ids": [
+      117687,
+      108368,
+      106557,
+      112886
+    ],
+    "wazuh_rule_traces": [
+      {
+        "rule_id": 117687,
+        "trace": {
+          "conversion_reason": "Rule converted using Linux/generic JSON field matching; no Windows Sysmon parent or win.eventdata fields are used.",
+          "source_sigma_rule_description": "Process created: urlhaus_43_i (urlhaus_43_i --urlhaus-validation)",
+          "source_sigma_rule_id": "37d2cdc8-e3bb-599c-91bf-c2d797969144",
+          "source_sigma_rule_title": "Process created urlhaus_43_i",
+          "source_sigma_trace": {
+            "attack_tags": [
+              "attack.t1059"
+            ],
+            "attack_technique_ids": [
+              "T1059"
+            ],
+            "platform_context": "non_windows",
+            "selector_reason": "Process selector chosen for non_windows telemetry from executable and command line evidence using: cmdline|contains, exe|endswith.",
+            "source_behavior_category": "process",
+            "source_behavior_description": "Process created: urlhaus_43_i (urlhaus_43_i --urlhaus-validation)",
+            "source_behavior_evidence": [
+              {
+                "command_line": "urlhaus_43_i --urlhaus-validation",
+                "pid": 9043,
+                "process_name": "urlhaus_43_i"
+              }
+            ],
+            "source_behavior_tags": [
+              "process_create",
+              "family_mozi",
+              "platform_linux_or_iot",
+              "platform_non_windows"
+            ]
+          }
+        }
+      },
+      {
+        "rule_id": 108368,
+        "trace": {
+          "conversion_reason": "Rule converted using Linux/generic JSON field matching; no Windows Sysmon parent or win.eventdata fields are used.",
+          "source_sigma_rule_description": "File dropped to user-accessible path: /tmp/urlhaus_43_i",
+          "source_sigma_rule_id": "db2c4941-05d1-5d43-a771-5a6bb79ea4a0",
+          "source_sigma_rule_title": "File dropped to user-accessible path /tmp/urlhaus_43_i",
+          "source_sigma_trace": {
+            "attack_tags": [
+              "attack.t1105"
+            ],
+            "attack_technique_ids": [
+              "T1105"
+            ],
+            "platform_context": "non_windows",
+            "selector_reason": "File selector chosen for non_windows telemetry from observed file path evidence using: file.path|contains.",
+            "source_behavior_category": "file",
+            "source_behavior_description": "File dropped to user-accessible path: /tmp/urlhaus_43_i",
+            "source_behavior_evidence": [
+              {
+                "path": "/tmp/urlhaus_43_i",
+                "raw": "/tmp/urlhaus_43_i"
+              }
+            ],
+            "source_behavior_tags": [
+              "file_drop",
+              "family_mozi",
+              "platform_linux_or_iot",
+              "platform_non_windows"
+            ]
+          }
+        }
+      },
+      {
+        "rule_id": 106557,
+        "trace": {
+          "conversion_reason": "Rule converted using Linux/generic JSON field matching; no Windows Sysmon parent or win.eventdata fields are used.",
+          "source_sigma_rule_description": "IP connection observed: 125.41.133.47",
+          "source_sigma_rule_id": "3ab520bb-0a3c-5a0c-995f-14ac219585cf",
+          "source_sigma_rule_title": "IP connection observed 125.41.133.47",
+          "source_sigma_trace": {
+            "attack_tags": [
+              "attack.t1071"
+            ],
+            "attack_technique_ids": [
+              "T1071"
+            ],
+            "platform_context": "non_windows",
+            "selector_reason": "Network selector chosen for non_windows telemetry from observed IP evidence using: destination.ip.",
+            "source_behavior_category": "network",
+            "source_behavior_description": "IP connection observed: 125.41.133.47",
+            "source_behavior_evidence": [
+              {
+                "domain": "125.41.133.47",
+                "ip": "125.41.133.47",
+                "source_field": "domain"
+              }
+            ],
+            "source_behavior_tags": [
+              "ip_connection",
+              "family_mozi",
+              "platform_linux_or_iot",
+              "platform_non_windows"
+            ]
+          }
+        }
+      },
+      {
+        "rule_id": 112886,
+        "trace": {
+          "conversion_reason": "Rule converted using Linux/generic JSON field matching; no Windows Sysmon parent or win.eventdata fields are used.",
+          "source_sigma_rule_description": "HTTP connection observed: http://125.41.133.47:43078/i",
+          "source_sigma_rule_id": "033d9e68-99fe-5526-a833-4b65a2cc5ea8",
+          "source_sigma_rule_title": "HTTP connection observed http //125.41.133.47 43078/i",
+          "source_sigma_trace": {
+            "attack_tags": [
+              "attack.t1071.001",
+              "attack.t1571"
+            ],
+            "attack_technique_ids": [
+              "T1071.001",
+              "T1571"
+            ],
+            "platform_context": "non_windows",
+            "selector_reason": "Network selector chosen for non_windows telemetry from observed IP evidence using: destination.ip, url|contains.",
+            "source_behavior_category": "network",
+            "source_behavior_description": "HTTP connection observed: http://125.41.133.47:43078/i",
+            "source_behavior_evidence": [
+              {
+                "host": "125.41.133.47",
+                "host_is_ip": true,
+                "ip": "125.41.133.47",
+                "port": 43078,
+                "uri": "http://125.41.133.47:43078/i"
+              }
+            ],
+            "source_behavior_tags": [
+              "http_connection",
+              "non_standard_port",
+              "family_mozi",
+              "platform_linux_or_iot",
+              "platform_non_windows"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "averages": {
+    "attack_confidence": 0.74,
+    "risk_score": 62.75
+  },
+  "counts": {
+    "attack_technique_count": 5,
+    "behaviors_by_category": {
+      "file": 1,
+      "network": 2,
+      "process": 1
+    },
+    "iocs_by_type": {
+      "file_path": 1,
+      "ipv4": 1,
+      "url": 1
+    },
+    "sigma_rule_count": 4,
+    "validation": {
+      "failed": 0,
+      "passed": 8,
+      "warning_count": 0
+    },
+    "wazuh_rule_count": 4
+  },
+  "generated_at": "2026-07-01T10:00:18+00:00",
+  "sample": {
+    "hash_status": {
+      "complete": false,
+      "missing": [
+        "md5",
+        "sha1",
+        "sha256"
+      ],
+      "note": "Payload hashes unavailable from source report."
+    },
+    "hashes": {
+      "md5": "",
+      "sha1": "",
+      "sha256": ""
+    },
+    "name": "urlhaus_43_i",
+    "sandbox": "cuckoo"
+  },
+  "tool": {
+    "name": "malware-behavior-detection-generator",
+    "version": "0.1.0"
+  }
+}

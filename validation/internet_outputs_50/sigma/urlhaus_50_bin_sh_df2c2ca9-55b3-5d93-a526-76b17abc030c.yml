@@ -1,0 +1,56 @@
+title: IP connection observed 112.239.101.142
+description: 'IP connection observed: 112.239.101.142'
+logsource:
+  category: network_connection
+  product: linux
+detection:
+  selection:
+    destination.ip: 112.239.101.142
+  condition: selection
+level: medium
+status: experimental
+author: malware-behavior-detection-generator
+tags:
+- attack.t1071
+references:
+- generated-by:malware-behavior-detection-generator
+- source:cuckoo
+falsepositives:
+- Unknown
+fields:
+- destination.ip
+metadata:
+  tool: malware-behavior-detection-generator
+  behavior_category: network
+  platform_context: non_windows
+  trace:
+    source_behavior_category: network
+    source_behavior_description: 'IP connection observed: 112.239.101.142'
+    source_behavior_evidence:
+    - domain: 112.239.101.142
+      source_field: domain
+      ip: 112.239.101.142
+    source_behavior_tags:
+    - ip_connection
+    - family_mozi
+    - platform_linux_or_iot
+    - platform_non_windows
+    platform_context: non_windows
+    attack_technique_ids:
+    - T1071
+    attack_tags:
+    - attack.t1071
+    selector_reason: 'Network selector chosen for non_windows telemetry from observed
+      IP evidence using: destination.ip.'
+  review:
+    status: unreviewed
+    reviewer: ''
+    notes: ''
+  version:
+    tool_name: malware-behavior-detection-generator
+    tool_version: 0.1.0
+    rule_version: 1.0.0
+    generated_at: '2026-07-01T10:00:18+00:00'
+    source_report_hash: null
+    content_hash: 86341d2f0503421230158c3879b06bc5e9fefafb08143176fee270436645569a
+id: df2c2ca9-55b3-5d93-a526-76b17abc030c

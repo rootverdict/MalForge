@@ -1,0 +1,35 @@
+project:
+  name: malware-behavior-detection-generator
+  environment: development
+  tool_version: 0.1.0
+
+paths:
+  samples_dir: samples
+  docs_dir: docs
+  output_dir: output
+  tests_dir: tests
+
+sandboxes:
+  supported:
+    - cuckoo
+    - cape
+    - anyrun
+
+artifacts:
+  sigma_dir: output/sigma
+  wazuh_dir: output/wazuh
+  test_events_dir: output/test_events
+  reports_dir: output/reports
+  iocs_dir: output/iocs
+  navigator_dir: output/navigator
+
+wazuh:
+  custom_rule_id_start: 100000
+  custom_rule_id_end: 119999
+  custom_rule_id_offset: 0
+
+integrations:
+  urlhaus_csv: ""
+  virustotal_api_key: ""
+  misp_url: ""
+  misp_api_key: ""

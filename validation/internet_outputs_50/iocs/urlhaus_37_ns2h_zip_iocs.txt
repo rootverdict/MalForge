@@ -1,0 +1,3 @@
+domain: easyfiles.cc
+url: https://easyfiles.cc/2026/6/ce0a3ffe-dc52-470b-8686-99cd20029255/NS2H.zip
+file_path: C:\Users\Public\Downloads\urlhaus_37_NS2H.zip

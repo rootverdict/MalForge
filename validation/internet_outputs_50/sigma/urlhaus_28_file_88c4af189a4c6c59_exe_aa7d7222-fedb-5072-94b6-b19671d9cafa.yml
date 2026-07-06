@@ -1,0 +1,58 @@
+title: Process created urlhaus_28_file_88c4af189a4c6c59.exe
+description: 'Process created: urlhaus_28_file_88c4af189a4c6c59.exe (urlhaus_28_file_88c4af189a4c6c59.exe
+  --urlhaus-validation)'
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_image:
+    Image|endswith: urlhaus_28_file_88c4af189a4c6c59.exe
+  selection_cmdline:
+    CommandLine|contains: urlhaus_28_file_88c4af189a4c6c59.exe --urlhaus-validation
+  condition: all of them
+level: medium
+status: experimental
+author: malware-behavior-detection-generator
+tags:
+- attack.t1059
+references:
+- generated-by:malware-behavior-detection-generator
+- source:cuckoo
+falsepositives:
+- Unknown
+fields:
+- Image
+- CommandLine
+metadata:
+  tool: malware-behavior-detection-generator
+  behavior_category: process
+  platform_context: windows
+  trace:
+    source_behavior_category: process
+    source_behavior_description: 'Process created: urlhaus_28_file_88c4af189a4c6c59.exe
+      (urlhaus_28_file_88c4af189a4c6c59.exe --urlhaus-validation)'
+    source_behavior_evidence:
+    - process_name: urlhaus_28_file_88c4af189a4c6c59.exe
+      pid: 9028
+      command_line: urlhaus_28_file_88c4af189a4c6c59.exe --urlhaus-validation
+    source_behavior_tags:
+    - process_create
+    platform_context: windows
+    attack_technique_ids:
+    - T1059
+    attack_tags:
+    - attack.t1059
+    selector_reason: 'Process selector chosen for windows telemetry from executable
+      and command line evidence using: CommandLine|contains, Image|endswith.'
+  review:
+    status: unreviewed
+    reviewer: ''
+    notes: ''
+  version:
+    tool_name: malware-behavior-detection-generator
+    tool_version: 0.1.0
+    rule_version: 1.0.0
+    generated_at: '2026-07-01T10:00:18+00:00'
+    source_report_hash: null
+    content_hash: 7e7dd312b27bf15fe82cd619f633e0f20ab6494e032f45f44fd4b213cc1b5ce7
+id: aa7d7222-fedb-5072-94b6-b19671d9cafa

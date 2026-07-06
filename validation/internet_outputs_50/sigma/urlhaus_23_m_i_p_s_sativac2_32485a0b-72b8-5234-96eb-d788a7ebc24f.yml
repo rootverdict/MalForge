@@ -1,0 +1,63 @@
+title: HTTP connection observed http //85.204.125.67 8080/m-i.p-s.SativaC2
+description: 'HTTP connection observed: http://85.204.125.67:8080/m-i.p-s.SativaC2'
+logsource:
+  category: network_connection
+  product: linux
+detection:
+  selection:
+    url|contains: http://85.204.125.67:8080/m-i.p-s.SativaC2
+    destination.ip: 85.204.125.67
+  condition: selection
+level: medium
+status: experimental
+author: malware-behavior-detection-generator
+tags:
+- attack.t1071.001
+- attack.t1571
+references:
+- generated-by:malware-behavior-detection-generator
+- source:cuckoo
+falsepositives:
+- Unknown
+fields:
+- url|contains
+- destination.ip
+metadata:
+  tool: malware-behavior-detection-generator
+  behavior_category: network
+  platform_context: non_windows
+  trace:
+    source_behavior_category: network
+    source_behavior_description: 'HTTP connection observed: http://85.204.125.67:8080/m-i.p-s.SativaC2'
+    source_behavior_evidence:
+    - uri: http://85.204.125.67:8080/m-i.p-s.SativaC2
+      host: 85.204.125.67
+      ip: 85.204.125.67
+      host_is_ip: true
+      port: 8080
+    source_behavior_tags:
+    - http_connection
+    - non_standard_port
+    - platform_linux_or_iot
+    - platform_non_windows
+    platform_context: non_windows
+    attack_technique_ids:
+    - T1071.001
+    - T1571
+    attack_tags:
+    - attack.t1071.001
+    - attack.t1571
+    selector_reason: 'Network selector chosen for non_windows telemetry from observed
+      IP evidence using: destination.ip, url|contains.'
+  review:
+    status: unreviewed
+    reviewer: ''
+    notes: ''
+  version:
+    tool_name: malware-behavior-detection-generator
+    tool_version: 0.1.0
+    rule_version: 1.0.0
+    generated_at: '2026-07-01T10:00:18+00:00'
+    source_report_hash: null
+    content_hash: 84382e26625c635010ca9361f0547ef7246e378deca3956cef01441c9f01a3c9
+id: 32485a0b-72b8-5234-96eb-d788a7ebc24f

@@ -1,0 +1,3 @@
+ipv4: 85.204.125.67
+url: http://85.204.125.67:8080/payload.sh
+file_path: C:\Users\Public\Downloads\urlhaus_24_payload.sh

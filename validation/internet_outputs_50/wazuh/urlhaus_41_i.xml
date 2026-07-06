@@ -1,0 +1,43 @@
+<group name="malware_behavior_detection_generator,">
+  <rule id="107795" level="7">
+    <if_sid>61603</if_sid>
+    <field name="win.eventdata.commandLine">urlhaus_41_i --urlhaus-validation</field>
+    <field name="win.eventdata.image">urlhaus_41_i</field>
+    <description>Process created: urlhaus_41_i (urlhaus_41_i --urlhaus-validation)</description>
+    <group>sysmon,process_creation,</group>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+  </rule>
+  <rule id="102373" level="10">
+    <decoded_as>json</decoded_as>
+    <description>File dropped to user-accessible path: C:\Users\Public\Downloads\urlhaus_41_i</description>
+    <group>sysmon,file_event,</group>
+    <field name="win.eventdata.targetFilename">C:\\Users\\Public\\Downloads\\urlhaus_41_i</field>
+    <field name="win.system.eventID">11</field>
+    <mitre>
+      <id>T1105</id>
+    </mitre>
+  </rule>
+  <rule id="108909" level="7">
+    <decoded_as>json</decoded_as>
+    <description>IP connection observed: 222.141.47.94</description>
+    <group>sysmon,network_connection,</group>
+    <field name="win.eventdata.destinationIp">222\.141\.47\.94</field>
+    <field name="win.system.eventID">3</field>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+  </rule>
+  <rule id="110583" level="7">
+    <decoded_as>json</decoded_as>
+    <description>HTTP connection observed: http://222.141.47.94:48327/i</description>
+    <group>sysmon,network_connection,</group>
+    <field name="win.eventdata.destinationIp">222\.141\.47\.94</field>
+    <field name="win.system.eventID">3</field>
+    <mitre>
+      <id>T1071.001</id>
+      <id>T1571</id>
+    </mitre>
+  </rule>
+</group>

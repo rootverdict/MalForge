@@ -1,0 +1,59 @@
+[
+  {
+    "confidence": 0.7,
+    "context": {
+      "raw": {
+        "domain": "91.92.242.236"
+      },
+      "source_section": "network.domain"
+    },
+    "source": "cuckoo",
+    "tags": [
+      "network"
+    ],
+    "type": "ipv4",
+    "value": "91.92.242.236"
+  },
+  {
+    "confidence": 0.7,
+    "context": {
+      "raw": {
+        "host": "91.92.242.236",
+        "uri": "http://91.92.242.236/files-129312398/files/file_88c4af189a4c6c59.exe"
+      },
+      "source_section": "network"
+    },
+    "source": "cuckoo",
+    "tags": [
+      "network"
+    ],
+    "type": "url",
+    "value": "http://91.92.242.236/files-129312398/files/file_88c4af189a4c6c59.exe"
+  },
+  {
+    "confidence": 0.6,
+    "context": {
+      "raw": "C:\\Users\\Public\\Downloads\\urlhaus_28_file_88c4af189a4c6c59.exe",
+      "source_section": "files"
+    },
+    "source": "cuckoo",
+    "tags": [
+      "filesystem"
+    ],
+    "type": "file_path",
+    "value": "C:\\Users\\Public\\Downloads\\urlhaus_28_file_88c4af189a4c6c59.exe"
+  },
+  {
+    "confidence": 0.3,
+    "context": {
+      "behavior": "Process created: urlhaus_28_file_88c4af189a4c6c59.exe (urlhaus_28_file_88c4af189a4c6c59.exe --urlhaus-validation)",
+      "category": "process"
+    },
+    "source": "cuckoo",
+    "tags": [
+      "process_image"
+    ],
+    "type": "file_path",
+    "value": "urlhaus_28_file_88c4af189a4c6c59.exe"
+  }
+]

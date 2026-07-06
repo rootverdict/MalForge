@@ -1,0 +1,46 @@
+[
+  {
+    "confidence": 0.7,
+    "context": {
+      "raw": {
+        "domain": "cdn.jsdelivr.net"
+      },
+      "source_section": "network"
+    },
+    "source": "cuckoo",
+    "tags": [
+      "network"
+    ],
+    "type": "domain",
+    "value": "cdn.jsdelivr.net"
+  },
+  {
+    "confidence": 0.7,
+    "context": {
+      "raw": {
+        "host": "cdn.jsdelivr.net",
+        "uri": "https://cdn.jsdelivr.net/gh/recavrylog/roandatech@1cc983d/rp_4"
+      },
+      "source_section": "network"
+    },
+    "source": "cuckoo",
+    "tags": [
+      "network"
+    ],
+    "type": "url",
+    "value": "https://cdn.jsdelivr.net/gh/recavrylog/roandatech@1cc983d/rp_4"
+  },
+  {
+    "confidence": 0.6,
+    "context": {
+      "raw": "C:\\Users\\Public\\Downloads\\urlhaus_46_rp_4",
+      "source_section": "files"
+    },
+    "source": "cuckoo",
+    "tags": [
+      "filesystem"
+    ],
+    "type": "file_path",
+    "value": "C:\\Users\\Public\\Downloads\\urlhaus_46_rp_4"
+  }
+]

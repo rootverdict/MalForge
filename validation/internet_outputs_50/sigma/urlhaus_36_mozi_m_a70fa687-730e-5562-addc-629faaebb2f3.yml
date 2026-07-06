@@ -1,0 +1,62 @@
+title: Process created urlhaus_36_Mozi.m
+description: 'Process created: urlhaus_36_Mozi.m (urlhaus_36_Mozi.m --urlhaus-validation)'
+logsource:
+  category: process_creation
+  product: linux
+  service: auditd
+detection:
+  selection_exe:
+    exe|endswith: urlhaus_36_Mozi.m
+  selection_cmdline:
+    cmdline|contains: urlhaus_36_Mozi.m --urlhaus-validation
+  condition: all of them
+level: medium
+status: experimental
+author: malware-behavior-detection-generator
+tags:
+- attack.t1059
+references:
+- generated-by:malware-behavior-detection-generator
+- source:cuckoo
+falsepositives:
+- Unknown
+fields:
+- exe
+- cmdline
+metadata:
+  tool: malware-behavior-detection-generator
+  behavior_category: process
+  platform_context: linux_or_iot
+  trace:
+    source_behavior_category: process
+    source_behavior_description: 'Process created: urlhaus_36_Mozi.m (urlhaus_36_Mozi.m
+      --urlhaus-validation)'
+    source_behavior_evidence:
+    - process_name: urlhaus_36_Mozi.m
+      pid: 9036
+      command_line: urlhaus_36_Mozi.m --urlhaus-validation
+    source_behavior_tags:
+    - process_create
+    - family_mozi
+    - format_elf
+    - platform_linux_or_iot
+    - platform_non_windows
+    platform_context: linux_or_iot
+    attack_technique_ids:
+    - T1059
+    attack_tags:
+    - attack.t1059
+    selector_reason: 'Process selector chosen for linux_or_iot telemetry from executable
+      and command line evidence using: cmdline|contains, exe|endswith.'
+  review:
+    status: unreviewed
+    reviewer: ''
+    notes: ''
+  version:
+    tool_name: malware-behavior-detection-generator
+    tool_version: 0.1.0
+    rule_version: 1.0.0
+    generated_at: '2026-07-01T10:00:18+00:00'
+    source_report_hash: null
+    content_hash: c19d53d45854b51a444d2c9de9101ac7effd2915ca746304550f375269660929
+id: a70fa687-730e-5562-addc-629faaebb2f3

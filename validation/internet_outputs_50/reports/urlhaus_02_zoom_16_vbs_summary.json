@@ -1,0 +1,311 @@
+{
+  "artifacts": {
+    "attack_techniques": [
+      "T1059",
+      "T1071.001",
+      "T1071.004",
+      "T1105"
+    ],
+    "ioc_values": [
+      {
+        "type": "domain",
+        "value": "jim-s.com"
+      },
+      {
+        "type": "url",
+        "value": "https://jim-s.com/ab/Zoom_meeting/Meeting%20Invite%20HTML/downloads/windows/aboki/Zoom%2016.vbs"
+      },
+      {
+        "type": "file_path",
+        "value": "C:\\Users\\Public\\Downloads\\urlhaus_02_Zoom 16.vbs"
+      }
+    ],
+    "navigator_technique_count": 4,
+    "review_states": [
+      "unreviewed"
+    ],
+    "sigma_rule_ids": [
+      "11f8fbfe-e630-52c7-89e4-2699c6830dba",
+      "42616780-0f64-5e61-b562-56ead854b36a",
+      "57fe2415-fdc0-5175-8760-e956414af378",
+      "8a443f9c-6248-5c84-98c1-55241a936ef7"
+    ],
+    "sigma_rule_traces": [
+      {
+        "rule_id": "11f8fbfe-e630-52c7-89e4-2699c6830dba",
+        "title": "Process created urlhaus_02_Zoom 16.vbs",
+        "trace": {
+          "attack_tags": [
+            "attack.t1059"
+          ],
+          "attack_technique_ids": [
+            "T1059"
+          ],
+          "platform_context": "windows",
+          "selector_reason": "Process selector chosen for windows telemetry from executable and command line evidence using: CommandLine|contains, Image|endswith.",
+          "source_behavior_category": "process",
+          "source_behavior_description": "Process created: urlhaus_02_Zoom 16.vbs (urlhaus_02_Zoom 16.vbs --urlhaus-validation)",
+          "source_behavior_evidence": [
+            {
+              "command_line": "urlhaus_02_Zoom 16.vbs --urlhaus-validation",
+              "pid": 9002,
+              "process_name": "urlhaus_02_Zoom 16.vbs"
+            }
+          ],
+          "source_behavior_tags": [
+            "process_create"
+          ]
+        }
+      },
+      {
+        "rule_id": "42616780-0f64-5e61-b562-56ead854b36a",
+        "title": "File dropped to user-accessible path C \\Users\\Public\\Downloads\\urlhaus_02_Zoom 16.vbs",
+        "trace": {
+          "attack_tags": [
+            "attack.t1105"
+          ],
+          "attack_technique_ids": [
+            "T1105"
+          ],
+          "platform_context": "windows",
+          "selector_reason": "File selector chosen for windows telemetry from observed file path evidence using: TargetFilename|contains.",
+          "source_behavior_category": "file",
+          "source_behavior_description": "File dropped to user-accessible path: C:\\Users\\Public\\Downloads\\urlhaus_02_Zoom 16.vbs",
+          "source_behavior_evidence": [
+            {
+              "path": "C:\\Users\\Public\\Downloads\\urlhaus_02_Zoom 16.vbs",
+              "raw": "C:\\Users\\Public\\Downloads\\urlhaus_02_Zoom 16.vbs"
+            }
+          ],
+          "source_behavior_tags": [
+            "file_drop"
+          ]
+        }
+      },
+      {
+        "rule_id": "57fe2415-fdc0-5175-8760-e956414af378",
+        "title": "DNS lookup observed jim-s.com",
+        "trace": {
+          "attack_tags": [
+            "attack.t1071.004"
+          ],
+          "attack_technique_ids": [
+            "T1071.004"
+          ],
+          "platform_context": "windows",
+          "selector_reason": "Network selector chosen for windows telemetry from observed DNS/domain evidence using: QueryName|contains.",
+          "source_behavior_category": "network",
+          "source_behavior_description": "DNS lookup observed: jim-s.com",
+          "source_behavior_evidence": [
+            {
+              "domain": "jim-s.com"
+            }
+          ],
+          "source_behavior_tags": [
+            "dns_query"
+          ]
+        }
+      },
+      {
+        "rule_id": "8a443f9c-6248-5c84-98c1-55241a936ef7",
+        "title": "HTTP connection observed https //jim-s.com/ab/Zoom_meeting/Meeting%20Invite%20HTML/downloads/windows/aboki/Zoom%2016.vbs",
+        "trace": {
+          "attack_tags": [
+            "attack.t1071.001"
+          ],
+          "attack_technique_ids": [
+            "T1071.001"
+          ],
+          "platform_context": "windows",
+          "selector_reason": "Network selector chosen for windows telemetry from observed network evidence using: DestinationHostname|contains.",
+          "source_behavior_category": "network",
+          "source_behavior_description": "HTTP connection observed: https://jim-s.com/ab/Zoom_meeting/Meeting%20Invite%20HTML/downloads/windows/aboki/Zoom%2016.vbs",
+          "source_behavior_evidence": [
+            {
+              "host": "jim-s.com",
+              "uri": "https://jim-s.com/ab/Zoom_meeting/Meeting%20Invite%20HTML/downloads/windows/aboki/Zoom%2016.vbs"
+            }
+          ],
+          "source_behavior_tags": [
+            "http_connection"
+          ]
+        }
+      }
+    ],
+    "wazuh_rule_ids": [
+      112819,
+      114979,
+      119856,
+      119237
+    ],
+    "wazuh_rule_traces": [
+      {
+        "rule_id": 112819,
+        "trace": {
+          "conversion_reason": "Process creation converted using Sysmon parent rule 61603 and win.eventdata image and commandLine fields when available.",
+          "source_sigma_rule_description": "Process created: urlhaus_02_Zoom 16.vbs (urlhaus_02_Zoom 16.vbs --urlhaus-validation)",
+          "source_sigma_rule_id": "11f8fbfe-e630-52c7-89e4-2699c6830dba",
+          "source_sigma_rule_title": "Process created urlhaus_02_Zoom 16.vbs",
+          "source_sigma_trace": {
+            "attack_tags": [
+              "attack.t1059"
+            ],
+            "attack_technique_ids": [
+              "T1059"
+            ],
+            "platform_context": "windows",
+            "selector_reason": "Process selector chosen for windows telemetry from executable and command line evidence using: CommandLine|contains, Image|endswith.",
+            "source_behavior_category": "process",
+            "source_behavior_description": "Process created: urlhaus_02_Zoom 16.vbs (urlhaus_02_Zoom 16.vbs --urlhaus-validation)",
+            "source_behavior_evidence": [
+              {
+                "command_line": "urlhaus_02_Zoom 16.vbs --urlhaus-validation",
+                "pid": 9002,
+                "process_name": "urlhaus_02_Zoom 16.vbs"
+              }
+            ],
+            "source_behavior_tags": [
+              "process_create"
+            ]
+          }
+        }
+      },
+      {
+        "rule_id": 114979,
+        "trace": {
+          "conversion_reason": "Non-process Windows rule converted using decoded JSON Wazuh field matching.",
+          "source_sigma_rule_description": "File dropped to user-accessible path: C:\\Users\\Public\\Downloads\\urlhaus_02_Zoom 16.vbs",
+          "source_sigma_rule_id": "42616780-0f64-5e61-b562-56ead854b36a",
+          "source_sigma_rule_title": "File dropped to user-accessible path C \\Users\\Public\\Downloads\\urlhaus_02_Zoom 16.vbs",
+          "source_sigma_trace": {
+            "attack_tags": [
+              "attack.t1105"
+            ],
+            "attack_technique_ids": [
+              "T1105"
+            ],
+            "platform_context": "windows",
+            "selector_reason": "File selector chosen for windows telemetry from observed file path evidence using: TargetFilename|contains.",
+            "source_behavior_category": "file",
+            "source_behavior_description": "File dropped to user-accessible path: C:\\Users\\Public\\Downloads\\urlhaus_02_Zoom 16.vbs",
+            "source_behavior_evidence": [
+              {
+                "path": "C:\\Users\\Public\\Downloads\\urlhaus_02_Zoom 16.vbs",
+                "raw": "C:\\Users\\Public\\Downloads\\urlhaus_02_Zoom 16.vbs"
+              }
+            ],
+            "source_behavior_tags": [
+              "file_drop"
+            ]
+          }
+        }
+      },
+      {
+        "rule_id": 119856,
+        "trace": {
+          "conversion_reason": "Non-process Windows rule converted using decoded JSON Wazuh field matching.",
+          "source_sigma_rule_description": "DNS lookup observed: jim-s.com",
+          "source_sigma_rule_id": "57fe2415-fdc0-5175-8760-e956414af378",
+          "source_sigma_rule_title": "DNS lookup observed jim-s.com",
+          "source_sigma_trace": {
+            "attack_tags": [
+              "attack.t1071.004"
+            ],
+            "attack_technique_ids": [
+              "T1071.004"
+            ],
+            "platform_context": "windows",
+            "selector_reason": "Network selector chosen for windows telemetry from observed DNS/domain evidence using: QueryName|contains.",
+            "source_behavior_category": "network",
+            "source_behavior_description": "DNS lookup observed: jim-s.com",
+            "source_behavior_evidence": [
+              {
+                "domain": "jim-s.com"
+              }
+            ],
+            "source_behavior_tags": [
+              "dns_query"
+            ]
+          }
+        }
+      },
+      {
+        "rule_id": 119237,
+        "trace": {
+          "conversion_reason": "Non-process Windows rule converted using decoded JSON Wazuh field matching.",
+          "source_sigma_rule_description": "HTTP connection observed: https://jim-s.com/ab/Zoom_meeting/Meeting%20Invite%20HTML/downloads/windows/aboki/Zoom%2016.vbs",
+          "source_sigma_rule_id": "8a443f9c-6248-5c84-98c1-55241a936ef7",
+          "source_sigma_rule_title": "HTTP connection observed https //jim-s.com/ab/Zoom_meeting/Meeting%20Invite%20HTML/downloads/windows/aboki/Zoom%2016.vbs",
+          "source_sigma_trace": {
+            "attack_tags": [
+              "attack.t1071.001"
+            ],
+            "attack_technique_ids": [
+              "T1071.001"
+            ],
+            "platform_context": "windows",
+            "selector_reason": "Network selector chosen for windows telemetry from observed network evidence using: DestinationHostname|contains.",
+            "source_behavior_category": "network",
+            "source_behavior_description": "HTTP connection observed: https://jim-s.com/ab/Zoom_meeting/Meeting%20Invite%20HTML/downloads/windows/aboki/Zoom%2016.vbs",
+            "source_behavior_evidence": [
+              {
+                "host": "jim-s.com",
+                "uri": "https://jim-s.com/ab/Zoom_meeting/Meeting%20Invite%20HTML/downloads/windows/aboki/Zoom%2016.vbs"
+              }
+            ],
+            "source_behavior_tags": [
+              "http_connection"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "averages": {
+    "attack_confidence": 0.7875,
+    "risk_score": 77.5
+  },
+  "counts": {
+    "attack_technique_count": 4,
+    "behaviors_by_category": {
+      "file": 1,
+      "network": 2,
+      "process": 1
+    },
+    "iocs_by_type": {
+      "domain": 1,
+      "file_path": 1,
+      "url": 1
+    },
+    "sigma_rule_count": 4,
+    "validation": {
+      "failed": 0,
+      "passed": 8,
+      "warning_count": 0
+    },
+    "wazuh_rule_count": 4
+  },
+  "generated_at": "2026-07-01T10:00:17+00:00",
+  "sample": {
+    "hash_status": {
+      "complete": false,
+      "missing": [
+        "md5",
+        "sha1",
+        "sha256"
+      ],
+      "note": "Payload hashes unavailable from source report."
+    },
+    "hashes": {
+      "md5": "",
+      "sha1": "",
+      "sha256": ""
+    },
+    "name": "urlhaus_02_Zoom 16.vbs",
+    "sandbox": "cuckoo"
+  },
+  "tool": {
+    "name": "malware-behavior-detection-generator",
+    "version": "0.1.0"
+  }
+}

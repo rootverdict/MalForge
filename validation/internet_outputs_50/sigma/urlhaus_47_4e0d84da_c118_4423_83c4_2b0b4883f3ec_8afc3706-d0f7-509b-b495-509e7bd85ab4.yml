@@ -1,0 +1,58 @@
+title: Process created urlhaus_47_4e0d84da-c118-4423-83c4-2b0b4883f3ec
+description: 'Process created: urlhaus_47_4e0d84da-c118-4423-83c4-2b0b4883f3ec (urlhaus_47_4e0d84da-c118-4423-83c4-2b0b4883f3ec
+  --urlhaus-validation)'
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_image:
+    Image|endswith: urlhaus_47_4e0d84da-c118-4423-83c4-2b0b4883f3ec
+  selection_cmdline:
+    CommandLine|contains: urlhaus_47_4e0d84da-c118-4423-83c4-2b0b4883f3ec --urlhaus-validation
+  condition: all of them
+level: medium
+status: experimental
+author: malware-behavior-detection-generator
+tags:
+- attack.t1059
+references:
+- generated-by:malware-behavior-detection-generator
+- source:cuckoo
+falsepositives:
+- Unknown
+fields:
+- Image
+- CommandLine
+metadata:
+  tool: malware-behavior-detection-generator
+  behavior_category: process
+  platform_context: windows
+  trace:
+    source_behavior_category: process
+    source_behavior_description: 'Process created: urlhaus_47_4e0d84da-c118-4423-83c4-2b0b4883f3ec
+      (urlhaus_47_4e0d84da-c118-4423-83c4-2b0b4883f3ec --urlhaus-validation)'
+    source_behavior_evidence:
+    - process_name: urlhaus_47_4e0d84da-c118-4423-83c4-2b0b4883f3ec
+      pid: 9047
+      command_line: urlhaus_47_4e0d84da-c118-4423-83c4-2b0b4883f3ec --urlhaus-validation
+    source_behavior_tags:
+    - process_create
+    platform_context: windows
+    attack_technique_ids:
+    - T1059
+    attack_tags:
+    - attack.t1059
+    selector_reason: 'Process selector chosen for windows telemetry from executable
+      and command line evidence using: CommandLine|contains, Image|endswith.'
+  review:
+    status: unreviewed
+    reviewer: ''
+    notes: ''
+  version:
+    tool_name: malware-behavior-detection-generator
+    tool_version: 0.1.0
+    rule_version: 1.0.0
+    generated_at: '2026-07-01T10:00:18+00:00'
+    source_report_hash: null
+    content_hash: 6d2d76269f41e250d01dc648656732a14dbd3b1c120644c57c1b1c826d3bcec0
+id: 8afc3706-d0f7-509b-b495-509e7bd85ab4

@@ -1,0 +1,328 @@
+{
+  "artifacts": {
+    "attack_techniques": [
+      "T1059",
+      "T1071",
+      "T1071.001",
+      "T1105",
+      "T1571"
+    ],
+    "ioc_values": [
+      {
+        "type": "ipv4",
+        "value": "85.204.125.67"
+      },
+      {
+        "type": "url",
+        "value": "http://85.204.125.67:8080/payload.sh"
+      },
+      {
+        "type": "file_path",
+        "value": "C:\\Users\\Public\\Downloads\\urlhaus_24_payload.sh"
+      }
+    ],
+    "navigator_technique_count": 5,
+    "review_states": [
+      "unreviewed"
+    ],
+    "sigma_rule_ids": [
+      "b947a38f-1275-5fc2-afb6-f3008cdcb2b5",
+      "e71ad6d8-c786-5b2b-bf0c-ffaeb7496186",
+      "7ad1782e-d8eb-5e18-9c16-b4ea64b90454",
+      "1487f7ee-6a72-5e70-a530-25e4b12880f1"
+    ],
+    "sigma_rule_traces": [
+      {
+        "rule_id": "b947a38f-1275-5fc2-afb6-f3008cdcb2b5",
+        "title": "Process created urlhaus_24_payload.sh",
+        "trace": {
+          "attack_tags": [
+            "attack.t1059"
+          ],
+          "attack_technique_ids": [
+            "T1059"
+          ],
+          "platform_context": "windows",
+          "selector_reason": "Process selector chosen for windows telemetry from executable and command line evidence using: CommandLine|contains, Image|endswith.",
+          "source_behavior_category": "process",
+          "source_behavior_description": "Process created: urlhaus_24_payload.sh (urlhaus_24_payload.sh --urlhaus-validation)",
+          "source_behavior_evidence": [
+            {
+              "command_line": "urlhaus_24_payload.sh --urlhaus-validation",
+              "pid": 9024,
+              "process_name": "urlhaus_24_payload.sh"
+            }
+          ],
+          "source_behavior_tags": [
+            "process_create"
+          ]
+        }
+      },
+      {
+        "rule_id": "e71ad6d8-c786-5b2b-bf0c-ffaeb7496186",
+        "title": "File dropped to user-accessible path C \\Users\\Public\\Downloads\\urlhaus_24_payload.sh",
+        "trace": {
+          "attack_tags": [
+            "attack.t1105"
+          ],
+          "attack_technique_ids": [
+            "T1105"
+          ],
+          "platform_context": "windows",
+          "selector_reason": "File selector chosen for windows telemetry from observed file path evidence using: TargetFilename|contains.",
+          "source_behavior_category": "file",
+          "source_behavior_description": "File dropped to user-accessible path: C:\\Users\\Public\\Downloads\\urlhaus_24_payload.sh",
+          "source_behavior_evidence": [
+            {
+              "path": "C:\\Users\\Public\\Downloads\\urlhaus_24_payload.sh",
+              "raw": "C:\\Users\\Public\\Downloads\\urlhaus_24_payload.sh"
+            }
+          ],
+          "source_behavior_tags": [
+            "file_drop"
+          ]
+        }
+      },
+      {
+        "rule_id": "7ad1782e-d8eb-5e18-9c16-b4ea64b90454",
+        "title": "IP connection observed 85.204.125.67",
+        "trace": {
+          "attack_tags": [
+            "attack.t1071"
+          ],
+          "attack_technique_ids": [
+            "T1071"
+          ],
+          "platform_context": "windows",
+          "selector_reason": "Network selector chosen for windows telemetry from observed IP evidence using: DestinationIp.",
+          "source_behavior_category": "network",
+          "source_behavior_description": "IP connection observed: 85.204.125.67",
+          "source_behavior_evidence": [
+            {
+              "domain": "85.204.125.67",
+              "ip": "85.204.125.67",
+              "source_field": "domain"
+            }
+          ],
+          "source_behavior_tags": [
+            "ip_connection"
+          ]
+        }
+      },
+      {
+        "rule_id": "1487f7ee-6a72-5e70-a530-25e4b12880f1",
+        "title": "HTTP connection observed http //85.204.125.67 8080/payload.sh",
+        "trace": {
+          "attack_tags": [
+            "attack.t1071.001",
+            "attack.t1571"
+          ],
+          "attack_technique_ids": [
+            "T1071.001",
+            "T1571"
+          ],
+          "platform_context": "windows",
+          "selector_reason": "Network selector chosen for windows telemetry from observed IP evidence using: DestinationIp.",
+          "source_behavior_category": "network",
+          "source_behavior_description": "HTTP connection observed: http://85.204.125.67:8080/payload.sh",
+          "source_behavior_evidence": [
+            {
+              "host": "85.204.125.67",
+              "host_is_ip": true,
+              "ip": "85.204.125.67",
+              "port": 8080,
+              "uri": "http://85.204.125.67:8080/payload.sh"
+            }
+          ],
+          "source_behavior_tags": [
+            "http_connection",
+            "non_standard_port"
+          ]
+        }
+      }
+    ],
+    "wazuh_rule_ids": [
+      112659,
+      106333,
+      117321,
+      116049
+    ],
+    "wazuh_rule_traces": [
+      {
+        "rule_id": 112659,
+        "trace": {
+          "conversion_reason": "Process creation converted using Sysmon parent rule 61603 and win.eventdata image and commandLine fields when available.",
+          "source_sigma_rule_description": "Process created: urlhaus_24_payload.sh (urlhaus_24_payload.sh --urlhaus-validation)",
+          "source_sigma_rule_id": "b947a38f-1275-5fc2-afb6-f3008cdcb2b5",
+          "source_sigma_rule_title": "Process created urlhaus_24_payload.sh",
+          "source_sigma_trace": {
+            "attack_tags": [
+              "attack.t1059"
+            ],
+            "attack_technique_ids": [
+              "T1059"
+            ],
+            "platform_context": "windows",
+            "selector_reason": "Process selector chosen for windows telemetry from executable and command line evidence using: CommandLine|contains, Image|endswith.",
+            "source_behavior_category": "process",
+            "source_behavior_description": "Process created: urlhaus_24_payload.sh (urlhaus_24_payload.sh --urlhaus-validation)",
+            "source_behavior_evidence": [
+              {
+                "command_line": "urlhaus_24_payload.sh --urlhaus-validation",
+                "pid": 9024,
+                "process_name": "urlhaus_24_payload.sh"
+              }
+            ],
+            "source_behavior_tags": [
+              "process_create"
+            ]
+          }
+        }
+      },
+      {
+        "rule_id": 106333,
+        "trace": {
+          "conversion_reason": "Non-process Windows rule converted using decoded JSON Wazuh field matching.",
+          "source_sigma_rule_description": "File dropped to user-accessible path: C:\\Users\\Public\\Downloads\\urlhaus_24_payload.sh",
+          "source_sigma_rule_id": "e71ad6d8-c786-5b2b-bf0c-ffaeb7496186",
+          "source_sigma_rule_title": "File dropped to user-accessible path C \\Users\\Public\\Downloads\\urlhaus_24_payload.sh",
+          "source_sigma_trace": {
+            "attack_tags": [
+              "attack.t1105"
+            ],
+            "attack_technique_ids": [
+              "T1105"
+            ],
+            "platform_context": "windows",
+            "selector_reason": "File selector chosen for windows telemetry from observed file path evidence using: TargetFilename|contains.",
+            "source_behavior_category": "file",
+            "source_behavior_description": "File dropped to user-accessible path: C:\\Users\\Public\\Downloads\\urlhaus_24_payload.sh",
+            "source_behavior_evidence": [
+              {
+                "path": "C:\\Users\\Public\\Downloads\\urlhaus_24_payload.sh",
+                "raw": "C:\\Users\\Public\\Downloads\\urlhaus_24_payload.sh"
+              }
+            ],
+            "source_behavior_tags": [
+              "file_drop"
+            ]
+          }
+        }
+      },
+      {
+        "rule_id": 117321,
+        "trace": {
+          "conversion_reason": "Non-process Windows rule converted using decoded JSON Wazuh field matching.",
+          "source_sigma_rule_description": "IP connection observed: 85.204.125.67",
+          "source_sigma_rule_id": "7ad1782e-d8eb-5e18-9c16-b4ea64b90454",
+          "source_sigma_rule_title": "IP connection observed 85.204.125.67",
+          "source_sigma_trace": {
+            "attack_tags": [
+              "attack.t1071"
+            ],
+            "attack_technique_ids": [
+              "T1071"
+            ],
+            "platform_context": "windows",
+            "selector_reason": "Network selector chosen for windows telemetry from observed IP evidence using: DestinationIp.",
+            "source_behavior_category": "network",
+            "source_behavior_description": "IP connection observed: 85.204.125.67",
+            "source_behavior_evidence": [
+              {
+                "domain": "85.204.125.67",
+                "ip": "85.204.125.67",
+                "source_field": "domain"
+              }
+            ],
+            "source_behavior_tags": [
+              "ip_connection"
+            ]
+          }
+        }
+      },
+      {
+        "rule_id": 116049,
+        "trace": {
+          "conversion_reason": "Non-process Windows rule converted using decoded JSON Wazuh field matching.",
+          "source_sigma_rule_description": "HTTP connection observed: http://85.204.125.67:8080/payload.sh",
+          "source_sigma_rule_id": "1487f7ee-6a72-5e70-a530-25e4b12880f1",
+          "source_sigma_rule_title": "HTTP connection observed http //85.204.125.67 8080/payload.sh",
+          "source_sigma_trace": {
+            "attack_tags": [
+              "attack.t1071.001",
+              "attack.t1571"
+            ],
+            "attack_technique_ids": [
+              "T1071.001",
+              "T1571"
+            ],
+            "platform_context": "windows",
+            "selector_reason": "Network selector chosen for windows telemetry from observed IP evidence using: DestinationIp.",
+            "source_behavior_category": "network",
+            "source_behavior_description": "HTTP connection observed: http://85.204.125.67:8080/payload.sh",
+            "source_behavior_evidence": [
+              {
+                "host": "85.204.125.67",
+                "host_is_ip": true,
+                "ip": "85.204.125.67",
+                "port": 8080,
+                "uri": "http://85.204.125.67:8080/payload.sh"
+              }
+            ],
+            "source_behavior_tags": [
+              "http_connection",
+              "non_standard_port"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "averages": {
+    "attack_confidence": 0.74,
+    "risk_score": 77.5
+  },
+  "counts": {
+    "attack_technique_count": 5,
+    "behaviors_by_category": {
+      "file": 1,
+      "network": 2,
+      "process": 1
+    },
+    "iocs_by_type": {
+      "file_path": 1,
+      "ipv4": 1,
+      "url": 1
+    },
+    "sigma_rule_count": 4,
+    "validation": {
+      "failed": 0,
+      "passed": 8,
+      "warning_count": 0
+    },
+    "wazuh_rule_count": 4
+  },
+  "generated_at": "2026-07-01T10:00:18+00:00",
+  "sample": {
+    "hash_status": {
+      "complete": false,
+      "missing": [
+        "md5",
+        "sha1",
+        "sha256"
+      ],
+      "note": "Payload hashes unavailable from source report."
+    },
+    "hashes": {
+      "md5": "",
+      "sha1": "",
+      "sha256": ""
+    },
+    "name": "urlhaus_24_payload.sh",
+    "sandbox": "cuckoo"
+  },
+  "tool": {
+    "name": "malware-behavior-detection-generator",
+    "version": "0.1.0"
+  }
+}

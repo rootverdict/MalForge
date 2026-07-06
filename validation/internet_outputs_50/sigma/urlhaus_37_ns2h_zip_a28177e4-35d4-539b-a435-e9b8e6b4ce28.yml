@@ -1,0 +1,57 @@
+title: Process created urlhaus_37_NS2H.zip
+description: 'Process created: urlhaus_37_NS2H.zip (urlhaus_37_NS2H.zip --urlhaus-validation)'
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_image:
+    Image|endswith: urlhaus_37_NS2H.zip
+  selection_cmdline:
+    CommandLine|contains: urlhaus_37_NS2H.zip --urlhaus-validation
+  condition: all of them
+level: medium
+status: experimental
+author: malware-behavior-detection-generator
+tags:
+- attack.t1059
+references:
+- generated-by:malware-behavior-detection-generator
+- source:cuckoo
+falsepositives:
+- Unknown
+fields:
+- Image
+- CommandLine
+metadata:
+  tool: malware-behavior-detection-generator
+  behavior_category: process
+  platform_context: windows
+  trace:
+    source_behavior_category: process
+    source_behavior_description: 'Process created: urlhaus_37_NS2H.zip (urlhaus_37_NS2H.zip
+      --urlhaus-validation)'
+    source_behavior_evidence:
+    - process_name: urlhaus_37_NS2H.zip
+      pid: 9037
+      command_line: urlhaus_37_NS2H.zip --urlhaus-validation
+    source_behavior_tags:
+    - process_create
+    platform_context: windows
+    attack_technique_ids:
+    - T1059
+    attack_tags:
+    - attack.t1059
+    selector_reason: 'Process selector chosen for windows telemetry from executable
+      and command line evidence using: CommandLine|contains, Image|endswith.'
+  review:
+    status: unreviewed
+    reviewer: ''
+    notes: ''
+  version:
+    tool_name: malware-behavior-detection-generator
+    tool_version: 0.1.0
+    rule_version: 1.0.0
+    generated_at: '2026-07-01T10:00:18+00:00'
+    source_report_hash: null
+    content_hash: 826f9dbaadc57417b46dbfd52e84f52aeceabca32ee01c4710748a3432e4158c
+id: a28177e4-35d4-539b-a435-e9b8e6b4ce28

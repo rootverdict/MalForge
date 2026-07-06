@@ -1,0 +1,58 @@
+title: File dropped to user-accessible path /tmp/urlhaus_49_bin.sh
+description: 'File dropped to user-accessible path: /tmp/urlhaus_49_bin.sh'
+logsource:
+  category: file_event
+  product: linux
+  service: auditd
+detection:
+  selection:
+    file.path|contains: urlhaus_49_bin.sh
+  condition: selection
+level: high
+status: experimental
+author: malware-behavior-detection-generator
+tags:
+- attack.t1105
+references:
+- generated-by:malware-behavior-detection-generator
+- source:cuckoo
+falsepositives:
+- Unknown
+fields:
+- file.path
+metadata:
+  tool: malware-behavior-detection-generator
+  behavior_category: file
+  platform_context: linux_or_iot
+  trace:
+    source_behavior_category: file
+    source_behavior_description: 'File dropped to user-accessible path: /tmp/urlhaus_49_bin.sh'
+    source_behavior_evidence:
+    - path: /tmp/urlhaus_49_bin.sh
+      raw: /tmp/urlhaus_49_bin.sh
+    source_behavior_tags:
+    - file_drop
+    - arch_mips
+    - family_mozi
+    - format_elf
+    - platform_linux_or_iot
+    - platform_non_windows
+    platform_context: linux_or_iot
+    attack_technique_ids:
+    - T1105
+    attack_tags:
+    - attack.t1105
+    selector_reason: 'File selector chosen for linux_or_iot telemetry from observed
+      file path evidence using: file.path|contains.'
+  review:
+    status: unreviewed
+    reviewer: ''
+    notes: ''
+  version:
+    tool_name: malware-behavior-detection-generator
+    tool_version: 0.1.0
+    rule_version: 1.0.0
+    generated_at: '2026-07-01T10:00:18+00:00'
+    source_report_hash: null
+    content_hash: 01c1c244b47f3cf555b3f7302fe4856b6a6ba40aeb5b5ed4f5ca0b17dffb0d0d
+id: d02e58e6-dce5-5518-bfa6-785d4a643b92

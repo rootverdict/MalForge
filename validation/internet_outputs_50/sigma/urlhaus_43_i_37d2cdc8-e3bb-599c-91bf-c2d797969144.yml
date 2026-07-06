@@ -1,0 +1,60 @@
+title: Process created urlhaus_43_i
+description: 'Process created: urlhaus_43_i (urlhaus_43_i --urlhaus-validation)'
+logsource:
+  category: process_creation
+  product: linux
+  service: auditd
+detection:
+  selection_exe:
+    exe|endswith: urlhaus_43_i
+  selection_cmdline:
+    cmdline|contains: urlhaus_43_i --urlhaus-validation
+  condition: all of them
+level: medium
+status: experimental
+author: malware-behavior-detection-generator
+tags:
+- attack.t1059
+references:
+- generated-by:malware-behavior-detection-generator
+- source:cuckoo
+falsepositives:
+- Unknown
+fields:
+- exe
+- cmdline
+metadata:
+  tool: malware-behavior-detection-generator
+  behavior_category: process
+  platform_context: non_windows
+  trace:
+    source_behavior_category: process
+    source_behavior_description: 'Process created: urlhaus_43_i (urlhaus_43_i --urlhaus-validation)'
+    source_behavior_evidence:
+    - process_name: urlhaus_43_i
+      pid: 9043
+      command_line: urlhaus_43_i --urlhaus-validation
+    source_behavior_tags:
+    - process_create
+    - family_mozi
+    - platform_linux_or_iot
+    - platform_non_windows
+    platform_context: non_windows
+    attack_technique_ids:
+    - T1059
+    attack_tags:
+    - attack.t1059
+    selector_reason: 'Process selector chosen for non_windows telemetry from executable
+      and command line evidence using: cmdline|contains, exe|endswith.'
+  review:
+    status: unreviewed
+    reviewer: ''
+    notes: ''
+  version:
+    tool_name: malware-behavior-detection-generator
+    tool_version: 0.1.0
+    rule_version: 1.0.0
+    generated_at: '2026-07-01T10:00:18+00:00'
+    source_report_hash: null
+    content_hash: ace1fdaecd6b76d1e7d0eb84ad02b3c71d6e7dcc207425acd5200e2d29abfaf1
+id: 37d2cdc8-e3bb-599c-91bf-c2d797969144

@@ -1,0 +1,51 @@
+title: DNS lookup observed squvbf6p.btyek.one
+description: 'DNS lookup observed: squvbf6p.btyek.one'
+logsource:
+  category: dns_query
+  product: windows
+detection:
+  selection:
+    QueryName|contains: squvbf6p.btyek.one
+  condition: selection
+level: medium
+status: experimental
+author: malware-behavior-detection-generator
+tags:
+- attack.t1071.004
+references:
+- generated-by:malware-behavior-detection-generator
+- source:cuckoo
+falsepositives:
+- Unknown
+fields:
+- QueryName|contains
+metadata:
+  tool: malware-behavior-detection-generator
+  behavior_category: network
+  platform_context: windows
+  trace:
+    source_behavior_category: network
+    source_behavior_description: 'DNS lookup observed: squvbf6p.btyek.one'
+    source_behavior_evidence:
+    - domain: squvbf6p.btyek.one
+    source_behavior_tags:
+    - dns_query
+    platform_context: windows
+    attack_technique_ids:
+    - T1071.004
+    attack_tags:
+    - attack.t1071.004
+    selector_reason: 'Network selector chosen for windows telemetry from observed
+      DNS/domain evidence using: QueryName|contains.'
+  review:
+    status: unreviewed
+    reviewer: ''
+    notes: ''
+  version:
+    tool_name: malware-behavior-detection-generator
+    tool_version: 0.1.0
+    rule_version: 1.0.0
+    generated_at: '2026-07-01T10:00:18+00:00'
+    source_report_hash: null
+    content_hash: 9bd5765b3f0c486792e7cdbc67cbb8ebd1ae05839bc3e901d33eb7eb2ef2e958
+id: 71c59458-a019-54d4-aadd-9da162f054d9

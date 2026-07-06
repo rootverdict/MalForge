@@ -1,0 +1,67 @@
+﻿{
+    "info":  {
+                 "id":  70020,
+                 "score":  5,
+                 "machine":  "internet-validation-urlhaus",
+                 "source":  "URLhaus recent CSV",
+                 "source_url":  "https://urlhaus.abuse.ch/downloads/csv_recent/",
+                 "urlhaus_id":  "3878827",
+                 "dateadded":  "2026-07-01 08:43:11",
+                 "threat":  "malware_download",
+                 "url_status":  "offline",
+                 "urlhaus_link":  "https://urlhaus.abuse.ch/url/3878827/",
+                 "tags":  [
+                              "vbs"
+                          ]
+             },
+    "target":  {
+                   "file":  {
+                                "name":  "urlhaus_20_Zoom 8.vbs",
+                                "md5":  "",
+                                "sha1":  "",
+                                "sha256":  ""
+                            }
+               },
+    "behavior":  {
+                     "processes":  [
+                                       {
+                                           "process_name":  "urlhaus_20_Zoom 8.vbs",
+                                           "pid":  9020,
+                                           "command_line":  "urlhaus_20_Zoom 8.vbs --urlhaus-validation"
+                                       }
+                                   ],
+                     "summary":  {
+                                     "files":  [
+                                                   "C:\\Users\\Public\\Downloads\\urlhaus_20_Zoom 8.vbs"
+                                               ],
+                                     "keys":  [
+
+                                              ],
+                                     "mutexes":  [
+
+                                                 ]
+                                 }
+                 },
+    "network":  {
+                    "hosts":  [
+
+                              ],
+                    "domains":  [
+                                    {
+                                        "domain":  "jim-s.com"
+                                    }
+                                ],
+                    "http":  [
+                                 {
+                                     "uri":  "https://jim-s.com/ab/Zoom_meeting/Meeting%20Invite%20HTML/downloads/windows/aboki/Zoom%208.vbs",
+                                     "host":  "jim-s.com"
+                                 }
+                             ]
+                },
+    "signatures":  [
+                       {
+                           "name":  "urlhaus_tag_vbs",
+                           "description":  "URLhaus tag: vbs"
+                       }
+                   ]
+}

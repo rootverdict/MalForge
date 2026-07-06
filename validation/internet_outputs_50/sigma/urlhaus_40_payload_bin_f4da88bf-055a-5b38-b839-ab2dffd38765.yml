@@ -1,0 +1,52 @@
+title: HTTP connection observed https //djaczx9h.btyek.online/?ublib=c4993d64-c456-4f4f-aca9-b1e039bcffb1
+description: 'HTTP connection observed: https://djaczx9h.btyek.online/?ublib=c4993d64-c456-4f4f-aca9-b1e039bcffb1'
+logsource:
+  category: network_connection
+  product: windows
+detection:
+  selection:
+    DestinationHostname|contains: djaczx9h.btyek.online
+  condition: selection
+level: medium
+status: experimental
+author: malware-behavior-detection-generator
+tags:
+- attack.t1071.001
+references:
+- generated-by:malware-behavior-detection-generator
+- source:cuckoo
+falsepositives:
+- Unknown
+fields:
+- DestinationHostname
+metadata:
+  tool: malware-behavior-detection-generator
+  behavior_category: network
+  platform_context: windows
+  trace:
+    source_behavior_category: network
+    source_behavior_description: 'HTTP connection observed: https://djaczx9h.btyek.online/?ublib=c4993d64-c456-4f4f-aca9-b1e039bcffb1'
+    source_behavior_evidence:
+    - uri: https://djaczx9h.btyek.online/?ublib=c4993d64-c456-4f4f-aca9-b1e039bcffb1
+      host: djaczx9h.btyek.online
+    source_behavior_tags:
+    - http_connection
+    platform_context: windows
+    attack_technique_ids:
+    - T1071.001
+    attack_tags:
+    - attack.t1071.001
+    selector_reason: 'Network selector chosen for windows telemetry from observed
+      network evidence using: DestinationHostname|contains.'
+  review:
+    status: unreviewed
+    reviewer: ''
+    notes: ''
+  version:
+    tool_name: malware-behavior-detection-generator
+    tool_version: 0.1.0
+    rule_version: 1.0.0
+    generated_at: '2026-07-01T10:00:18+00:00'
+    source_report_hash: null
+    content_hash: 4577a244f4cbd11e212e26ea37094aa11b228fec8c20e718a83f6cd2452b4272
+id: f4da88bf-055a-5b38-b839-ab2dffd38765

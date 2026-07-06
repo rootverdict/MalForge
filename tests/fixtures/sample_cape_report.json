@@ -1,0 +1,52 @@
+{
+  "info": {
+    "id": 202,
+    "sandbox": "cape"
+  },
+  "target": {
+    "file": {
+      "name": "document_reader.exe",
+      "md5": "11111111111111111111111111111111",
+      "sha1": "2222222222222222222222222222222222222222",
+      "sha256": "3333333333333333333333333333333333333333333333333333333333333333"
+    }
+  },
+  "behavior": {
+    "summary": {
+      "files": [
+        "C:\\Temp\\stage.bin"
+      ],
+      "keys": [
+        "HKLM\\Software\\SafeVendor"
+      ]
+    }
+  },
+  "CAPE": {
+    "payload": "document_reader.exe",
+    "processes": [
+      {
+        "process_name": "rundll32.exe",
+        "pid": 4455
+      }
+    ],
+    "files": [
+      "C:\\Temp\\stage.bin"
+    ],
+    "registry": [
+      "HKLM\\Software\\SafeVendor"
+    ],
+    "network": [
+      {
+        "uri": "http://example.test/health"
+      }
+    ],
+    "mutexes": [
+      "SAFE-MUTEX-002"
+    ]
+  },
+  "signatures": [
+    {
+      "name": "drops_payload"
+    }
+  ]
+}

@@ -1,0 +1,134 @@
+{
+  "sigma": {
+    "20b89528-693e-5714-9ca6-41e3933c1f4d": {
+      "negative": [
+        {
+          "destination.ip": "benign-value",
+          "event_type": "network_connection"
+        }
+      ],
+      "positive": [
+        {
+          "destination.ip": "123.12.20.109",
+          "event_type": "network_connection"
+        }
+      ]
+    },
+    "9213e44d-1d68-51b3-8700-18e59f697226": {
+      "negative": [
+        {
+          "event_type": "file_event",
+          "file.path": "benign-value"
+        }
+      ],
+      "positive": [
+        {
+          "event_type": "file_event",
+          "file.path": "urlhaus_31_bin.sh"
+        }
+      ]
+    },
+    "c3d9dd41-cc53-5325-996b-ff7c87db851e": {
+      "negative": [
+        {
+          "destination.ip": "benign-value",
+          "event_type": "network_connection",
+          "url": "benign-value"
+        }
+      ],
+      "positive": [
+        {
+          "destination.ip": "123.12.20.109",
+          "event_type": "network_connection",
+          "url": "http://123.12.20.109:60932/bin.sh"
+        }
+      ]
+    },
+    "c50f6e8f-caca-561b-a58d-32ae3c688d91": {
+      "negative": [
+        {
+          "cmdline": "benign-value",
+          "event_type": "process_creation",
+          "exe": "benign-value"
+        }
+      ],
+      "positive": [
+        {
+          "cmdline": "urlhaus_31_bin.sh --urlhaus-validation",
+          "event_type": "process_creation",
+          "exe": "urlhaus_31_bin.sh"
+        }
+      ]
+    }
+  },
+  "wazuh": {
+    "101288": {
+      "negative": [
+        {
+          "decoder": "json",
+          "dstip": "benign-value",
+          "group": "linux,network_connection,"
+        }
+      ],
+      "positive": [
+        {
+          "decoder": "json",
+          "dstip": "123.12.20.109",
+          "group": "linux,network_connection,"
+        }
+      ]
+    },
+    "101601": {
+      "negative": [
+        {
+          "decoder": "json",
+          "dstip": "benign-value",
+          "group": "linux,network_connection,",
+          "url": "benign-value"
+        }
+      ],
+      "positive": [
+        {
+          "decoder": "json",
+          "dstip": "123.12.20.109",
+          "group": "linux,network_connection,",
+          "url": "http://123.12.20.109:60932/bin.sh"
+        }
+      ]
+    },
+    "103263": {
+      "negative": [
+        {
+          "audit.command": "benign-value",
+          "audit.exe": "benign-value",
+          "decoder": "json",
+          "group": "linux,auditd,process_creation,"
+        }
+      ],
+      "positive": [
+        {
+          "audit.command": "urlhaus_31_bin.sh --urlhaus-validation",
+          "audit.exe": "urlhaus_31_bin.sh",
+          "decoder": "json",
+          "group": "linux,auditd,process_creation,"
+        }
+      ]
+    },
+    "115113": {
+      "negative": [
+        {
+          "audit.file.path": "benign-value",
+          "decoder": "json",
+          "group": "linux,auditd,file_event,"
+        }
+      ],
+      "positive": [
+        {
+          "audit.file.path": "urlhaus_31_bin.sh",
+          "decoder": "json",
+          "group": "linux,auditd,file_event,"
+        }
+      ]
+    }
+  }
+}

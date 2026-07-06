@@ -1,0 +1,4 @@
+domain: djaczx9h.btyek.online
+url: https://djaczx9h.btyek.online/?ublib=c4993d64-c456-4f4f-aca9-b1e039bcffb1
+file_path: C:\Users\Public\Downloads\urlhaus_40_payload.bin
+file_path: urlhaus_40_payload.bin

@@ -1,0 +1,46 @@
+[
+  {
+    "confidence": 0.7,
+    "context": {
+      "raw": {
+        "domain": "110.37.53.25"
+      },
+      "source_section": "network.domain"
+    },
+    "source": "cuckoo",
+    "tags": [
+      "network"
+    ],
+    "type": "ipv4",
+    "value": "110.37.53.25"
+  },
+  {
+    "confidence": 0.7,
+    "context": {
+      "raw": {
+        "host": "110.37.53.25",
+        "uri": "http://110.37.53.25:58088/i"
+      },
+      "source_section": "network"
+    },
+    "source": "cuckoo",
+    "tags": [
+      "network"
+    ],
+    "type": "url",
+    "value": "http://110.37.53.25:58088/i"
+  },
+  {
+    "confidence": 0.6,
+    "context": {
+      "raw": "/tmp/urlhaus_01_i",
+      "source_section": "files"
+    },
+    "source": "cuckoo",
+    "tags": [
+      "filesystem"
+    ],
+    "type": "file_path",
+    "value": "/tmp/urlhaus_01_i"
+  }
+]

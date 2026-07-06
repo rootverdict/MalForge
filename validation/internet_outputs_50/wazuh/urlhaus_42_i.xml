@@ -1,0 +1,41 @@
+<group name="malware_behavior_detection_generator,">
+  <rule id="107853" level="7">
+    <decoded_as>json</decoded_as>
+    <description>Process created: urlhaus_42_i (urlhaus_42_i --urlhaus-validation)</description>
+    <group>linux,auditd,process_creation,</group>
+    <field name="audit.command">urlhaus_42_i --urlhaus-validation</field>
+    <field name="audit.exe">urlhaus_42_i</field>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+  </rule>
+  <rule id="116206" level="10">
+    <decoded_as>json</decoded_as>
+    <description>File dropped to user-accessible path: /tmp/urlhaus_42_i</description>
+    <group>linux,auditd,file_event,</group>
+    <field name="audit.file.path">urlhaus_42_i</field>
+    <mitre>
+      <id>T1105</id>
+    </mitre>
+  </rule>
+  <rule id="105495" level="7">
+    <decoded_as>json</decoded_as>
+    <description>IP connection observed: 39.71.205.224</description>
+    <group>linux,network_connection,</group>
+    <field name="dstip">39\.71\.205\.224</field>
+    <mitre>
+      <id>T1071</id>
+    </mitre>
+  </rule>
+  <rule id="112387" level="7">
+    <decoded_as>json</decoded_as>
+    <description>HTTP connection observed: http://39.71.205.224:59523/i</description>
+    <group>linux,network_connection,</group>
+    <field name="dstip">39\.71\.205\.224</field>
+    <field name="url">http://39\.71\.205\.224:59523/i</field>
+    <mitre>
+      <id>T1071.001</id>
+      <id>T1571</id>
+    </mitre>
+  </rule>
+</group>

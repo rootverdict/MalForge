@@ -1,0 +1,136 @@
+{
+  "sigma": {
+    "a28177e4-35d4-539b-a435-e9b8e6b4ce28": {
+      "negative": [
+        {
+          "CommandLine": "notepad.exe C:\\notes.txt",
+          "Image": "notepad.exe",
+          "event_type": "process_creation"
+        }
+      ],
+      "positive": [
+        {
+          "CommandLine": "urlhaus_37_NS2H.zip --urlhaus-validation",
+          "Image": "urlhaus_37_NS2H.zip",
+          "event_type": "process_creation"
+        }
+      ]
+    },
+    "becfb152-5a83-57c8-a7b3-fab4d6aea638": {
+      "negative": [
+        {
+          "QueryName": "localhost.localdomain",
+          "event_type": "dns_query"
+        }
+      ],
+      "positive": [
+        {
+          "QueryName": "easyfiles.cc",
+          "event_type": "dns_query"
+        }
+      ]
+    },
+    "e9db57a4-2e0d-508b-a93e-43dba4c84dd4": {
+      "negative": [
+        {
+          "DestinationHostname": "localhost.localdomain",
+          "event_type": "network_connection"
+        }
+      ],
+      "positive": [
+        {
+          "DestinationHostname": "easyfiles.cc",
+          "event_type": "network_connection"
+        }
+      ]
+    },
+    "fc626222-fa92-544e-9594-725a3efd775e": {
+      "negative": [
+        {
+          "TargetFilename": "C:\\Users\\Public\\notes.txt",
+          "event_type": "file_event"
+        }
+      ],
+      "positive": [
+        {
+          "TargetFilename": "C:\\Users\\Public\\Downloads\\urlhaus_37_NS2H.zip",
+          "event_type": "file_event"
+        }
+      ]
+    }
+  },
+  "wazuh": {
+    "105363": {
+      "negative": [
+        {
+          "decoder": "json",
+          "group": "sysmon,file_event,",
+          "win.eventdata.targetFilename": "C:\\Users\\Public\\notes.txt",
+          "win.system.eventID": "benign-value"
+        }
+      ],
+      "positive": [
+        {
+          "decoder": "json",
+          "group": "sysmon,file_event,",
+          "win.eventdata.targetFilename": "C:\\Users\\Public\\Downloads\\urlhaus_37_NS2H.zip",
+          "win.system.eventID": "11"
+        }
+      ]
+    },
+    "107509": {
+      "negative": [
+        {
+          "decoder": "json",
+          "group": "sysmon,dns,",
+          "win.eventdata.queryName": "localhost.localdomain",
+          "win.system.eventID": "benign-value"
+        }
+      ],
+      "positive": [
+        {
+          "decoder": "json",
+          "group": "sysmon,dns,",
+          "win.eventdata.queryName": "easyfiles.cc",
+          "win.system.eventID": "22"
+        }
+      ]
+    },
+    "111453": {
+      "negative": [
+        {
+          "decoder": "",
+          "group": "sysmon,process_creation,",
+          "win.eventdata.commandLine": "notepad.exe C:\\notes.txt",
+          "win.eventdata.image": "notepad.exe"
+        }
+      ],
+      "positive": [
+        {
+          "decoder": "",
+          "group": "sysmon,process_creation,",
+          "win.eventdata.commandLine": "urlhaus_37_NS2H.zip --urlhaus-validation",
+          "win.eventdata.image": "urlhaus_37_NS2H.zip"
+        }
+      ]
+    },
+    "119429": {
+      "negative": [
+        {
+          "decoder": "json",
+          "group": "sysmon,network_connection,",
+          "win.eventdata.destinationHostname": "localhost.localdomain",
+          "win.system.eventID": "benign-value"
+        }
+      ],
+      "positive": [
+        {
+          "decoder": "json",
+          "group": "sysmon,network_connection,",
+          "win.eventdata.destinationHostname": "easyfiles.cc",
+          "win.system.eventID": "3"
+        }
+      ]
+    }
+  }
+}

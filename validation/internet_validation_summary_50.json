@@ -1,0 +1,438 @@
+﻿{
+    "validation_name":  "Internet-derived 50 report validation corpus",
+    "source":  "URLhaus recent CSV feed",
+    "source_url":  "https://urlhaus.abuse.ch/downloads/csv_recent/",
+    "generated_at":  "2026-07-01T15:30:54",
+    "safety_scope":  "Downloaded public CSV metadata only; no malware binaries, no detonation, no live sample execution.",
+    "requested_report_count":  50,
+    "generated_input_reports":  50,
+    "successful_cli_runs":  50,
+    "failed_cli_runs":  0,
+    "unique_summary_outputs":  50,
+    "artifact_counts":  {
+                            "markdown_reports":  50,
+                            "summary_json_files":  50,
+                            "sigma_files":  200,
+                            "wazuh_files":  50,
+                            "ioc_json_files":  50,
+                            "navigator_files":  50,
+                            "test_event_files":  50
+                        },
+    "aggregate_counts":  {
+                             "behaviors":  203,
+                             "iocs":  156,
+                             "sigma_rules":  200,
+                             "wazuh_rules":  200,
+                             "validation_warnings":  0,
+                             "unique_attack_techniques":  6
+                         },
+    "validation_notes":  [
+                             "Platform-aware generation verified on URLhaus Mozi elf/mips report: Linux/generic rules were emitted instead of Windows/Sysmon rules.",
+                             "Raw IP values in domain-like source fields are classified as IP/network C2 evidence, not DNS/domain evidence or Remote Services lateral movement.",
+                             "HTTP URL evidence from Cuckoo-style network.http entries is preserved and mapped to web-protocol behavior; non-standard ports also receive T1571.",
+                             "Missing MD5/SHA1/SHA256 values are reported as source-data limitations when URL-only metadata lacks payload hashes."
+                         ],
+    "note":  "This validates broad externally sourced URL/IOC report handling. It does not prove compatibility with every possible sandbox/vendor schema.",
+    "rows":  [
+                 {
+                     "summary_file":  "urlhaus_01_i_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_02_zoom_16_vbs_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_03_zoom_11_vbs_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_04_zoom_23_vbs_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_05_zoom_10_vbs_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_06_zoom_20_vbs_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_07_zoom_25_vbs_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_08_zoom_15_vbs_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_09_zoom_18_vbs_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_10_zoom_21_vbs_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_11_zoom_24_vbs_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_12_zoom_19_vbs_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_13_zoom_12_vbs_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_14_zoom_9_vbs_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_15_zoom_13_vbs_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_16_zoom_22_vbs_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_17_zoom_14_vbs_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_18_zoom_17_vbs_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_19_zoom_3_vbs_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_20_zoom_8_vbs_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_21_zoom_5_vbs_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_22_zoom_7_vbs_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_23_m_i_p_s_sativac2_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_24_payload_sh_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_25_zoom_4_vbs_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_26_zoom_2_vbs_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_27_zoom_6_vbs_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_28_file_88c4af189a4c6c59_exe_summary.json",
+                     "behaviors":  5,
+                     "iocs":  4,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_29_i_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_30_payload_bin_summary.json",
+                     "behaviors":  4,
+                     "iocs":  4,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_31_bin_sh_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_32_i_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_33_i_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_34_file_ac12f1da1bdab1e0_exe_summary.json",
+                     "behaviors":  5,
+                     "iocs":  4,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_35_bin_sh_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_36_mozi_m_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_37_ns2h_zip_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_38_file_f0193e939ef907b9_exe_summary.json",
+                     "behaviors":  5,
+                     "iocs":  4,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_39_i_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_40_payload_bin_summary.json",
+                     "behaviors":  4,
+                     "iocs":  4,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_41_i_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_42_i_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_43_i_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_44_payload_bin_summary.json",
+                     "behaviors":  4,
+                     "iocs":  4,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_45_bin_sh_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_46_rp_4_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_47_4e0d84da_c118_4423_83c4_2b0b4883f3ec_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_48_bin_sh_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_49_bin_sh_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 },
+                 {
+                     "summary_file":  "urlhaus_50_bin_sh_summary.json",
+                     "behaviors":  4,
+                     "iocs":  3,
+                     "sigma_rules":  4,
+                     "wazuh_rules":  4,
+                     "warnings":  0
+                 }
+             ]
+}

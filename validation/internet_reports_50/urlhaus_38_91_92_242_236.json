@@ -1,0 +1,72 @@
+﻿{
+    "info":  {
+                 "id":  70038,
+                 "score":  5,
+                 "machine":  "internet-validation-urlhaus",
+                 "source":  "URLhaus recent CSV",
+                 "source_url":  "https://urlhaus.abuse.ch/downloads/csv_recent/",
+                 "urlhaus_id":  "3878808",
+                 "dateadded":  "2026-07-01 07:43:07",
+                 "threat":  "malware_download",
+                 "url_status":  "offline",
+                 "urlhaus_link":  "https://urlhaus.abuse.ch/url/3878808/",
+                 "tags":  [
+                              "c2-monitor-auto",
+                              "dropped-by-amadey"
+                          ]
+             },
+    "target":  {
+                   "file":  {
+                                "name":  "urlhaus_38_file_f0193e939ef907b9.exe",
+                                "md5":  "",
+                                "sha1":  "",
+                                "sha256":  ""
+                            }
+               },
+    "behavior":  {
+                     "processes":  [
+                                       {
+                                           "process_name":  "urlhaus_38_file_f0193e939ef907b9.exe",
+                                           "pid":  9038,
+                                           "command_line":  "urlhaus_38_file_f0193e939ef907b9.exe --urlhaus-validation"
+                                       }
+                                   ],
+                     "summary":  {
+                                     "files":  [
+                                                   "C:\\Users\\Public\\Downloads\\urlhaus_38_file_f0193e939ef907b9.exe"
+                                               ],
+                                     "keys":  [
+
+                                              ],
+                                     "mutexes":  [
+
+                                                 ]
+                                 }
+                 },
+    "network":  {
+                    "hosts":  [
+
+                              ],
+                    "domains":  [
+                                    {
+                                        "domain":  "91.92.242.236"
+                                    }
+                                ],
+                    "http":  [
+                                 {
+                                     "uri":  "http://91.92.242.236/files-129312398/files/file_f0193e939ef907b9.exe",
+                                     "host":  "91.92.242.236"
+                                 }
+                             ]
+                },
+    "signatures":  [
+                       {
+                           "name":  "urlhaus_tag_c2_monitor_auto",
+                           "description":  "URLhaus tag: c2-monitor-auto"
+                       },
+                       {
+                           "name":  "urlhaus_tag_dropped_by_amadey",
+                           "description":  "URLhaus tag: dropped-by-amadey"
+                       }
+                   ]
+}

@@ -1,0 +1,46 @@
+[
+  {
+    "confidence": 0.7,
+    "context": {
+      "raw": {
+        "domain": "easyfiles.cc"
+      },
+      "source_section": "network"
+    },
+    "source": "cuckoo",
+    "tags": [
+      "network"
+    ],
+    "type": "domain",
+    "value": "easyfiles.cc"
+  },
+  {
+    "confidence": 0.7,
+    "context": {
+      "raw": {
+        "host": "easyfiles.cc",
+        "uri": "https://easyfiles.cc/2026/6/ce0a3ffe-dc52-470b-8686-99cd20029255/NS2H.zip"
+      },
+      "source_section": "network"
+    },
+    "source": "cuckoo",
+    "tags": [
+      "network"
+    ],
+    "type": "url",
+    "value": "https://easyfiles.cc/2026/6/ce0a3ffe-dc52-470b-8686-99cd20029255/NS2H.zip"
+  },
+  {
+    "confidence": 0.6,
+    "context": {
+      "raw": "C:\\Users\\Public\\Downloads\\urlhaus_37_NS2H.zip",
+      "source_section": "files"
+    },
+    "source": "cuckoo",
+    "tags": [
+      "filesystem"
+    ],
+    "type": "file_path",
+    "value": "C:\\Users\\Public\\Downloads\\urlhaus_37_NS2H.zip"
+  }
+]

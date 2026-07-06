@@ -1,0 +1,74 @@
+{
+  "description": "Rule-based ATT&CK mappings derived from extracted sandbox behaviors.",
+  "domain": "enterprise-attack",
+  "hideDisabled": false,
+  "layout": {
+    "aggregateFunction": "average",
+    "layout": "side",
+    "showID": false,
+    "showName": true
+  },
+  "legendItems": [
+    {
+      "color": "#d32f2f",
+      "label": "High confidence"
+    },
+    {
+      "color": "#f9a825",
+      "label": "Medium confidence"
+    },
+    {
+      "color": "#1976d2",
+      "label": "Low confidence"
+    }
+  ],
+  "name": "urlhaus_48_bin.sh ATT&CK Layer",
+  "sorting": 0,
+  "techniques": [
+    {
+      "color": "#f9a825",
+      "comment": "Process created: urlhaus_48_bin.sh (urlhaus_48_bin.sh --urlhaus-validation)",
+      "enabled": true,
+      "score": 60,
+      "tactic": "execution",
+      "techniqueID": "T1059"
+    },
+    {
+      "color": "#f9a825",
+      "comment": "IP connection observed: 14.0.131.161",
+      "enabled": true,
+      "score": 60,
+      "tactic": "command-and-control",
+      "techniqueID": "T1071"
+    },
+    {
+      "color": "#d32f2f",
+      "comment": "HTTP connection observed: http://14.0.131.161:38465/bin.sh",
+      "enabled": true,
+      "score": 90,
+      "tactic": "command-and-control",
+      "techniqueID": "T1071.001"
+    },
+    {
+      "color": "#f9a825",
+      "comment": "File dropped to user-accessible path: /tmp/urlhaus_48_bin.sh",
+      "enabled": true,
+      "score": 60,
+      "tactic": "command-and-control",
+      "techniqueID": "T1105"
+    },
+    {
+      "color": "#f9a825",
+      "comment": "HTTP connection observed: http://14.0.131.161:38465/bin.sh",
+      "enabled": true,
+      "score": 60,
+      "tactic": "command-and-control",
+      "techniqueID": "T1571"
+    }
+  ],
+  "versions": {
+    "attack": "16.1",
+    "layer": "4.5",
+    "navigator": "4.9"
+  }
+}

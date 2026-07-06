@@ -1,0 +1,3 @@
+domain: jim-s.com
+url: https://jim-s.com/ab/Zoom_meeting/Meeting%20Invite%20HTML/downloads/windows/aboki/Zoom%2024.vbs
+file_path: C:\Users\Public\Downloads\urlhaus_11_Zoom 24.vbs

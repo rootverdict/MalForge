@@ -1,0 +1,52 @@
+title: HTTP connection observed https //jim-s.com/ab/Zoom_meeting/Meeting%20Invite%20HTML/downloads/windows/aboki/Zoom%2018.vbs
+description: 'HTTP connection observed: https://jim-s.com/ab/Zoom_meeting/Meeting%20Invite%20HTML/downloads/windows/aboki/Zoom%2018.vbs'
+logsource:
+  category: network_connection
+  product: windows
+detection:
+  selection:
+    DestinationHostname|contains: jim-s.com
+  condition: selection
+level: medium
+status: experimental
+author: malware-behavior-detection-generator
+tags:
+- attack.t1071.001
+references:
+- generated-by:malware-behavior-detection-generator
+- source:cuckoo
+falsepositives:
+- Unknown
+fields:
+- DestinationHostname
+metadata:
+  tool: malware-behavior-detection-generator
+  behavior_category: network
+  platform_context: windows
+  trace:
+    source_behavior_category: network
+    source_behavior_description: 'HTTP connection observed: https://jim-s.com/ab/Zoom_meeting/Meeting%20Invite%20HTML/downloads/windows/aboki/Zoom%2018.vbs'
+    source_behavior_evidence:
+    - uri: https://jim-s.com/ab/Zoom_meeting/Meeting%20Invite%20HTML/downloads/windows/aboki/Zoom%2018.vbs
+      host: jim-s.com
+    source_behavior_tags:
+    - http_connection
+    platform_context: windows
+    attack_technique_ids:
+    - T1071.001
+    attack_tags:
+    - attack.t1071.001
+    selector_reason: 'Network selector chosen for windows telemetry from observed
+      network evidence using: DestinationHostname|contains.'
+  review:
+    status: unreviewed
+    reviewer: ''
+    notes: ''
+  version:
+    tool_name: malware-behavior-detection-generator
+    tool_version: 0.1.0
+    rule_version: 1.0.0
+    generated_at: '2026-07-01T10:00:17+00:00'
+    source_report_hash: null
+    content_hash: 45b827390c7279ef06c5521f330be9475060010da813ca6c299ae561e909a6cf
+id: 0e3f7715-3d56-5f25-8cfd-e31df173d43e

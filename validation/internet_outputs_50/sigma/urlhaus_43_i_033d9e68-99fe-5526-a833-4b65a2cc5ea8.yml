@@ -1,0 +1,64 @@
+title: HTTP connection observed http //125.41.133.47 43078/i
+description: 'HTTP connection observed: http://125.41.133.47:43078/i'
+logsource:
+  category: network_connection
+  product: linux
+detection:
+  selection:
+    url|contains: http://125.41.133.47:43078/i
+    destination.ip: 125.41.133.47
+  condition: selection
+level: medium
+status: experimental
+author: malware-behavior-detection-generator
+tags:
+- attack.t1071.001
+- attack.t1571
+references:
+- generated-by:malware-behavior-detection-generator
+- source:cuckoo
+falsepositives:
+- Unknown
+fields:
+- url|contains
+- destination.ip
+metadata:
+  tool: malware-behavior-detection-generator
+  behavior_category: network
+  platform_context: non_windows
+  trace:
+    source_behavior_category: network
+    source_behavior_description: 'HTTP connection observed: http://125.41.133.47:43078/i'
+    source_behavior_evidence:
+    - uri: http://125.41.133.47:43078/i
+      host: 125.41.133.47
+      ip: 125.41.133.47
+      host_is_ip: true
+      port: 43078
+    source_behavior_tags:
+    - http_connection
+    - non_standard_port
+    - family_mozi
+    - platform_linux_or_iot
+    - platform_non_windows
+    platform_context: non_windows
+    attack_technique_ids:
+    - T1071.001
+    - T1571
+    attack_tags:
+    - attack.t1071.001
+    - attack.t1571
+    selector_reason: 'Network selector chosen for non_windows telemetry from observed
+      IP evidence using: destination.ip, url|contains.'
+  review:
+    status: unreviewed
+    reviewer: ''
+    notes: ''
+  version:
+    tool_name: malware-behavior-detection-generator
+    tool_version: 0.1.0
+    rule_version: 1.0.0
+    generated_at: '2026-07-01T10:00:18+00:00'
+    source_report_hash: null
+    content_hash: cdf858ef875a08f48e4f72ddee1bb1249609296a29e95d9a5239f3db38f3f789
+id: 033d9e68-99fe-5526-a833-4b65a2cc5ea8

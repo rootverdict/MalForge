@@ -1,0 +1,82 @@
+﻿{
+    "info":  {
+                 "id":  70039,
+                 "score":  5,
+                 "machine":  "internet-validation-urlhaus",
+                 "source":  "URLhaus recent CSV",
+                 "source_url":  "https://urlhaus.abuse.ch/downloads/csv_recent/",
+                 "urlhaus_id":  "3878807",
+                 "dateadded":  "2026-07-01 07:42:25",
+                 "threat":  "malware_download",
+                 "url_status":  "online",
+                 "urlhaus_link":  "https://urlhaus.abuse.ch/url/3878807/",
+                 "tags":  [
+                              "32-bit",
+                              "elf",
+                              "mips",
+                              "Mozi"
+                          ]
+             },
+    "target":  {
+                   "file":  {
+                                "name":  "urlhaus_39_i",
+                                "md5":  "",
+                                "sha1":  "",
+                                "sha256":  ""
+                            }
+               },
+    "behavior":  {
+                     "processes":  [
+                                       {
+                                           "process_name":  "urlhaus_39_i",
+                                           "pid":  9039,
+                                           "command_line":  "urlhaus_39_i --urlhaus-validation"
+                                       }
+                                   ],
+                     "summary":  {
+                                     "files":  [
+                                                   "/tmp/urlhaus_39_i"
+                                               ],
+                                     "keys":  [
+
+                                              ],
+                                     "mutexes":  [
+
+                                                 ]
+                                 }
+                 },
+    "network":  {
+                    "hosts":  [
+
+                              ],
+                    "domains":  [
+                                    {
+                                        "domain":  "14.0.131.161"
+                                    }
+                                ],
+                    "http":  [
+                                 {
+                                     "uri":  "http://14.0.131.161:38465/i",
+                                     "host":  "14.0.131.161"
+                                 }
+                             ]
+                },
+    "signatures":  [
+                       {
+                           "name":  "urlhaus_tag_32_bit",
+                           "description":  "URLhaus tag: 32-bit"
+                       },
+                       {
+                           "name":  "urlhaus_tag_elf",
+                           "description":  "URLhaus tag: elf"
+                       },
+                       {
+                           "name":  "urlhaus_tag_mips",
+                           "description":  "URLhaus tag: mips"
+                       },
+                       {
+                           "name":  "urlhaus_tag_Mozi",
+                           "description":  "URLhaus tag: Mozi"
+                       }
+                   ]
+}

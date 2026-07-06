@@ -1,0 +1,46 @@
+[
+  {
+    "confidence": 0.7,
+    "context": {
+      "raw": {
+        "domain": "112.27.10.150"
+      },
+      "source_section": "network.domain"
+    },
+    "source": "cuckoo",
+    "tags": [
+      "network"
+    ],
+    "type": "ipv4",
+    "value": "112.27.10.150"
+  },
+  {
+    "confidence": 0.7,
+    "context": {
+      "raw": {
+        "host": "112.27.10.150",
+        "uri": "http://112.27.10.150:34339/Mozi.m"
+      },
+      "source_section": "network"
+    },
+    "source": "cuckoo",
+    "tags": [
+      "network"
+    ],
+    "type": "url",
+    "value": "http://112.27.10.150:34339/Mozi.m"
+  },
+  {
+    "confidence": 0.6,
+    "context": {
+      "raw": "/tmp/urlhaus_36_Mozi.m",
+      "source_section": "files"
+    },
+    "source": "cuckoo",
+    "tags": [
+      "filesystem"
+    ],
+    "type": "file_path",
+    "value": "/tmp/urlhaus_36_Mozi.m"
+  }
+]

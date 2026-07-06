@@ -1,0 +1,51 @@
+title: DNS lookup observed jim-s.com
+description: 'DNS lookup observed: jim-s.com'
+logsource:
+  category: dns_query
+  product: windows
+detection:
+  selection:
+    QueryName|contains: jim-s.com
+  condition: selection
+level: medium
+status: experimental
+author: malware-behavior-detection-generator
+tags:
+- attack.t1071.004
+references:
+- generated-by:malware-behavior-detection-generator
+- source:cuckoo
+falsepositives:
+- Unknown
+fields:
+- QueryName|contains
+metadata:
+  tool: malware-behavior-detection-generator
+  behavior_category: network
+  platform_context: windows
+  trace:
+    source_behavior_category: network
+    source_behavior_description: 'DNS lookup observed: jim-s.com'
+    source_behavior_evidence:
+    - domain: jim-s.com
+    source_behavior_tags:
+    - dns_query
+    platform_context: windows
+    attack_technique_ids:
+    - T1071.004
+    attack_tags:
+    - attack.t1071.004
+    selector_reason: 'Network selector chosen for windows telemetry from observed
+      DNS/domain evidence using: QueryName|contains.'
+  review:
+    status: unreviewed
+    reviewer: ''
+    notes: ''
+  version:
+    tool_name: malware-behavior-detection-generator
+    tool_version: 0.1.0
+    rule_version: 1.0.0
+    generated_at: '2026-07-01T10:00:18+00:00'
+    source_report_hash: null
+    content_hash: 47e2b42b136c229323b1d6ec06f87fb03d7445835687cf766a0a96e042f3e24a
+id: 57fe2415-fdc0-5175-8760-e956414af378

@@ -1,0 +1,52 @@
+title: HTTP connection observed https //lvt.vip1xbet.net/4e0d84da-c118-4423-83c4-2b0b4883f3ec
+description: 'HTTP connection observed: https://lvt.vip1xbet.net/4e0d84da-c118-4423-83c4-2b0b4883f3ec'
+logsource:
+  category: network_connection
+  product: windows
+detection:
+  selection:
+    DestinationHostname|contains: lvt.vip1xbet.net
+  condition: selection
+level: medium
+status: experimental
+author: malware-behavior-detection-generator
+tags:
+- attack.t1071.001
+references:
+- generated-by:malware-behavior-detection-generator
+- source:cuckoo
+falsepositives:
+- Unknown
+fields:
+- DestinationHostname
+metadata:
+  tool: malware-behavior-detection-generator
+  behavior_category: network
+  platform_context: windows
+  trace:
+    source_behavior_category: network
+    source_behavior_description: 'HTTP connection observed: https://lvt.vip1xbet.net/4e0d84da-c118-4423-83c4-2b0b4883f3ec'
+    source_behavior_evidence:
+    - uri: https://lvt.vip1xbet.net/4e0d84da-c118-4423-83c4-2b0b4883f3ec
+      host: lvt.vip1xbet.net
+    source_behavior_tags:
+    - http_connection
+    platform_context: windows
+    attack_technique_ids:
+    - T1071.001
+    attack_tags:
+    - attack.t1071.001
+    selector_reason: 'Network selector chosen for windows telemetry from observed
+      network evidence using: DestinationHostname|contains.'
+  review:
+    status: unreviewed
+    reviewer: ''
+    notes: ''
+  version:
+    tool_name: malware-behavior-detection-generator
+    tool_version: 0.1.0
+    rule_version: 1.0.0
+    generated_at: '2026-07-01T10:00:18+00:00'
+    source_report_hash: null
+    content_hash: 67dfde3736dae8d902b6679e7a59680ba3124690f3bcc25f4792b3867c00f3c9
+id: c88175f3-27fe-5c20-be22-a8096752a527

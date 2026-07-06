@@ -1,0 +1,3 @@
+ipv4: 112.239.101.142
+url: http://112.239.101.142:35487/bin.sh
+file_path: /tmp/urlhaus_50_bin.sh

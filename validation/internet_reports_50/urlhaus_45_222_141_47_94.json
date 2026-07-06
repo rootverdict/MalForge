@@ -1,0 +1,67 @@
+﻿{
+    "info":  {
+                 "id":  70045,
+                 "score":  5,
+                 "machine":  "internet-validation-urlhaus",
+                 "source":  "URLhaus recent CSV",
+                 "source_url":  "https://urlhaus.abuse.ch/downloads/csv_recent/",
+                 "urlhaus_id":  "3878801",
+                 "dateadded":  "2026-07-01 07:21:08",
+                 "threat":  "malware_download",
+                 "url_status":  "online",
+                 "urlhaus_link":  "https://urlhaus.abuse.ch/url/3878801/",
+                 "tags":  [
+                              "None"
+                          ]
+             },
+    "target":  {
+                   "file":  {
+                                "name":  "urlhaus_45_bin.sh",
+                                "md5":  "",
+                                "sha1":  "",
+                                "sha256":  ""
+                            }
+               },
+    "behavior":  {
+                     "processes":  [
+                                       {
+                                           "process_name":  "urlhaus_45_bin.sh",
+                                           "pid":  9045,
+                                           "command_line":  "urlhaus_45_bin.sh --urlhaus-validation"
+                                       }
+                                   ],
+                     "summary":  {
+                                     "files":  [
+                                                   "C:\\Users\\Public\\Downloads\\urlhaus_45_bin.sh"
+                                               ],
+                                     "keys":  [
+
+                                              ],
+                                     "mutexes":  [
+
+                                                 ]
+                                 }
+                 },
+    "network":  {
+                    "hosts":  [
+
+                              ],
+                    "domains":  [
+                                    {
+                                        "domain":  "222.141.47.94"
+                                    }
+                                ],
+                    "http":  [
+                                 {
+                                     "uri":  "http://222.141.47.94:48327/bin.sh",
+                                     "host":  "222.141.47.94"
+                                 }
+                             ]
+                },
+    "signatures":  [
+                       {
+                           "name":  "urlhaus_tag_None",
+                           "description":  "URLhaus tag: None"
+                       }
+                   ]
+}

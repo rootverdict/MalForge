@@ -1,0 +1,59 @@
+[
+  {
+    "confidence": 0.7,
+    "context": {
+      "raw": {
+        "domain": "squvbf6p.btyek.one"
+      },
+      "source_section": "network"
+    },
+    "source": "cuckoo",
+    "tags": [
+      "network"
+    ],
+    "type": "domain",
+    "value": "squvbf6p.btyek.one"
+  },
+  {
+    "confidence": 0.7,
+    "context": {
+      "raw": {
+        "host": "squvbf6p.btyek.one",
+        "uri": "https://squvbf6p.btyek.one/?ublib=3ad123de-3852-4784-9864-dc443665a2e0"
+      },
+      "source_section": "network"
+    },
+    "source": "cuckoo",
+    "tags": [
+      "network"
+    ],
+    "type": "url",
+    "value": "https://squvbf6p.btyek.one/?ublib=3ad123de-3852-4784-9864-dc443665a2e0"
+  },
+  {
+    "confidence": 0.6,
+    "context": {
+      "raw": "C:\\Users\\Public\\Downloads\\urlhaus_44_payload.bin",
+      "source_section": "files"
+    },
+    "source": "cuckoo",
+    "tags": [
+      "filesystem"
+    ],
+    "type": "file_path",
+    "value": "C:\\Users\\Public\\Downloads\\urlhaus_44_payload.bin"
+  },
+  {
+    "confidence": 0.3,
+    "context": {
+      "behavior": "Process created: urlhaus_44_payload.bin (urlhaus_44_payload.bin --urlhaus-validation)",
+      "category": "process"
+    },
+    "source": "cuckoo",
+    "tags": [
+      "process_image"
+    ],
+    "type": "file_path",
+    "value": "urlhaus_44_payload.bin"
+  }
+]

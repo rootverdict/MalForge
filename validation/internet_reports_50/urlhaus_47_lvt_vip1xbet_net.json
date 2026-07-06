@@ -1,0 +1,77 @@
+﻿{
+    "info":  {
+                 "id":  70047,
+                 "score":  5,
+                 "machine":  "internet-validation-urlhaus",
+                 "source":  "URLhaus recent CSV",
+                 "source_url":  "https://urlhaus.abuse.ch/downloads/csv_recent/",
+                 "urlhaus_id":  "3878800",
+                 "dateadded":  "2026-07-01 07:18:08",
+                 "threat":  "malware_download",
+                 "url_status":  "offline",
+                 "urlhaus_link":  "https://urlhaus.abuse.ch/url/3878800/",
+                 "tags":  [
+                              "ClearFake",
+                              "win-0x4679",
+                              "windows"
+                          ]
+             },
+    "target":  {
+                   "file":  {
+                                "name":  "urlhaus_47_4e0d84da-c118-4423-83c4-2b0b4883f3ec",
+                                "md5":  "",
+                                "sha1":  "",
+                                "sha256":  ""
+                            }
+               },
+    "behavior":  {
+                     "processes":  [
+                                       {
+                                           "process_name":  "urlhaus_47_4e0d84da-c118-4423-83c4-2b0b4883f3ec",
+                                           "pid":  9047,
+                                           "command_line":  "urlhaus_47_4e0d84da-c118-4423-83c4-2b0b4883f3ec --urlhaus-validation"
+                                       }
+                                   ],
+                     "summary":  {
+                                     "files":  [
+                                                   "C:\\Users\\Public\\Downloads\\urlhaus_47_4e0d84da-c118-4423-83c4-2b0b4883f3ec"
+                                               ],
+                                     "keys":  [
+
+                                              ],
+                                     "mutexes":  [
+
+                                                 ]
+                                 }
+                 },
+    "network":  {
+                    "hosts":  [
+
+                              ],
+                    "domains":  [
+                                    {
+                                        "domain":  "lvt.vip1xbet.net"
+                                    }
+                                ],
+                    "http":  [
+                                 {
+                                     "uri":  "https://lvt.vip1xbet.net/4e0d84da-c118-4423-83c4-2b0b4883f3ec",
+                                     "host":  "lvt.vip1xbet.net"
+                                 }
+                             ]
+                },
+    "signatures":  [
+                       {
+                           "name":  "urlhaus_tag_ClearFake",
+                           "description":  "URLhaus tag: ClearFake"
+                       },
+                       {
+                           "name":  "urlhaus_tag_win_0x4679",
+                           "description":  "URLhaus tag: win-0x4679"
+                       },
+                       {
+                           "name":  "urlhaus_tag_windows",
+                           "description":  "URLhaus tag: windows"
+                       }
+                   ]
+}

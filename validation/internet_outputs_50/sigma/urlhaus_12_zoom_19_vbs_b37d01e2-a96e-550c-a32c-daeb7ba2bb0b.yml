@@ -1,0 +1,55 @@
+title: File dropped to user-accessible path C \Users\Public\Downloads\urlhaus_12_Zoom
+  19.vbs
+description: 'File dropped to user-accessible path: C:\Users\Public\Downloads\urlhaus_12_Zoom
+  19.vbs'
+logsource:
+  category: file_event
+  product: windows
+detection:
+  selection:
+    TargetFilename|contains: C:\Users\Public\Downloads\urlhaus_12_Zoom 19.vbs
+  condition: selection
+level: high
+status: experimental
+author: malware-behavior-detection-generator
+tags:
+- attack.t1105
+references:
+- generated-by:malware-behavior-detection-generator
+- source:cuckoo
+falsepositives:
+- Unknown
+fields:
+- TargetFilename
+metadata:
+  tool: malware-behavior-detection-generator
+  behavior_category: file
+  platform_context: windows
+  trace:
+    source_behavior_category: file
+    source_behavior_description: 'File dropped to user-accessible path: C:\Users\Public\Downloads\urlhaus_12_Zoom
+      19.vbs'
+    source_behavior_evidence:
+    - path: C:\Users\Public\Downloads\urlhaus_12_Zoom 19.vbs
+      raw: C:\Users\Public\Downloads\urlhaus_12_Zoom 19.vbs
+    source_behavior_tags:
+    - file_drop
+    platform_context: windows
+    attack_technique_ids:
+    - T1105
+    attack_tags:
+    - attack.t1105
+    selector_reason: 'File selector chosen for windows telemetry from observed file
+      path evidence using: TargetFilename|contains.'
+  review:
+    status: unreviewed
+    reviewer: ''
+    notes: ''
+  version:
+    tool_name: malware-behavior-detection-generator
+    tool_version: 0.1.0
+    rule_version: 1.0.0
+    generated_at: '2026-07-01T10:00:17+00:00'
+    source_report_hash: null
+    content_hash: 5ca8f1200f86884c6a6c9bf158e33e865801a7878ace222798e7193b5bc1551e
+id: b37d01e2-a96e-550c-a32c-daeb7ba2bb0b

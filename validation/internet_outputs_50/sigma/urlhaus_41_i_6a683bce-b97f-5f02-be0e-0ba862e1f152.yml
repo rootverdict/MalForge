@@ -1,0 +1,53 @@
+title: IP connection observed 222.141.47.94
+description: 'IP connection observed: 222.141.47.94'
+logsource:
+  category: network_connection
+  product: windows
+detection:
+  selection:
+    DestinationIp: 222.141.47.94
+  condition: selection
+level: medium
+status: experimental
+author: malware-behavior-detection-generator
+tags:
+- attack.t1071
+references:
+- generated-by:malware-behavior-detection-generator
+- source:cuckoo
+falsepositives:
+- Unknown
+fields:
+- DestinationIp
+metadata:
+  tool: malware-behavior-detection-generator
+  behavior_category: network
+  platform_context: windows
+  trace:
+    source_behavior_category: network
+    source_behavior_description: 'IP connection observed: 222.141.47.94'
+    source_behavior_evidence:
+    - domain: 222.141.47.94
+      source_field: domain
+      ip: 222.141.47.94
+    source_behavior_tags:
+    - ip_connection
+    platform_context: windows
+    attack_technique_ids:
+    - T1071
+    attack_tags:
+    - attack.t1071
+    selector_reason: 'Network selector chosen for windows telemetry from observed
+      IP evidence using: DestinationIp.'
+  review:
+    status: unreviewed
+    reviewer: ''
+    notes: ''
+  version:
+    tool_name: malware-behavior-detection-generator
+    tool_version: 0.1.0
+    rule_version: 1.0.0
+    generated_at: '2026-07-01T10:00:18+00:00'
+    source_report_hash: null
+    content_hash: ab2f0fab3ce8ab5a37c4c321b970b05d10fcedde61db2428d26c602ae2f7e6c8
+id: 6a683bce-b97f-5f02-be0e-0ba862e1f152

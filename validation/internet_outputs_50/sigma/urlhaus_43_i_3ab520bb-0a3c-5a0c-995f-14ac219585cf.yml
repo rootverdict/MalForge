@@ -1,0 +1,56 @@
+title: IP connection observed 125.41.133.47
+description: 'IP connection observed: 125.41.133.47'
+logsource:
+  category: network_connection
+  product: linux
+detection:
+  selection:
+    destination.ip: 125.41.133.47
+  condition: selection
+level: medium
+status: experimental
+author: malware-behavior-detection-generator
+tags:
+- attack.t1071
+references:
+- generated-by:malware-behavior-detection-generator
+- source:cuckoo
+falsepositives:
+- Unknown
+fields:
+- destination.ip
+metadata:
+  tool: malware-behavior-detection-generator
+  behavior_category: network
+  platform_context: non_windows
+  trace:
+    source_behavior_category: network
+    source_behavior_description: 'IP connection observed: 125.41.133.47'
+    source_behavior_evidence:
+    - domain: 125.41.133.47
+      source_field: domain
+      ip: 125.41.133.47
+    source_behavior_tags:
+    - ip_connection
+    - family_mozi
+    - platform_linux_or_iot
+    - platform_non_windows
+    platform_context: non_windows
+    attack_technique_ids:
+    - T1071
+    attack_tags:
+    - attack.t1071
+    selector_reason: 'Network selector chosen for non_windows telemetry from observed
+      IP evidence using: destination.ip.'
+  review:
+    status: unreviewed
+    reviewer: ''
+    notes: ''
+  version:
+    tool_name: malware-behavior-detection-generator
+    tool_version: 0.1.0
+    rule_version: 1.0.0
+    generated_at: '2026-07-01T10:00:18+00:00'
+    source_report_hash: null
+    content_hash: c1f0e6d98336babc079373ef2e9dcab5a551d8847a987e89ca60e1f105670d53
+id: 3ab520bb-0a3c-5a0c-995f-14ac219585cf

@@ -1,0 +1,59 @@
+title: HTTP connection observed http //85.204.125.67 8080/payload.sh
+description: 'HTTP connection observed: http://85.204.125.67:8080/payload.sh'
+logsource:
+  category: network_connection
+  product: windows
+detection:
+  selection:
+    DestinationIp: 85.204.125.67
+  condition: selection
+level: medium
+status: experimental
+author: malware-behavior-detection-generator
+tags:
+- attack.t1071.001
+- attack.t1571
+references:
+- generated-by:malware-behavior-detection-generator
+- source:cuckoo
+falsepositives:
+- Unknown
+fields:
+- DestinationIp
+metadata:
+  tool: malware-behavior-detection-generator
+  behavior_category: network
+  platform_context: windows
+  trace:
+    source_behavior_category: network
+    source_behavior_description: 'HTTP connection observed: http://85.204.125.67:8080/payload.sh'
+    source_behavior_evidence:
+    - uri: http://85.204.125.67:8080/payload.sh
+      host: 85.204.125.67
+      ip: 85.204.125.67
+      host_is_ip: true
+      port: 8080
+    source_behavior_tags:
+    - http_connection
+    - non_standard_port
+    platform_context: windows
+    attack_technique_ids:
+    - T1071.001
+    - T1571
+    attack_tags:
+    - attack.t1071.001
+    - attack.t1571
+    selector_reason: 'Network selector chosen for windows telemetry from observed
+      IP evidence using: DestinationIp.'
+  review:
+    status: unreviewed
+    reviewer: ''
+    notes: ''
+  version:
+    tool_name: malware-behavior-detection-generator
+    tool_version: 0.1.0
+    rule_version: 1.0.0
+    generated_at: '2026-07-01T10:00:18+00:00'
+    source_report_hash: null
+    content_hash: cb1169305c470c865689681c73d0e0a9a94682f3c3d33f99c3472efa5a9d7ed3
+id: 1487f7ee-6a72-5e70-a530-25e4b12880f1

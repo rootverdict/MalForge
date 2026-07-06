@@ -1,0 +1,64 @@
+title: HTTP connection observed http //112.239.101.142 35487/bin.sh
+description: 'HTTP connection observed: http://112.239.101.142:35487/bin.sh'
+logsource:
+  category: network_connection
+  product: linux
+detection:
+  selection:
+    url|contains: http://112.239.101.142:35487/bin.sh
+    destination.ip: 112.239.101.142
+  condition: selection
+level: medium
+status: experimental
+author: malware-behavior-detection-generator
+tags:
+- attack.t1071.001
+- attack.t1571
+references:
+- generated-by:malware-behavior-detection-generator
+- source:cuckoo
+falsepositives:
+- Unknown
+fields:
+- url|contains
+- destination.ip
+metadata:
+  tool: malware-behavior-detection-generator
+  behavior_category: network
+  platform_context: non_windows
+  trace:
+    source_behavior_category: network
+    source_behavior_description: 'HTTP connection observed: http://112.239.101.142:35487/bin.sh'
+    source_behavior_evidence:
+    - uri: http://112.239.101.142:35487/bin.sh
+      host: 112.239.101.142
+      ip: 112.239.101.142
+      host_is_ip: true
+      port: 35487
+    source_behavior_tags:
+    - http_connection
+    - non_standard_port
+    - family_mozi
+    - platform_linux_or_iot
+    - platform_non_windows
+    platform_context: non_windows
+    attack_technique_ids:
+    - T1071.001
+    - T1571
+    attack_tags:
+    - attack.t1071.001
+    - attack.t1571
+    selector_reason: 'Network selector chosen for non_windows telemetry from observed
+      IP evidence using: destination.ip, url|contains.'
+  review:
+    status: unreviewed
+    reviewer: ''
+    notes: ''
+  version:
+    tool_name: malware-behavior-detection-generator
+    tool_version: 0.1.0
+    rule_version: 1.0.0
+    generated_at: '2026-07-01T10:00:18+00:00'
+    source_report_hash: null
+    content_hash: a299a42a0031e860e1f6c499b6b361c40c59574ca75ee47d500ecccac81b7074
+id: f21f478c-f419-5def-9826-834d23979034

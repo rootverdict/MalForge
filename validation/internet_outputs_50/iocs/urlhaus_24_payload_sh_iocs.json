@@ -1,0 +1,46 @@
+[
+  {
+    "confidence": 0.7,
+    "context": {
+      "raw": {
+        "domain": "85.204.125.67"
+      },
+      "source_section": "network.domain"
+    },
+    "source": "cuckoo",
+    "tags": [
+      "network"
+    ],
+    "type": "ipv4",
+    "value": "85.204.125.67"
+  },
+  {
+    "confidence": 0.7,
+    "context": {
+      "raw": {
+        "host": "85.204.125.67",
+        "uri": "http://85.204.125.67:8080/payload.sh"
+      },
+      "source_section": "network"
+    },
+    "source": "cuckoo",
+    "tags": [
+      "network"
+    ],
+    "type": "url",
+    "value": "http://85.204.125.67:8080/payload.sh"
+  },
+  {
+    "confidence": 0.6,
+    "context": {
+      "raw": "C:\\Users\\Public\\Downloads\\urlhaus_24_payload.sh",
+      "source_section": "files"
+    },
+    "source": "cuckoo",
+    "tags": [
+      "filesystem"
+    ],
+    "type": "file_path",
+    "value": "C:\\Users\\Public\\Downloads\\urlhaus_24_payload.sh"
+  }
+]

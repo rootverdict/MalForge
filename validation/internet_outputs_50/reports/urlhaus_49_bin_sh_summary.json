@@ -1,0 +1,368 @@
+{
+  "artifacts": {
+    "attack_techniques": [
+      "T1059",
+      "T1071",
+      "T1071.001",
+      "T1105",
+      "T1571"
+    ],
+    "ioc_values": [
+      {
+        "type": "ipv4",
+        "value": "39.71.205.224"
+      },
+      {
+        "type": "url",
+        "value": "http://39.71.205.224:59523/bin.sh"
+      },
+      {
+        "type": "file_path",
+        "value": "/tmp/urlhaus_49_bin.sh"
+      }
+    ],
+    "navigator_technique_count": 5,
+    "review_states": [
+      "unreviewed"
+    ],
+    "sigma_rule_ids": [
+      "7dc90987-e630-53cf-bc4b-26753e707a24",
+      "d02e58e6-dce5-5518-bfa6-785d4a643b92",
+      "83b2d35a-fa2e-51b9-acc8-564a2332bf93",
+      "d137061f-ca7c-587f-9a81-36218e34dd26"
+    ],
+    "sigma_rule_traces": [
+      {
+        "rule_id": "7dc90987-e630-53cf-bc4b-26753e707a24",
+        "title": "Process created urlhaus_49_bin.sh",
+        "trace": {
+          "attack_tags": [
+            "attack.t1059"
+          ],
+          "attack_technique_ids": [
+            "T1059"
+          ],
+          "platform_context": "linux_or_iot",
+          "selector_reason": "Process selector chosen for linux_or_iot telemetry from executable and command line evidence using: cmdline|contains, exe|endswith.",
+          "source_behavior_category": "process",
+          "source_behavior_description": "Process created: urlhaus_49_bin.sh (urlhaus_49_bin.sh --urlhaus-validation)",
+          "source_behavior_evidence": [
+            {
+              "command_line": "urlhaus_49_bin.sh --urlhaus-validation",
+              "pid": 9049,
+              "process_name": "urlhaus_49_bin.sh"
+            }
+          ],
+          "source_behavior_tags": [
+            "process_create",
+            "arch_mips",
+            "family_mozi",
+            "format_elf",
+            "platform_linux_or_iot",
+            "platform_non_windows"
+          ]
+        }
+      },
+      {
+        "rule_id": "d02e58e6-dce5-5518-bfa6-785d4a643b92",
+        "title": "File dropped to user-accessible path /tmp/urlhaus_49_bin.sh",
+        "trace": {
+          "attack_tags": [
+            "attack.t1105"
+          ],
+          "attack_technique_ids": [
+            "T1105"
+          ],
+          "platform_context": "linux_or_iot",
+          "selector_reason": "File selector chosen for linux_or_iot telemetry from observed file path evidence using: file.path|contains.",
+          "source_behavior_category": "file",
+          "source_behavior_description": "File dropped to user-accessible path: /tmp/urlhaus_49_bin.sh",
+          "source_behavior_evidence": [
+            {
+              "path": "/tmp/urlhaus_49_bin.sh",
+              "raw": "/tmp/urlhaus_49_bin.sh"
+            }
+          ],
+          "source_behavior_tags": [
+            "file_drop",
+            "arch_mips",
+            "family_mozi",
+            "format_elf",
+            "platform_linux_or_iot",
+            "platform_non_windows"
+          ]
+        }
+      },
+      {
+        "rule_id": "83b2d35a-fa2e-51b9-acc8-564a2332bf93",
+        "title": "IP connection observed 39.71.205.224",
+        "trace": {
+          "attack_tags": [
+            "attack.t1071"
+          ],
+          "attack_technique_ids": [
+            "T1071"
+          ],
+          "platform_context": "linux_or_iot",
+          "selector_reason": "Network selector chosen for linux_or_iot telemetry from observed IP evidence using: destination.ip.",
+          "source_behavior_category": "network",
+          "source_behavior_description": "IP connection observed: 39.71.205.224",
+          "source_behavior_evidence": [
+            {
+              "domain": "39.71.205.224",
+              "ip": "39.71.205.224",
+              "source_field": "domain"
+            }
+          ],
+          "source_behavior_tags": [
+            "ip_connection",
+            "arch_mips",
+            "family_mozi",
+            "format_elf",
+            "platform_linux_or_iot",
+            "platform_non_windows"
+          ]
+        }
+      },
+      {
+        "rule_id": "d137061f-ca7c-587f-9a81-36218e34dd26",
+        "title": "HTTP connection observed http //39.71.205.224 59523/bin.sh",
+        "trace": {
+          "attack_tags": [
+            "attack.t1071.001",
+            "attack.t1571"
+          ],
+          "attack_technique_ids": [
+            "T1071.001",
+            "T1571"
+          ],
+          "platform_context": "linux_or_iot",
+          "selector_reason": "Network selector chosen for linux_or_iot telemetry from observed IP evidence using: destination.ip, url|contains.",
+          "source_behavior_category": "network",
+          "source_behavior_description": "HTTP connection observed: http://39.71.205.224:59523/bin.sh",
+          "source_behavior_evidence": [
+            {
+              "host": "39.71.205.224",
+              "host_is_ip": true,
+              "ip": "39.71.205.224",
+              "port": 59523,
+              "uri": "http://39.71.205.224:59523/bin.sh"
+            }
+          ],
+          "source_behavior_tags": [
+            "http_connection",
+            "non_standard_port",
+            "arch_mips",
+            "family_mozi",
+            "format_elf",
+            "platform_linux_or_iot",
+            "platform_non_windows"
+          ]
+        }
+      }
+    ],
+    "wazuh_rule_ids": [
+      113546,
+      105241,
+      105495,
+      109871
+    ],
+    "wazuh_rule_traces": [
+      {
+        "rule_id": 113546,
+        "trace": {
+          "conversion_reason": "Rule converted using Linux/generic JSON field matching; no Windows Sysmon parent or win.eventdata fields are used.",
+          "source_sigma_rule_description": "Process created: urlhaus_49_bin.sh (urlhaus_49_bin.sh --urlhaus-validation)",
+          "source_sigma_rule_id": "7dc90987-e630-53cf-bc4b-26753e707a24",
+          "source_sigma_rule_title": "Process created urlhaus_49_bin.sh",
+          "source_sigma_trace": {
+            "attack_tags": [
+              "attack.t1059"
+            ],
+            "attack_technique_ids": [
+              "T1059"
+            ],
+            "platform_context": "linux_or_iot",
+            "selector_reason": "Process selector chosen for linux_or_iot telemetry from executable and command line evidence using: cmdline|contains, exe|endswith.",
+            "source_behavior_category": "process",
+            "source_behavior_description": "Process created: urlhaus_49_bin.sh (urlhaus_49_bin.sh --urlhaus-validation)",
+            "source_behavior_evidence": [
+              {
+                "command_line": "urlhaus_49_bin.sh --urlhaus-validation",
+                "pid": 9049,
+                "process_name": "urlhaus_49_bin.sh"
+              }
+            ],
+            "source_behavior_tags": [
+              "process_create",
+              "arch_mips",
+              "family_mozi",
+              "format_elf",
+              "platform_linux_or_iot",
+              "platform_non_windows"
+            ]
+          }
+        }
+      },
+      {
+        "rule_id": 105241,
+        "trace": {
+          "conversion_reason": "Rule converted using Linux/generic JSON field matching; no Windows Sysmon parent or win.eventdata fields are used.",
+          "source_sigma_rule_description": "File dropped to user-accessible path: /tmp/urlhaus_49_bin.sh",
+          "source_sigma_rule_id": "d02e58e6-dce5-5518-bfa6-785d4a643b92",
+          "source_sigma_rule_title": "File dropped to user-accessible path /tmp/urlhaus_49_bin.sh",
+          "source_sigma_trace": {
+            "attack_tags": [
+              "attack.t1105"
+            ],
+            "attack_technique_ids": [
+              "T1105"
+            ],
+            "platform_context": "linux_or_iot",
+            "selector_reason": "File selector chosen for linux_or_iot telemetry from observed file path evidence using: file.path|contains.",
+            "source_behavior_category": "file",
+            "source_behavior_description": "File dropped to user-accessible path: /tmp/urlhaus_49_bin.sh",
+            "source_behavior_evidence": [
+              {
+                "path": "/tmp/urlhaus_49_bin.sh",
+                "raw": "/tmp/urlhaus_49_bin.sh"
+              }
+            ],
+            "source_behavior_tags": [
+              "file_drop",
+              "arch_mips",
+              "family_mozi",
+              "format_elf",
+              "platform_linux_or_iot",
+              "platform_non_windows"
+            ]
+          }
+        }
+      },
+      {
+        "rule_id": 105495,
+        "trace": {
+          "conversion_reason": "Rule converted using Linux/generic JSON field matching; no Windows Sysmon parent or win.eventdata fields are used.",
+          "source_sigma_rule_description": "IP connection observed: 39.71.205.224",
+          "source_sigma_rule_id": "83b2d35a-fa2e-51b9-acc8-564a2332bf93",
+          "source_sigma_rule_title": "IP connection observed 39.71.205.224",
+          "source_sigma_trace": {
+            "attack_tags": [
+              "attack.t1071"
+            ],
+            "attack_technique_ids": [
+              "T1071"
+            ],
+            "platform_context": "linux_or_iot",
+            "selector_reason": "Network selector chosen for linux_or_iot telemetry from observed IP evidence using: destination.ip.",
+            "source_behavior_category": "network",
+            "source_behavior_description": "IP connection observed: 39.71.205.224",
+            "source_behavior_evidence": [
+              {
+                "domain": "39.71.205.224",
+                "ip": "39.71.205.224",
+                "source_field": "domain"
+              }
+            ],
+            "source_behavior_tags": [
+              "ip_connection",
+              "arch_mips",
+              "family_mozi",
+              "format_elf",
+              "platform_linux_or_iot",
+              "platform_non_windows"
+            ]
+          }
+        }
+      },
+      {
+        "rule_id": 109871,
+        "trace": {
+          "conversion_reason": "Rule converted using Linux/generic JSON field matching; no Windows Sysmon parent or win.eventdata fields are used.",
+          "source_sigma_rule_description": "HTTP connection observed: http://39.71.205.224:59523/bin.sh",
+          "source_sigma_rule_id": "d137061f-ca7c-587f-9a81-36218e34dd26",
+          "source_sigma_rule_title": "HTTP connection observed http //39.71.205.224 59523/bin.sh",
+          "source_sigma_trace": {
+            "attack_tags": [
+              "attack.t1071.001",
+              "attack.t1571"
+            ],
+            "attack_technique_ids": [
+              "T1071.001",
+              "T1571"
+            ],
+            "platform_context": "linux_or_iot",
+            "selector_reason": "Network selector chosen for linux_or_iot telemetry from observed IP evidence using: destination.ip, url|contains.",
+            "source_behavior_category": "network",
+            "source_behavior_description": "HTTP connection observed: http://39.71.205.224:59523/bin.sh",
+            "source_behavior_evidence": [
+              {
+                "host": "39.71.205.224",
+                "host_is_ip": true,
+                "ip": "39.71.205.224",
+                "port": 59523,
+                "uri": "http://39.71.205.224:59523/bin.sh"
+              }
+            ],
+            "source_behavior_tags": [
+              "http_connection",
+              "non_standard_port",
+              "arch_mips",
+              "family_mozi",
+              "format_elf",
+              "platform_linux_or_iot",
+              "platform_non_windows"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "averages": {
+    "attack_confidence": 0.74,
+    "risk_score": 62.75
+  },
+  "counts": {
+    "attack_technique_count": 5,
+    "behaviors_by_category": {
+      "file": 1,
+      "network": 2,
+      "process": 1
+    },
+    "iocs_by_type": {
+      "file_path": 1,
+      "ipv4": 1,
+      "url": 1
+    },
+    "sigma_rule_count": 4,
+    "validation": {
+      "failed": 0,
+      "passed": 8,
+      "warning_count": 0
+    },
+    "wazuh_rule_count": 4
+  },
+  "generated_at": "2026-07-01T10:00:18+00:00",
+  "sample": {
+    "hash_status": {
+      "complete": false,
+      "missing": [
+        "md5",
+        "sha1",
+        "sha256"
+      ],
+      "note": "Payload hashes unavailable from source report."
+    },
+    "hashes": {
+      "md5": "",
+      "sha1": "",
+      "sha256": ""
+    },
+    "name": "urlhaus_49_bin.sh",
+    "sandbox": "cuckoo"
+  },
+  "tool": {
+    "name": "malware-behavior-detection-generator",
+    "version": "0.1.0"
+  }
+}

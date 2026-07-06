@@ -1,0 +1,56 @@
+title: File dropped to user-accessible path /tmp/urlhaus_43_i
+description: 'File dropped to user-accessible path: /tmp/urlhaus_43_i'
+logsource:
+  category: file_event
+  product: linux
+  service: auditd
+detection:
+  selection:
+    file.path|contains: urlhaus_43_i
+  condition: selection
+level: high
+status: experimental
+author: malware-behavior-detection-generator
+tags:
+- attack.t1105
+references:
+- generated-by:malware-behavior-detection-generator
+- source:cuckoo
+falsepositives:
+- Unknown
+fields:
+- file.path
+metadata:
+  tool: malware-behavior-detection-generator
+  behavior_category: file
+  platform_context: non_windows
+  trace:
+    source_behavior_category: file
+    source_behavior_description: 'File dropped to user-accessible path: /tmp/urlhaus_43_i'
+    source_behavior_evidence:
+    - path: /tmp/urlhaus_43_i
+      raw: /tmp/urlhaus_43_i
+    source_behavior_tags:
+    - file_drop
+    - family_mozi
+    - platform_linux_or_iot
+    - platform_non_windows
+    platform_context: non_windows
+    attack_technique_ids:
+    - T1105
+    attack_tags:
+    - attack.t1105
+    selector_reason: 'File selector chosen for non_windows telemetry from observed
+      file path evidence using: file.path|contains.'
+  review:
+    status: unreviewed
+    reviewer: ''
+    notes: ''
+  version:
+    tool_name: malware-behavior-detection-generator
+    tool_version: 0.1.0
+    rule_version: 1.0.0
+    generated_at: '2026-07-01T10:00:18+00:00'
+    source_report_hash: null
+    content_hash: a1b1096e429a4b726feeaa381cccef004cc65588cf448e679c648e7851eb0712
+id: db2c4941-05d1-5d43-a771-5a6bb79ea4a0

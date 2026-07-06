@@ -1,0 +1,3 @@
+ipv4: 222.141.47.94
+url: http://222.141.47.94:48327/bin.sh
+file_path: C:\Users\Public\Downloads\urlhaus_45_bin.sh

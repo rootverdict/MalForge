@@ -1,0 +1,67 @@
+﻿{
+    "info":  {
+                 "id":  70050,
+                 "score":  5,
+                 "machine":  "internet-validation-urlhaus",
+                 "source":  "URLhaus recent CSV",
+                 "source_url":  "https://urlhaus.abuse.ch/downloads/csv_recent/",
+                 "urlhaus_id":  "3878796",
+                 "dateadded":  "2026-07-01 07:06:09",
+                 "threat":  "malware_download",
+                 "url_status":  "online",
+                 "urlhaus_link":  "https://urlhaus.abuse.ch/url/3878796/",
+                 "tags":  [
+                              "Mozi"
+                          ]
+             },
+    "target":  {
+                   "file":  {
+                                "name":  "urlhaus_50_bin.sh",
+                                "md5":  "",
+                                "sha1":  "",
+                                "sha256":  ""
+                            }
+               },
+    "behavior":  {
+                     "processes":  [
+                                       {
+                                           "process_name":  "urlhaus_50_bin.sh",
+                                           "pid":  9050,
+                                           "command_line":  "urlhaus_50_bin.sh --urlhaus-validation"
+                                       }
+                                   ],
+                     "summary":  {
+                                     "files":  [
+                                                   "/tmp/urlhaus_50_bin.sh"
+                                               ],
+                                     "keys":  [
+
+                                              ],
+                                     "mutexes":  [
+
+                                                 ]
+                                 }
+                 },
+    "network":  {
+                    "hosts":  [
+
+                              ],
+                    "domains":  [
+                                    {
+                                        "domain":  "112.239.101.142"
+                                    }
+                                ],
+                    "http":  [
+                                 {
+                                     "uri":  "http://112.239.101.142:35487/bin.sh",
+                                     "host":  "112.239.101.142"
+                                 }
+                             ]
+                },
+    "signatures":  [
+                       {
+                           "name":  "urlhaus_tag_Mozi",
+                           "description":  "URLhaus tag: Mozi"
+                       }
+                   ]
+}

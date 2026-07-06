@@ -1,0 +1,59 @@
+[
+  {
+    "confidence": 0.7,
+    "context": {
+      "raw": {
+        "domain": "djaczx9h.btyek.online"
+      },
+      "source_section": "network"
+    },
+    "source": "cuckoo",
+    "tags": [
+      "network"
+    ],
+    "type": "domain",
+    "value": "djaczx9h.btyek.online"
+  },
+  {
+    "confidence": 0.7,
+    "context": {
+      "raw": {
+        "host": "djaczx9h.btyek.online",
+        "uri": "https://djaczx9h.btyek.online/?ublib=c4993d64-c456-4f4f-aca9-b1e039bcffb1"
+      },
+      "source_section": "network"
+    },
+    "source": "cuckoo",
+    "tags": [
+      "network"
+    ],
+    "type": "url",
+    "value": "https://djaczx9h.btyek.online/?ublib=c4993d64-c456-4f4f-aca9-b1e039bcffb1"
+  },
+  {
+    "confidence": 0.6,
+    "context": {
+      "raw": "C:\\Users\\Public\\Downloads\\urlhaus_40_payload.bin",
+      "source_section": "files"
+    },
+    "source": "cuckoo",
+    "tags": [
+      "filesystem"
+    ],
+    "type": "file_path",
+    "value": "C:\\Users\\Public\\Downloads\\urlhaus_40_payload.bin"
+  },
+  {
+    "confidence": 0.3,
+    "context": {
+      "behavior": "Process created: urlhaus_40_payload.bin (urlhaus_40_payload.bin --urlhaus-validation)",
+      "category": "process"
+    },
+    "source": "cuckoo",
+    "tags": [
+      "process_image"
+    ],
+    "type": "file_path",
+    "value": "urlhaus_40_payload.bin"
+  }
+]

@@ -1,0 +1,66 @@
+{
+  "description": "Rule-based ATT&CK mappings derived from extracted sandbox behaviors.",
+  "domain": "enterprise-attack",
+  "hideDisabled": false,
+  "layout": {
+    "aggregateFunction": "average",
+    "layout": "side",
+    "showID": false,
+    "showName": true
+  },
+  "legendItems": [
+    {
+      "color": "#d32f2f",
+      "label": "High confidence"
+    },
+    {
+      "color": "#f9a825",
+      "label": "Medium confidence"
+    },
+    {
+      "color": "#1976d2",
+      "label": "Low confidence"
+    }
+  ],
+  "name": "urlhaus_13_Zoom 12.vbs ATT&CK Layer",
+  "sorting": 0,
+  "techniques": [
+    {
+      "color": "#f9a825",
+      "comment": "Process created: urlhaus_13_Zoom 12.vbs (urlhaus_13_Zoom 12.vbs --urlhaus-validation)",
+      "enabled": true,
+      "score": 60,
+      "tactic": "execution",
+      "techniqueID": "T1059"
+    },
+    {
+      "color": "#d32f2f",
+      "comment": "HTTP connection observed: https://jim-s.com/ab/Zoom_meeting/Meeting%20Invite%20HTML/downloads/windows/aboki/Zoom%2012.vbs",
+      "enabled": true,
+      "score": 90,
+      "tactic": "command-and-control",
+      "techniqueID": "T1071.001"
+    },
+    {
+      "color": "#d32f2f",
+      "comment": "DNS lookup observed: jim-s.com",
+      "enabled": true,
+      "score": 90,
+      "tactic": "command-and-control",
+      "techniqueID": "T1071.004"
+    },
+    {
+      "color": "#f9a825",
+      "comment": "File dropped to user-accessible path: C:\\Users\\Public\\Downloads\\urlhaus_13_Zoom 12.vbs",
+      "enabled": true,
+      "score": 60,
+      "tactic": "command-and-control",
+      "techniqueID": "T1105"
+    }
+  ],
+  "versions": {
+    "attack": "16.1",
+    "layer": "4.5",
+    "navigator": "4.9"
+  }
+}

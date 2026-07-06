@@ -1,0 +1,52 @@
+title: HTTP connection observed https //squvbf6p.btyek.one/?ublib=3ad123de-3852-4784-9864-dc443665a2e0
+description: 'HTTP connection observed: https://squvbf6p.btyek.one/?ublib=3ad123de-3852-4784-9864-dc443665a2e0'
+logsource:
+  category: network_connection
+  product: windows
+detection:
+  selection:
+    DestinationHostname|contains: squvbf6p.btyek.one
+  condition: selection
+level: medium
+status: experimental
+author: malware-behavior-detection-generator
+tags:
+- attack.t1071.001
+references:
+- generated-by:malware-behavior-detection-generator
+- source:cuckoo
+falsepositives:
+- Unknown
+fields:
+- DestinationHostname
+metadata:
+  tool: malware-behavior-detection-generator
+  behavior_category: network
+  platform_context: windows
+  trace:
+    source_behavior_category: network
+    source_behavior_description: 'HTTP connection observed: https://squvbf6p.btyek.one/?ublib=3ad123de-3852-4784-9864-dc443665a2e0'
+    source_behavior_evidence:
+    - uri: https://squvbf6p.btyek.one/?ublib=3ad123de-3852-4784-9864-dc443665a2e0
+      host: squvbf6p.btyek.one
+    source_behavior_tags:
+    - http_connection
+    platform_context: windows
+    attack_technique_ids:
+    - T1071.001
+    attack_tags:
+    - attack.t1071.001
+    selector_reason: 'Network selector chosen for windows telemetry from observed
+      network evidence using: DestinationHostname|contains.'
+  review:
+    status: unreviewed
+    reviewer: ''
+    notes: ''
+  version:
+    tool_name: malware-behavior-detection-generator
+    tool_version: 0.1.0
+    rule_version: 1.0.0
+    generated_at: '2026-07-01T10:00:18+00:00'
+    source_report_hash: null
+    content_hash: c2140dbe5070f6e854600364a2514005daa5fe77d179fb477206d0d491ce9e33
+id: dfca469a-1a8e-5ebf-bc84-980eae038dd4

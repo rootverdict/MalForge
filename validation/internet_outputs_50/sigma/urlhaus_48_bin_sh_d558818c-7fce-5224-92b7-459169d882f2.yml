@@ -1,0 +1,58 @@
+title: IP connection observed 14.0.131.161
+description: 'IP connection observed: 14.0.131.161'
+logsource:
+  category: network_connection
+  product: linux
+detection:
+  selection:
+    destination.ip: 14.0.131.161
+  condition: selection
+level: medium
+status: experimental
+author: malware-behavior-detection-generator
+tags:
+- attack.t1071
+references:
+- generated-by:malware-behavior-detection-generator
+- source:cuckoo
+falsepositives:
+- Unknown
+fields:
+- destination.ip
+metadata:
+  tool: malware-behavior-detection-generator
+  behavior_category: network
+  platform_context: linux_or_iot
+  trace:
+    source_behavior_category: network
+    source_behavior_description: 'IP connection observed: 14.0.131.161'
+    source_behavior_evidence:
+    - domain: 14.0.131.161
+      source_field: domain
+      ip: 14.0.131.161
+    source_behavior_tags:
+    - ip_connection
+    - arch_mips
+    - family_mozi
+    - format_elf
+    - platform_linux_or_iot
+    - platform_non_windows
+    platform_context: linux_or_iot
+    attack_technique_ids:
+    - T1071
+    attack_tags:
+    - attack.t1071
+    selector_reason: 'Network selector chosen for linux_or_iot telemetry from observed
+      IP evidence using: destination.ip.'
+  review:
+    status: unreviewed
+    reviewer: ''
+    notes: ''
+  version:
+    tool_name: malware-behavior-detection-generator
+    tool_version: 0.1.0
+    rule_version: 1.0.0
+    generated_at: '2026-07-01T10:00:18+00:00'
+    source_report_hash: null
+    content_hash: 01da6f90a998dcce8455ba4be80c57c0a28e1ae2986fac773b2e80b255d57bb7
+id: d558818c-7fce-5224-92b7-459169d882f2

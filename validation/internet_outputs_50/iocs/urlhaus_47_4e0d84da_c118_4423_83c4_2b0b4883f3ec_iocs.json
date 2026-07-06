@@ -1,0 +1,46 @@
+[
+  {
+    "confidence": 0.7,
+    "context": {
+      "raw": {
+        "domain": "lvt.vip1xbet.net"
+      },
+      "source_section": "network"
+    },
+    "source": "cuckoo",
+    "tags": [
+      "network"
+    ],
+    "type": "domain",
+    "value": "lvt.vip1xbet.net"
+  },
+  {
+    "confidence": 0.7,
+    "context": {
+      "raw": {
+        "host": "lvt.vip1xbet.net",
+        "uri": "https://lvt.vip1xbet.net/4e0d84da-c118-4423-83c4-2b0b4883f3ec"
+      },
+      "source_section": "network"
+    },
+    "source": "cuckoo",
+    "tags": [
+      "network"
+    ],
+    "type": "url",
+    "value": "https://lvt.vip1xbet.net/4e0d84da-c118-4423-83c4-2b0b4883f3ec"
+  },
+  {
+    "confidence": 0.6,
+    "context": {
+      "raw": "C:\\Users\\Public\\Downloads\\urlhaus_47_4e0d84da-c118-4423-83c4-2b0b4883f3ec",
+      "source_section": "files"
+    },
+    "source": "cuckoo",
+    "tags": [
+      "filesystem"
+    ],
+    "type": "file_path",
+    "value": "C:\\Users\\Public\\Downloads\\urlhaus_47_4e0d84da-c118-4423-83c4-2b0b4883f3ec"
+  }
+]

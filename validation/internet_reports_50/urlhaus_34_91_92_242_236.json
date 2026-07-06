@@ -1,0 +1,77 @@
+﻿{
+    "info":  {
+                 "id":  70034,
+                 "score":  5,
+                 "machine":  "internet-validation-urlhaus",
+                 "source":  "URLhaus recent CSV",
+                 "source_url":  "https://urlhaus.abuse.ch/downloads/csv_recent/",
+                 "urlhaus_id":  "3878812",
+                 "dateadded":  "2026-07-01 07:49:12",
+                 "threat":  "malware_download",
+                 "url_status":  "online",
+                 "urlhaus_link":  "https://urlhaus.abuse.ch/url/3878812/",
+                 "tags":  [
+                              "54e64e",
+                              "dropped-by-amadey",
+                              "RemusStealer"
+                          ]
+             },
+    "target":  {
+                   "file":  {
+                                "name":  "urlhaus_34_file_ac12f1da1bdab1e0.exe",
+                                "md5":  "",
+                                "sha1":  "",
+                                "sha256":  ""
+                            }
+               },
+    "behavior":  {
+                     "processes":  [
+                                       {
+                                           "process_name":  "urlhaus_34_file_ac12f1da1bdab1e0.exe",
+                                           "pid":  9034,
+                                           "command_line":  "urlhaus_34_file_ac12f1da1bdab1e0.exe --urlhaus-validation"
+                                       }
+                                   ],
+                     "summary":  {
+                                     "files":  [
+                                                   "C:\\Users\\Public\\Downloads\\urlhaus_34_file_ac12f1da1bdab1e0.exe"
+                                               ],
+                                     "keys":  [
+
+                                              ],
+                                     "mutexes":  [
+
+                                                 ]
+                                 }
+                 },
+    "network":  {
+                    "hosts":  [
+
+                              ],
+                    "domains":  [
+                                    {
+                                        "domain":  "91.92.242.236"
+                                    }
+                                ],
+                    "http":  [
+                                 {
+                                     "uri":  "http://91.92.242.236/files-129312398/files/file_ac12f1da1bdab1e0.exe",
+                                     "host":  "91.92.242.236"
+                                 }
+                             ]
+                },
+    "signatures":  [
+                       {
+                           "name":  "urlhaus_tag_54e64e",
+                           "description":  "URLhaus tag: 54e64e"
+                       },
+                       {
+                           "name":  "urlhaus_tag_dropped_by_amadey",
+                           "description":  "URLhaus tag: dropped-by-amadey"
+                       },
+                       {
+                           "name":  "urlhaus_tag_RemusStealer",
+                           "description":  "URLhaus tag: RemusStealer"
+                       }
+                   ]
+}

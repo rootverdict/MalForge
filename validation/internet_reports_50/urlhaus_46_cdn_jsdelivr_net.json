@@ -1,0 +1,77 @@
+﻿{
+    "info":  {
+                 "id":  70046,
+                 "score":  5,
+                 "machine":  "internet-validation-urlhaus",
+                 "source":  "URLhaus recent CSV",
+                 "source_url":  "https://urlhaus.abuse.ch/downloads/csv_recent/",
+                 "urlhaus_id":  "3878799",
+                 "dateadded":  "2026-07-01 07:18:08",
+                 "threat":  "malware_download",
+                 "url_status":  "offline",
+                 "urlhaus_link":  "https://urlhaus.abuse.ch/url/3878799/",
+                 "tags":  [
+                              "ClearFake",
+                              "win-0x4679",
+                              "windows"
+                          ]
+             },
+    "target":  {
+                   "file":  {
+                                "name":  "urlhaus_46_rp_4",
+                                "md5":  "",
+                                "sha1":  "",
+                                "sha256":  ""
+                            }
+               },
+    "behavior":  {
+                     "processes":  [
+                                       {
+                                           "process_name":  "urlhaus_46_rp_4",
+                                           "pid":  9046,
+                                           "command_line":  "urlhaus_46_rp_4 --urlhaus-validation"
+                                       }
+                                   ],
+                     "summary":  {
+                                     "files":  [
+                                                   "C:\\Users\\Public\\Downloads\\urlhaus_46_rp_4"
+                                               ],
+                                     "keys":  [
+
+                                              ],
+                                     "mutexes":  [
+
+                                                 ]
+                                 }
+                 },
+    "network":  {
+                    "hosts":  [
+
+                              ],
+                    "domains":  [
+                                    {
+                                        "domain":  "cdn.jsdelivr.net"
+                                    }
+                                ],
+                    "http":  [
+                                 {
+                                     "uri":  "https://cdn.jsdelivr.net/gh/recavrylog/roandatech@1cc983d/rp_4",
+                                     "host":  "cdn.jsdelivr.net"
+                                 }
+                             ]
+                },
+    "signatures":  [
+                       {
+                           "name":  "urlhaus_tag_ClearFake",
+                           "description":  "URLhaus tag: ClearFake"
+                       },
+                       {
+                           "name":  "urlhaus_tag_win_0x4679",
+                           "description":  "URLhaus tag: win-0x4679"
+                       },
+                       {
+                           "name":  "urlhaus_tag_windows",
+                           "description":  "URLhaus tag: windows"
+                       }
+                   ]
+}

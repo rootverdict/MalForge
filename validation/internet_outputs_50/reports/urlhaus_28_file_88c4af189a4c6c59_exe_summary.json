@@ -1,0 +1,325 @@
+{
+  "artifacts": {
+    "attack_techniques": [
+      "T1059",
+      "T1071",
+      "T1071.001",
+      "T1105"
+    ],
+    "ioc_values": [
+      {
+        "type": "ipv4",
+        "value": "91.92.242.236"
+      },
+      {
+        "type": "url",
+        "value": "http://91.92.242.236/files-129312398/files/file_88c4af189a4c6c59.exe"
+      },
+      {
+        "type": "file_path",
+        "value": "C:\\Users\\Public\\Downloads\\urlhaus_28_file_88c4af189a4c6c59.exe"
+      },
+      {
+        "type": "file_path",
+        "value": "urlhaus_28_file_88c4af189a4c6c59.exe"
+      }
+    ],
+    "navigator_technique_count": 4,
+    "review_states": [
+      "unreviewed"
+    ],
+    "sigma_rule_ids": [
+      "aa7d7222-fedb-5072-94b6-b19671d9cafa",
+      "ca46716b-abb2-5f7e-a47e-1a997983162b",
+      "b0187ff2-6e92-55fd-a98d-c654b7145ecd",
+      "9d7b9d7d-67a5-56f4-bfd9-9f822bf7ee1e"
+    ],
+    "sigma_rule_traces": [
+      {
+        "rule_id": "aa7d7222-fedb-5072-94b6-b19671d9cafa",
+        "title": "Process created urlhaus_28_file_88c4af189a4c6c59.exe",
+        "trace": {
+          "attack_tags": [
+            "attack.t1059"
+          ],
+          "attack_technique_ids": [
+            "T1059"
+          ],
+          "platform_context": "windows",
+          "selector_reason": "Process selector chosen for windows telemetry from executable and command line evidence using: CommandLine|contains, Image|endswith.",
+          "source_behavior_category": "process",
+          "source_behavior_description": "Process created: urlhaus_28_file_88c4af189a4c6c59.exe (urlhaus_28_file_88c4af189a4c6c59.exe --urlhaus-validation)",
+          "source_behavior_evidence": [
+            {
+              "command_line": "urlhaus_28_file_88c4af189a4c6c59.exe --urlhaus-validation",
+              "pid": 9028,
+              "process_name": "urlhaus_28_file_88c4af189a4c6c59.exe"
+            }
+          ],
+          "source_behavior_tags": [
+            "process_create"
+          ]
+        }
+      },
+      {
+        "rule_id": "ca46716b-abb2-5f7e-a47e-1a997983162b",
+        "title": "File dropped to user-accessible path C \\Users\\Public\\Downloads\\urlhaus_28_file_88c4af189a4c6c59.exe",
+        "trace": {
+          "attack_tags": [
+            "attack.t1105"
+          ],
+          "attack_technique_ids": [
+            "T1105"
+          ],
+          "platform_context": "windows",
+          "selector_reason": "File selector chosen for windows telemetry from observed file path evidence using: TargetFilename|contains.",
+          "source_behavior_category": "file",
+          "source_behavior_description": "File dropped to user-accessible path: C:\\Users\\Public\\Downloads\\urlhaus_28_file_88c4af189a4c6c59.exe",
+          "source_behavior_evidence": [
+            {
+              "path": "C:\\Users\\Public\\Downloads\\urlhaus_28_file_88c4af189a4c6c59.exe",
+              "raw": "C:\\Users\\Public\\Downloads\\urlhaus_28_file_88c4af189a4c6c59.exe"
+            }
+          ],
+          "source_behavior_tags": [
+            "file_drop",
+            "executable_artifact"
+          ]
+        }
+      },
+      {
+        "rule_id": "b0187ff2-6e92-55fd-a98d-c654b7145ecd",
+        "title": "IP connection observed 91.92.242.236",
+        "trace": {
+          "attack_tags": [
+            "attack.t1071"
+          ],
+          "attack_technique_ids": [
+            "T1071"
+          ],
+          "platform_context": "windows",
+          "selector_reason": "Network selector chosen for windows telemetry from observed IP evidence using: DestinationIp.",
+          "source_behavior_category": "network",
+          "source_behavior_description": "IP connection observed: 91.92.242.236",
+          "source_behavior_evidence": [
+            {
+              "domain": "91.92.242.236",
+              "ip": "91.92.242.236",
+              "source_field": "domain"
+            }
+          ],
+          "source_behavior_tags": [
+            "ip_connection"
+          ]
+        }
+      },
+      {
+        "rule_id": "9d7b9d7d-67a5-56f4-bfd9-9f822bf7ee1e",
+        "title": "HTTP connection observed http //91.92.242.236/files-129312398/files/file_88c4af189a4c6c59.exe",
+        "trace": {
+          "attack_tags": [
+            "attack.t1071.001"
+          ],
+          "attack_technique_ids": [
+            "T1071.001"
+          ],
+          "platform_context": "windows",
+          "selector_reason": "Network selector chosen for windows telemetry from observed IP evidence using: DestinationIp.",
+          "source_behavior_category": "network",
+          "source_behavior_description": "HTTP connection observed: http://91.92.242.236/files-129312398/files/file_88c4af189a4c6c59.exe",
+          "source_behavior_evidence": [
+            {
+              "host": "91.92.242.236",
+              "host_is_ip": true,
+              "ip": "91.92.242.236",
+              "uri": "http://91.92.242.236/files-129312398/files/file_88c4af189a4c6c59.exe"
+            }
+          ],
+          "source_behavior_tags": [
+            "http_connection"
+          ]
+        }
+      }
+    ],
+    "wazuh_rule_ids": [
+      103801,
+      117649,
+      104942,
+      113190
+    ],
+    "wazuh_rule_traces": [
+      {
+        "rule_id": 103801,
+        "trace": {
+          "conversion_reason": "Process creation converted using Sysmon parent rule 61603 and win.eventdata image and commandLine fields when available.",
+          "source_sigma_rule_description": "Process created: urlhaus_28_file_88c4af189a4c6c59.exe (urlhaus_28_file_88c4af189a4c6c59.exe --urlhaus-validation)",
+          "source_sigma_rule_id": "aa7d7222-fedb-5072-94b6-b19671d9cafa",
+          "source_sigma_rule_title": "Process created urlhaus_28_file_88c4af189a4c6c59.exe",
+          "source_sigma_trace": {
+            "attack_tags": [
+              "attack.t1059"
+            ],
+            "attack_technique_ids": [
+              "T1059"
+            ],
+            "platform_context": "windows",
+            "selector_reason": "Process selector chosen for windows telemetry from executable and command line evidence using: CommandLine|contains, Image|endswith.",
+            "source_behavior_category": "process",
+            "source_behavior_description": "Process created: urlhaus_28_file_88c4af189a4c6c59.exe (urlhaus_28_file_88c4af189a4c6c59.exe --urlhaus-validation)",
+            "source_behavior_evidence": [
+              {
+                "command_line": "urlhaus_28_file_88c4af189a4c6c59.exe --urlhaus-validation",
+                "pid": 9028,
+                "process_name": "urlhaus_28_file_88c4af189a4c6c59.exe"
+              }
+            ],
+            "source_behavior_tags": [
+              "process_create"
+            ]
+          }
+        }
+      },
+      {
+        "rule_id": 117649,
+        "trace": {
+          "conversion_reason": "Non-process Windows rule converted using decoded JSON Wazuh field matching.",
+          "source_sigma_rule_description": "File dropped to user-accessible path: C:\\Users\\Public\\Downloads\\urlhaus_28_file_88c4af189a4c6c59.exe",
+          "source_sigma_rule_id": "ca46716b-abb2-5f7e-a47e-1a997983162b",
+          "source_sigma_rule_title": "File dropped to user-accessible path C \\Users\\Public\\Downloads\\urlhaus_28_file_88c4af189a4c6c59.exe",
+          "source_sigma_trace": {
+            "attack_tags": [
+              "attack.t1105"
+            ],
+            "attack_technique_ids": [
+              "T1105"
+            ],
+            "platform_context": "windows",
+            "selector_reason": "File selector chosen for windows telemetry from observed file path evidence using: TargetFilename|contains.",
+            "source_behavior_category": "file",
+            "source_behavior_description": "File dropped to user-accessible path: C:\\Users\\Public\\Downloads\\urlhaus_28_file_88c4af189a4c6c59.exe",
+            "source_behavior_evidence": [
+              {
+                "path": "C:\\Users\\Public\\Downloads\\urlhaus_28_file_88c4af189a4c6c59.exe",
+                "raw": "C:\\Users\\Public\\Downloads\\urlhaus_28_file_88c4af189a4c6c59.exe"
+              }
+            ],
+            "source_behavior_tags": [
+              "file_drop",
+              "executable_artifact"
+            ]
+          }
+        }
+      },
+      {
+        "rule_id": 104942,
+        "trace": {
+          "conversion_reason": "Non-process Windows rule converted using decoded JSON Wazuh field matching.",
+          "source_sigma_rule_description": "IP connection observed: 91.92.242.236",
+          "source_sigma_rule_id": "b0187ff2-6e92-55fd-a98d-c654b7145ecd",
+          "source_sigma_rule_title": "IP connection observed 91.92.242.236",
+          "source_sigma_trace": {
+            "attack_tags": [
+              "attack.t1071"
+            ],
+            "attack_technique_ids": [
+              "T1071"
+            ],
+            "platform_context": "windows",
+            "selector_reason": "Network selector chosen for windows telemetry from observed IP evidence using: DestinationIp.",
+            "source_behavior_category": "network",
+            "source_behavior_description": "IP connection observed: 91.92.242.236",
+            "source_behavior_evidence": [
+              {
+                "domain": "91.92.242.236",
+                "ip": "91.92.242.236",
+                "source_field": "domain"
+              }
+            ],
+            "source_behavior_tags": [
+              "ip_connection"
+            ]
+          }
+        }
+      },
+      {
+        "rule_id": 113190,
+        "trace": {
+          "conversion_reason": "Non-process Windows rule converted using decoded JSON Wazuh field matching.",
+          "source_sigma_rule_description": "HTTP connection observed: http://91.92.242.236/files-129312398/files/file_88c4af189a4c6c59.exe",
+          "source_sigma_rule_id": "9d7b9d7d-67a5-56f4-bfd9-9f822bf7ee1e",
+          "source_sigma_rule_title": "HTTP connection observed http //91.92.242.236/files-129312398/files/file_88c4af189a4c6c59.exe",
+          "source_sigma_trace": {
+            "attack_tags": [
+              "attack.t1071.001"
+            ],
+            "attack_technique_ids": [
+              "T1071.001"
+            ],
+            "platform_context": "windows",
+            "selector_reason": "Network selector chosen for windows telemetry from observed IP evidence using: DestinationIp.",
+            "source_behavior_category": "network",
+            "source_behavior_description": "HTTP connection observed: http://91.92.242.236/files-129312398/files/file_88c4af189a4c6c59.exe",
+            "source_behavior_evidence": [
+              {
+                "host": "91.92.242.236",
+                "host_is_ip": true,
+                "ip": "91.92.242.236",
+                "uri": "http://91.92.242.236/files-129312398/files/file_88c4af189a4c6c59.exe"
+              }
+            ],
+            "source_behavior_tags": [
+              "http_connection"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "averages": {
+    "attack_confidence": 0.71,
+    "risk_score": 77.5
+  },
+  "counts": {
+    "attack_technique_count": 4,
+    "behaviors_by_category": {
+      "file": 2,
+      "network": 2,
+      "process": 1
+    },
+    "iocs_by_type": {
+      "file_path": 2,
+      "ipv4": 1,
+      "url": 1
+    },
+    "sigma_rule_count": 4,
+    "validation": {
+      "failed": 0,
+      "passed": 8,
+      "warning_count": 0
+    },
+    "wazuh_rule_count": 4
+  },
+  "generated_at": "2026-07-01T10:00:18+00:00",
+  "sample": {
+    "hash_status": {
+      "complete": false,
+      "missing": [
+        "md5",
+        "sha1",
+        "sha256"
+      ],
+      "note": "Payload hashes unavailable from source report."
+    },
+    "hashes": {
+      "md5": "",
+      "sha1": "",
+      "sha256": ""
+    },
+    "name": "urlhaus_28_file_88c4af189a4c6c59.exe",
+    "sandbox": "cuckoo"
+  },
+  "tool": {
+    "name": "malware-behavior-detection-generator",
+    "version": "0.1.0"
+  }
+}

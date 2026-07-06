@@ -1,0 +1,52 @@
+{
+  "info": {
+    "id": 101,
+    "score": 4.2,
+    "machine": "win10-lab"
+  },
+  "target": {
+    "file": {
+      "name": "invoice_viewer.exe",
+      "md5": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "sha1": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+    }
+  },
+  "behavior": {
+    "processes": [
+      {
+        "process_name": "invoice_viewer.exe",
+        "pid": 1337,
+        "command_line": "invoice_viewer.exe /safe"
+      }
+    ],
+    "summary": {
+      "files": [
+        "C:\\Users\\Public\\report.tmp"
+      ],
+      "keys": [
+        "HKCU\\Software\\FakeApp"
+      ],
+      "mutexes": [
+        "SAFE-MUTEX-001"
+      ]
+    }
+  },
+  "network": {
+    "hosts": [
+      {
+        "ip": "44.55.66.77"
+      }
+    ],
+    "domains": [
+      {
+        "domain": "example.test"
+      }
+    ]
+  },
+  "signatures": [
+    {
+      "name": "creates_temp_file"
+    }
+  ]
+}

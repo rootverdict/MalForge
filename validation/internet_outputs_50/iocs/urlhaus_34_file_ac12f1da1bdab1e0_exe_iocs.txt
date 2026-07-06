@@ -1,0 +1,4 @@
+ipv4: 91.92.242.236
+url: http://91.92.242.236/files-129312398/files/file_ac12f1da1bdab1e0.exe
+file_path: C:\Users\Public\Downloads\urlhaus_34_file_ac12f1da1bdab1e0.exe
+file_path: urlhaus_34_file_ac12f1da1bdab1e0.exe

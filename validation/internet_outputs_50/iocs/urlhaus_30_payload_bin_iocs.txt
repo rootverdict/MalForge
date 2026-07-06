@@ -1,0 +1,4 @@
+domain: mdftw8lo.btyek.website
+url: https://mdftw8lo.btyek.website/?ublib=bf723810-216b-4253-949d-cd83a30499d4
+file_path: C:\Users\Public\Downloads\urlhaus_30_payload.bin
+file_path: urlhaus_30_payload.bin

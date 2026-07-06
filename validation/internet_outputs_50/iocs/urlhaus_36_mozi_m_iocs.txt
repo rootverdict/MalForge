@@ -1,0 +1,3 @@
+ipv4: 112.27.10.150
+url: http://112.27.10.150:34339/Mozi.m
+file_path: /tmp/urlhaus_36_Mozi.m

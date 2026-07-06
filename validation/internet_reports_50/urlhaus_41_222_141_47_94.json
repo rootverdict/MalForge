@@ -1,0 +1,67 @@
+﻿{
+    "info":  {
+                 "id":  70041,
+                 "score":  5,
+                 "machine":  "internet-validation-urlhaus",
+                 "source":  "URLhaus recent CSV",
+                 "source_url":  "https://urlhaus.abuse.ch/downloads/csv_recent/",
+                 "urlhaus_id":  "3878805",
+                 "dateadded":  "2026-07-01 07:37:09",
+                 "threat":  "malware_download",
+                 "url_status":  "online",
+                 "urlhaus_link":  "https://urlhaus.abuse.ch/url/3878805/",
+                 "tags":  [
+                              "None"
+                          ]
+             },
+    "target":  {
+                   "file":  {
+                                "name":  "urlhaus_41_i",
+                                "md5":  "",
+                                "sha1":  "",
+                                "sha256":  ""
+                            }
+               },
+    "behavior":  {
+                     "processes":  [
+                                       {
+                                           "process_name":  "urlhaus_41_i",
+                                           "pid":  9041,
+                                           "command_line":  "urlhaus_41_i --urlhaus-validation"
+                                       }
+                                   ],
+                     "summary":  {
+                                     "files":  [
+                                                   "C:\\Users\\Public\\Downloads\\urlhaus_41_i"
+                                               ],
+                                     "keys":  [
+
+                                              ],
+                                     "mutexes":  [
+
+                                                 ]
+                                 }
+                 },
+    "network":  {
+                    "hosts":  [
+
+                              ],
+                    "domains":  [
+                                    {
+                                        "domain":  "222.141.47.94"
+                                    }
+                                ],
+                    "http":  [
+                                 {
+                                     "uri":  "http://222.141.47.94:48327/i",
+                                     "host":  "222.141.47.94"
+                                 }
+                             ]
+                },
+    "signatures":  [
+                       {
+                           "name":  "urlhaus_tag_None",
+                           "description":  "URLhaus tag: None"
+                       }
+                   ]
+}

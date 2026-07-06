@@ -1,0 +1,54 @@
+title: HTTP connection observed http //91.92.242.236/files-129312398/files/file_f0193e939ef907b9.exe
+description: 'HTTP connection observed: http://91.92.242.236/files-129312398/files/file_f0193e939ef907b9.exe'
+logsource:
+  category: network_connection
+  product: windows
+detection:
+  selection:
+    DestinationIp: 91.92.242.236
+  condition: selection
+level: medium
+status: experimental
+author: malware-behavior-detection-generator
+tags:
+- attack.t1071.001
+references:
+- generated-by:malware-behavior-detection-generator
+- source:cuckoo
+falsepositives:
+- Unknown
+fields:
+- DestinationIp
+metadata:
+  tool: malware-behavior-detection-generator
+  behavior_category: network
+  platform_context: windows
+  trace:
+    source_behavior_category: network
+    source_behavior_description: 'HTTP connection observed: http://91.92.242.236/files-129312398/files/file_f0193e939ef907b9.exe'
+    source_behavior_evidence:
+    - uri: http://91.92.242.236/files-129312398/files/file_f0193e939ef907b9.exe
+      host: 91.92.242.236
+      ip: 91.92.242.236
+      host_is_ip: true
+    source_behavior_tags:
+    - http_connection
+    platform_context: windows
+    attack_technique_ids:
+    - T1071.001
+    attack_tags:
+    - attack.t1071.001
+    selector_reason: 'Network selector chosen for windows telemetry from observed
+      IP evidence using: DestinationIp.'
+  review:
+    status: unreviewed
+    reviewer: ''
+    notes: ''
+  version:
+    tool_name: malware-behavior-detection-generator
+    tool_version: 0.1.0
+    rule_version: 1.0.0
+    generated_at: '2026-07-01T10:00:18+00:00'
+    source_report_hash: null
+    content_hash: ec6f53bf7792f9309607339a61c6a4b6d8081da1599f89ed7e201a6a9f07498d
+id: b04068b8-9aca-5895-a9b1-f0f75c513afb

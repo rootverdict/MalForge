@@ -1,0 +1,3 @@
+ipv4: 14.0.131.161
+url: http://14.0.131.161:38465/bin.sh
+file_path: /tmp/urlhaus_48_bin.sh

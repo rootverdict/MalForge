@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "malware-behavior-detection-generator"
+version = "0.1.0"
+description = "Scaffold for a malware behavior to detection rule generator."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "PyYAML>=6.0,<7.0",
+  "pytest>=8.0,<10.0",
+]

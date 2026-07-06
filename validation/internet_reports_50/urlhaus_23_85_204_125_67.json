@@ -1,0 +1,72 @@
+﻿{
+    "info":  {
+                 "id":  70023,
+                 "score":  5,
+                 "machine":  "internet-validation-urlhaus",
+                 "source":  "URLhaus recent CSV",
+                 "source_url":  "https://urlhaus.abuse.ch/downloads/csv_recent/",
+                 "urlhaus_id":  "3878824",
+                 "dateadded":  "2026-07-01 08:43:08",
+                 "threat":  "malware_download",
+                 "url_status":  "online",
+                 "urlhaus_link":  "https://urlhaus.abuse.ch/url/3878824/",
+                 "tags":  [
+                              "gafgyt",
+                              "wraith"
+                          ]
+             },
+    "target":  {
+                   "file":  {
+                                "name":  "urlhaus_23_m-i.p-s.SativaC2",
+                                "md5":  "",
+                                "sha1":  "",
+                                "sha256":  ""
+                            }
+               },
+    "behavior":  {
+                     "processes":  [
+                                       {
+                                           "process_name":  "urlhaus_23_m-i.p-s.SativaC2",
+                                           "pid":  9023,
+                                           "command_line":  "urlhaus_23_m-i.p-s.SativaC2 --urlhaus-validation"
+                                       }
+                                   ],
+                     "summary":  {
+                                     "files":  [
+                                                   "/tmp/urlhaus_23_m-i.p-s.SativaC2"
+                                               ],
+                                     "keys":  [
+
+                                              ],
+                                     "mutexes":  [
+
+                                                 ]
+                                 }
+                 },
+    "network":  {
+                    "hosts":  [
+
+                              ],
+                    "domains":  [
+                                    {
+                                        "domain":  "85.204.125.67"
+                                    }
+                                ],
+                    "http":  [
+                                 {
+                                     "uri":  "http://85.204.125.67:8080/m-i.p-s.SativaC2",
+                                     "host":  "85.204.125.67"
+                                 }
+                             ]
+                },
+    "signatures":  [
+                       {
+                           "name":  "urlhaus_tag_gafgyt",
+                           "description":  "URLhaus tag: gafgyt"
+                       },
+                       {
+                           "name":  "urlhaus_tag_wraith",
+                           "description":  "URLhaus tag: wraith"
+                       }
+                   ]
+}

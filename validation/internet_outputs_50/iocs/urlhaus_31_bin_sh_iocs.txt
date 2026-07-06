@@ -1,0 +1,3 @@
+ipv4: 123.12.20.109
+url: http://123.12.20.109:60932/bin.sh
+file_path: /tmp/urlhaus_31_bin.sh

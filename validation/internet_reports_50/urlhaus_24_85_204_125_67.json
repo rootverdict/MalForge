@@ -1,0 +1,67 @@
+﻿{
+    "info":  {
+                 "id":  70024,
+                 "score":  5,
+                 "machine":  "internet-validation-urlhaus",
+                 "source":  "URLhaus recent CSV",
+                 "source_url":  "https://urlhaus.abuse.ch/downloads/csv_recent/",
+                 "urlhaus_id":  "3878819",
+                 "dateadded":  "2026-07-01 08:43:07",
+                 "threat":  "malware_download",
+                 "url_status":  "offline",
+                 "urlhaus_link":  "https://urlhaus.abuse.ch/url/3878819/",
+                 "tags":  [
+                              "script"
+                          ]
+             },
+    "target":  {
+                   "file":  {
+                                "name":  "urlhaus_24_payload.sh",
+                                "md5":  "",
+                                "sha1":  "",
+                                "sha256":  ""
+                            }
+               },
+    "behavior":  {
+                     "processes":  [
+                                       {
+                                           "process_name":  "urlhaus_24_payload.sh",
+                                           "pid":  9024,
+                                           "command_line":  "urlhaus_24_payload.sh --urlhaus-validation"
+                                       }
+                                   ],
+                     "summary":  {
+                                     "files":  [
+                                                   "C:\\Users\\Public\\Downloads\\urlhaus_24_payload.sh"
+                                               ],
+                                     "keys":  [
+
+                                              ],
+                                     "mutexes":  [
+
+                                                 ]
+                                 }
+                 },
+    "network":  {
+                    "hosts":  [
+
+                              ],
+                    "domains":  [
+                                    {
+                                        "domain":  "85.204.125.67"
+                                    }
+                                ],
+                    "http":  [
+                                 {
+                                     "uri":  "http://85.204.125.67:8080/payload.sh",
+                                     "host":  "85.204.125.67"
+                                 }
+                             ]
+                },
+    "signatures":  [
+                       {
+                           "name":  "urlhaus_tag_script",
+                           "description":  "URLhaus tag: script"
+                       }
+                   ]
+}

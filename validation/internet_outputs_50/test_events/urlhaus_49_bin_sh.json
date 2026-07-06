@@ -1,0 +1,134 @@
+{
+  "sigma": {
+    "7dc90987-e630-53cf-bc4b-26753e707a24": {
+      "negative": [
+        {
+          "cmdline": "benign-value",
+          "event_type": "process_creation",
+          "exe": "benign-value"
+        }
+      ],
+      "positive": [
+        {
+          "cmdline": "urlhaus_49_bin.sh --urlhaus-validation",
+          "event_type": "process_creation",
+          "exe": "urlhaus_49_bin.sh"
+        }
+      ]
+    },
+    "83b2d35a-fa2e-51b9-acc8-564a2332bf93": {
+      "negative": [
+        {
+          "destination.ip": "benign-value",
+          "event_type": "network_connection"
+        }
+      ],
+      "positive": [
+        {
+          "destination.ip": "39.71.205.224",
+          "event_type": "network_connection"
+        }
+      ]
+    },
+    "d02e58e6-dce5-5518-bfa6-785d4a643b92": {
+      "negative": [
+        {
+          "event_type": "file_event",
+          "file.path": "benign-value"
+        }
+      ],
+      "positive": [
+        {
+          "event_type": "file_event",
+          "file.path": "urlhaus_49_bin.sh"
+        }
+      ]
+    },
+    "d137061f-ca7c-587f-9a81-36218e34dd26": {
+      "negative": [
+        {
+          "destination.ip": "benign-value",
+          "event_type": "network_connection",
+          "url": "benign-value"
+        }
+      ],
+      "positive": [
+        {
+          "destination.ip": "39.71.205.224",
+          "event_type": "network_connection",
+          "url": "http://39.71.205.224:59523/bin.sh"
+        }
+      ]
+    }
+  },
+  "wazuh": {
+    "105241": {
+      "negative": [
+        {
+          "audit.file.path": "benign-value",
+          "decoder": "json",
+          "group": "linux,auditd,file_event,"
+        }
+      ],
+      "positive": [
+        {
+          "audit.file.path": "urlhaus_49_bin.sh",
+          "decoder": "json",
+          "group": "linux,auditd,file_event,"
+        }
+      ]
+    },
+    "105495": {
+      "negative": [
+        {
+          "decoder": "json",
+          "dstip": "benign-value",
+          "group": "linux,network_connection,"
+        }
+      ],
+      "positive": [
+        {
+          "decoder": "json",
+          "dstip": "39.71.205.224",
+          "group": "linux,network_connection,"
+        }
+      ]
+    },
+    "109871": {
+      "negative": [
+        {
+          "decoder": "json",
+          "dstip": "benign-value",
+          "group": "linux,network_connection,",
+          "url": "benign-value"
+        }
+      ],
+      "positive": [
+        {
+          "decoder": "json",
+          "dstip": "39.71.205.224",
+          "group": "linux,network_connection,",
+          "url": "http://39.71.205.224:59523/bin.sh"
+        }
+      ]
+    },
+    "113546": {
+      "negative": [
+        {
+          "audit.command": "benign-value",
+          "audit.exe": "benign-value",
+          "decoder": "json",
+          "group": "linux,auditd,process_creation,"
+        }
+      ],
+      "positive": [
+        {
+          "audit.command": "urlhaus_49_bin.sh --urlhaus-validation",
+          "audit.exe": "urlhaus_49_bin.sh",
+          "decoder": "json",
+          "group": "linux,auditd,process_creation,"
+        }
+      ]
+    }
+  }
+}

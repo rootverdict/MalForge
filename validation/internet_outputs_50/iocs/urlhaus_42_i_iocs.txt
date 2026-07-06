@@ -1,0 +1,3 @@
+ipv4: 39.71.205.224
+url: http://39.71.205.224:59523/i
+file_path: /tmp/urlhaus_42_i

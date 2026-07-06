@@ -1,0 +1,57 @@
+title: IP connection observed 112.27.10.150
+description: 'IP connection observed: 112.27.10.150'
+logsource:
+  category: network_connection
+  product: linux
+detection:
+  selection:
+    destination.ip: 112.27.10.150
+  condition: selection
+level: medium
+status: experimental
+author: malware-behavior-detection-generator
+tags:
+- attack.t1071
+references:
+- generated-by:malware-behavior-detection-generator
+- source:cuckoo
+falsepositives:
+- Unknown
+fields:
+- destination.ip
+metadata:
+  tool: malware-behavior-detection-generator
+  behavior_category: network
+  platform_context: linux_or_iot
+  trace:
+    source_behavior_category: network
+    source_behavior_description: 'IP connection observed: 112.27.10.150'
+    source_behavior_evidence:
+    - domain: 112.27.10.150
+      source_field: domain
+      ip: 112.27.10.150
+    source_behavior_tags:
+    - ip_connection
+    - family_mozi
+    - format_elf
+    - platform_linux_or_iot
+    - platform_non_windows
+    platform_context: linux_or_iot
+    attack_technique_ids:
+    - T1071
+    attack_tags:
+    - attack.t1071
+    selector_reason: 'Network selector chosen for linux_or_iot telemetry from observed
+      IP evidence using: destination.ip.'
+  review:
+    status: unreviewed
+    reviewer: ''
+    notes: ''
+  version:
+    tool_name: malware-behavior-detection-generator
+    tool_version: 0.1.0
+    rule_version: 1.0.0
+    generated_at: '2026-07-01T10:00:18+00:00'
+    source_report_hash: null
+    content_hash: 3810e15d33c957065ec9e9db95689c5b0d23e0fb8a7638e7c17ceacc36712604
+id: a101fd5c-8b65-54ca-8fda-ff0a2fc4fd7f

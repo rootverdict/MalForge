@@ -1,0 +1,65 @@
+title: HTTP connection observed http //112.27.10.150 34339/Mozi.m
+description: 'HTTP connection observed: http://112.27.10.150:34339/Mozi.m'
+logsource:
+  category: network_connection
+  product: linux
+detection:
+  selection:
+    url|contains: http://112.27.10.150:34339/Mozi.m
+    destination.ip: 112.27.10.150
+  condition: selection
+level: medium
+status: experimental
+author: malware-behavior-detection-generator
+tags:
+- attack.t1071.001
+- attack.t1571
+references:
+- generated-by:malware-behavior-detection-generator
+- source:cuckoo
+falsepositives:
+- Unknown
+fields:
+- url|contains
+- destination.ip
+metadata:
+  tool: malware-behavior-detection-generator
+  behavior_category: network
+  platform_context: linux_or_iot
+  trace:
+    source_behavior_category: network
+    source_behavior_description: 'HTTP connection observed: http://112.27.10.150:34339/Mozi.m'
+    source_behavior_evidence:
+    - uri: http://112.27.10.150:34339/Mozi.m
+      host: 112.27.10.150
+      ip: 112.27.10.150
+      host_is_ip: true
+      port: 34339
+    source_behavior_tags:
+    - http_connection
+    - non_standard_port
+    - family_mozi
+    - format_elf
+    - platform_linux_or_iot
+    - platform_non_windows
+    platform_context: linux_or_iot
+    attack_technique_ids:
+    - T1071.001
+    - T1571
+    attack_tags:
+    - attack.t1071.001
+    - attack.t1571
+    selector_reason: 'Network selector chosen for linux_or_iot telemetry from observed
+      IP evidence using: destination.ip, url|contains.'
+  review:
+    status: unreviewed
+    reviewer: ''
+    notes: ''
+  version:
+    tool_name: malware-behavior-detection-generator
+    tool_version: 0.1.0
+    rule_version: 1.0.0
+    generated_at: '2026-07-01T10:00:18+00:00'
+    source_report_hash: null
+    content_hash: 6010d7307eacc3f2fb80ede91816703e40c95fca93098660189eaa3a96e6ce33
+id: f4d6d5b8-f0ba-52dc-a5a2-59c5978557af

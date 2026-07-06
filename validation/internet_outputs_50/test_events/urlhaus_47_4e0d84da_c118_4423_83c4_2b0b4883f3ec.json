@@ -1,0 +1,136 @@
+{
+  "sigma": {
+    "8afc3706-d0f7-509b-b495-509e7bd85ab4": {
+      "negative": [
+        {
+          "CommandLine": "notepad.exe C:\\notes.txt",
+          "Image": "notepad.exe",
+          "event_type": "process_creation"
+        }
+      ],
+      "positive": [
+        {
+          "CommandLine": "urlhaus_47_4e0d84da-c118-4423-83c4-2b0b4883f3ec --urlhaus-validation",
+          "Image": "urlhaus_47_4e0d84da-c118-4423-83c4-2b0b4883f3ec",
+          "event_type": "process_creation"
+        }
+      ]
+    },
+    "b3ce27d2-df40-5311-8d06-dfc2c119b876": {
+      "negative": [
+        {
+          "TargetFilename": "C:\\Users\\Public\\notes.txt",
+          "event_type": "file_event"
+        }
+      ],
+      "positive": [
+        {
+          "TargetFilename": "C:\\Users\\Public\\Downloads\\urlhaus_47_4e0d84da-c118-4423-83c4-2b0b4883f3ec",
+          "event_type": "file_event"
+        }
+      ]
+    },
+    "c88175f3-27fe-5c20-be22-a8096752a527": {
+      "negative": [
+        {
+          "DestinationHostname": "localhost.localdomain",
+          "event_type": "network_connection"
+        }
+      ],
+      "positive": [
+        {
+          "DestinationHostname": "lvt.vip1xbet.net",
+          "event_type": "network_connection"
+        }
+      ]
+    },
+    "d75d2ceb-b7c4-50a8-ab31-ee6c71d9c0d9": {
+      "negative": [
+        {
+          "QueryName": "localhost.localdomain",
+          "event_type": "dns_query"
+        }
+      ],
+      "positive": [
+        {
+          "QueryName": "lvt.vip1xbet.net",
+          "event_type": "dns_query"
+        }
+      ]
+    }
+  },
+  "wazuh": {
+    "102369": {
+      "negative": [
+        {
+          "decoder": "",
+          "group": "sysmon,process_creation,",
+          "win.eventdata.commandLine": "notepad.exe C:\\notes.txt",
+          "win.eventdata.image": "notepad.exe"
+        }
+      ],
+      "positive": [
+        {
+          "decoder": "",
+          "group": "sysmon,process_creation,",
+          "win.eventdata.commandLine": "urlhaus_47_4e0d84da-c118-4423-83c4-2b0b4883f3ec --urlhaus-validation",
+          "win.eventdata.image": "urlhaus_47_4e0d84da-c118-4423-83c4-2b0b4883f3ec"
+        }
+      ]
+    },
+    "107820": {
+      "negative": [
+        {
+          "decoder": "json",
+          "group": "sysmon,file_event,",
+          "win.eventdata.targetFilename": "C:\\Users\\Public\\notes.txt",
+          "win.system.eventID": "benign-value"
+        }
+      ],
+      "positive": [
+        {
+          "decoder": "json",
+          "group": "sysmon,file_event,",
+          "win.eventdata.targetFilename": "C:\\Users\\Public\\Downloads\\urlhaus_47_4e0d84da-c118-4423-83c4-2b0b4883f3ec",
+          "win.system.eventID": "11"
+        }
+      ]
+    },
+    "111431": {
+      "negative": [
+        {
+          "decoder": "json",
+          "group": "sysmon,dns,",
+          "win.eventdata.queryName": "localhost.localdomain",
+          "win.system.eventID": "benign-value"
+        }
+      ],
+      "positive": [
+        {
+          "decoder": "json",
+          "group": "sysmon,dns,",
+          "win.eventdata.queryName": "lvt.vip1xbet.net",
+          "win.system.eventID": "22"
+        }
+      ]
+    },
+    "119611": {
+      "negative": [
+        {
+          "decoder": "json",
+          "group": "sysmon,network_connection,",
+          "win.eventdata.destinationHostname": "localhost.localdomain",
+          "win.system.eventID": "benign-value"
+        }
+      ],
+      "positive": [
+        {
+          "decoder": "json",
+          "group": "sysmon,network_connection,",
+          "win.eventdata.destinationHostname": "lvt.vip1xbet.net",
+          "win.system.eventID": "3"
+        }
+      ]
+    }
+  }
+}

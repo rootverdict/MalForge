@@ -1,0 +1,52 @@
+{
+  "task": {
+    "id": "task-safe-303",
+    "verdict": "suspicious"
+  },
+  "sample": {
+    "name": "media_helper.exe",
+    "hashes": {
+      "md5": "dddddddddddddddddddddddddddddddd",
+      "sha1": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+    }
+  },
+  "analysis": {
+    "processes": [
+      {
+        "name": "media_helper.exe",
+        "pid": 9001
+      }
+    ],
+    "network": [
+      {
+        "domain": "api.example.test"
+      }
+    ],
+    "activity": {
+      "files": [
+        {
+          "path": "C:\\Users\\Public\\media.log"
+        }
+      ],
+      "registry": [
+        {
+          "key": "HKCU\\Software\\SafeMedia"
+        }
+      ],
+      "persistence": [
+        {
+          "type": "startup_shortcut"
+        }
+      ],
+      "mutexes": [
+        "SAFE-MUTEX-003"
+      ]
+    }
+  },
+  "signatures": [
+    {
+      "name": "contacts_test_api"
+    }
+  ]
+}
