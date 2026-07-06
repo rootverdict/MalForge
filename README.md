@@ -1,6 +1,6 @@
-﻿# malware-behavior-detection-generator
+# MalForge
 
-Local malware behavior to detection content pipeline for sandbox JSON reports. The project parses Cuckoo, CAPE, and ANY.RUN reports, extracts behavior, maps to MITRE ATT&CK, generates Sigma rules, converts them to Wazuh XML, scores and validates output, creates synthetic test events, and builds analyst-facing reports.
+Local malware behavior to detection-rule pipeline for sandbox JSON reports. The project parses Cuckoo, CAPE, and ANY.RUN reports, extracts behavior, maps to MITRE ATT&CK, generates Sigma rules, converts them to Wazuh XML, scores and validates output, creates synthetic test events, and builds analyst-facing reports.
 
 ## Safety
 
