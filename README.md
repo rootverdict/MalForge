@@ -1,5 +1,7 @@
 # MalForge
 
+[![CI](https://github.com/rootverdict/MalForge/actions/workflows/ci.yml/badge.svg)](https://github.com/rootverdict/MalForge/actions/workflows/ci.yml)
+
 Local malware behavior to detection-rule pipeline for sandbox JSON reports. The project parses Cuckoo, CAPE, and ANY.RUN reports, extracts behavior, maps to MITRE ATT&CK, generates Sigma rules, converts them to Wazuh XML, scores and validates output, creates synthetic test events, and builds analyst-facing reports.
 
 ## Safety
@@ -152,6 +154,7 @@ Evidence files:
 This validates broad externally sourced URL/IOC report handling. It does not prove compatibility with every possible sandbox/vendor schema.
 
 The URLhaus validation set also includes a Mozi `elf/mips` sample-style report. For that case the pipeline now emits Linux/generic telemetry rules instead of Windows/Sysmon rules, preserves raw IP values as generic network evidence without forcing an application-protocol or Remote Services mapping, preserves direct HTTP URL evidence as web-protocol behavior, tags non-standard ports with T1571, and reports missing payload hashes as source-data limitations when URL-only metadata does not include MD5/SHA1/SHA256 values.
+
 ## Current Limitations
 
 - VirusTotal and MISP enrichment modules build local descriptors but do not make API calls
@@ -168,7 +171,11 @@ The URLhaus validation set also includes a Mozi `elf/mips` sample-style report. 
 - Improve Sigma selector fidelity and rule grouping
 - Add optional Wazuh deployment packaging and manager-side validation
 - Export consolidated pipeline manifests
-- Add optional packaging and CI workflow polish
+- Add automated release and artifact publishing
+
+## License
+
+MalForge is released under the [MIT License](LICENSE).
 
 
 

@@ -50,3 +50,21 @@ def test_generated_handbook_is_ignored() -> None:
     }
 
     assert "MALFORGE_COMPLETE_PROJECT_HANDBOOK.md" in ignored_entries
+
+
+def test_repository_has_an_mit_license() -> None:
+    license_text = (PROJECT_ROOT / "LICENSE").read_text(encoding="utf-8")
+
+    assert license_text.startswith("MIT License")
+    assert "Copyright (c) 2026 rootverdict" in license_text
+
+
+def test_ci_runs_tests_and_compilation_on_supported_python_versions() -> None:
+    workflow = (PROJECT_ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+
+    assert "actions/checkout@v6" in workflow
+    assert "actions/setup-python@v6" in workflow
+    assert 'python-version: ["3.11", "3.14"]' in workflow
+    assert "python -m pytest -q" in workflow
+    assert "python -m compileall -q" in workflow
+    assert "quality reporting review tests main.py" in workflow
