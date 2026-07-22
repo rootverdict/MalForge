@@ -39,6 +39,16 @@ def _fixture_sigma_rules() -> list[SigmaRule]:
     return generate_sigma_rules(behaviors, mappings)
 
 
+def _dns_sigma_rule(rule_id: str = "sigma-dns-test") -> SigmaRule:
+    return SigmaRule(
+        title="DNS Test Rule",
+        rule_id=rule_id,
+        description="DNS query observed",
+        logsource={"category": "dns_query", "product": "windows"},
+        detection={"selection": {"QueryName|contains": "example.test"}, "condition": "selection"},
+    )
+
+
 def test_sigma_process_rule_converts_to_wazuh_rule() -> None:
     sigma_rule = SigmaRule(
         title="Process Created Powershell Exe",
@@ -160,8 +170,8 @@ def test_registry_and_file_paths_are_escaped_for_wazuh_regex_match_values() -> N
 
     field_values = [field.text or "" for field in root.findall(".//field")]
 
-    assert r"HKCU\\Software\\FakeApp" in field_values
-    assert r"C:\\Users\\Public\\report\.tmp" in field_values
+    assert r"(?i)HKCU\\Software\\FakeApp" in field_values
+    assert r"(?i)C:\\Users\\Public\\report\.tmp" in field_values
 
 
 def test_xml_contains_structured_field_names_for_decoded_rules() -> None:
@@ -223,7 +233,7 @@ def test_registry_file_ip_and_dns_use_fields_while_process_uses_sysmon_parent() 
     root = ET.fromstring(xml_text)
 
     process_rule = root.findall("./rule")[0]
-    assert process_rule.find("./field[@name='win.eventdata.image']") is not None
+    assert process_rule.find("./field[@name='win.eventdata.image']") is None
     assert process_rule.find("./field[@name='win.eventdata.commandLine']") is not None
     assert process_rule.find("./match") is None
     assert root.find(".//field[@name='win.eventdata.targetObject']") is not None
@@ -239,7 +249,8 @@ def test_generated_xml_shape_matches_wazuh_lab_constraints() -> None:
 
     assert root.attrib["name"] == "malware_behavior_detection_generator,"
     assert "<if_sid>80700</if_sid>" not in xml_text
-    assert "<decoded_as>json</decoded_as>" in xml_text
+    assert "<decoded_as>json</decoded_as>" not in xml_text
+    assert "<if_group>sysmon_event" in xml_text
     assert "<options>" not in xml_text
     rule_groups = [element.text or "" for element in root.findall("./rule/group")]
     assert rule_groups
@@ -272,8 +283,8 @@ def test_process_creation_rule_uses_live_tested_sysmon_shape() -> None:
     root = ET.fromstring(xml_text)
 
     assert "<if_sid>61603</if_sid>" in xml_text
-    assert '<field name="win.eventdata.image">invoice_viewer.exe</field>' in xml_text
-    assert '<field name="win.eventdata.commandLine">invoice_viewer\\.exe /safe</field>' in xml_text
+    assert r'<field name="win.eventdata.image" type="pcre2">(?i)invoice_viewer\.exe$</field>' in xml_text
+    assert '<field name="win.eventdata.commandLine" type="pcre2">(?i)invoice_viewer\\.exe /safe</field>' in xml_text
     assert "<decoded_as>" not in xml_text
     assert "<match>" not in xml_text
     assert root.find("./if_sid") is not None
@@ -317,7 +328,7 @@ def test_wazuh_rule_trace_metadata_exists() -> None:
     assert trace["source_sigma_trace"]["source_behavior_category"] == "process"
 
 
-def test_wazuh_rule_id_exhaustion_raises_runtime_error(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_wazuh_rule_id_exhaustion_raises_value_error(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(wazuh_converter, "WAZUH_CUSTOM_RULE_ID_RANGE", range(100000, 100002))
     monkeypatch.setattr(wazuh_converter, "WAZUH_RULE_ID_START", 100000)
     sigma_rules = [
@@ -332,7 +343,7 @@ def test_wazuh_rule_id_exhaustion_raises_runtime_error(monkeypatch: pytest.Monke
         for index in range(3)
     ]
 
-    with pytest.raises(RuntimeError):
+    with pytest.raises(ValueError, match="ID space exhausted"):
         convert_sigma_to_wazuh(sigma_rules)
 
 
@@ -349,6 +360,51 @@ def test_duplicate_sigma_rules_do_not_create_duplicate_wazuh_rules() -> None:
     converted = convert_sigma_to_wazuh([sigma_rule, sigma_rule])
 
     assert len(converted) == 1
+
+
+def test_distinct_sigma_rule_ids_are_not_deduplicated() -> None:
+    first = _dns_sigma_rule("sigma-distinct-1")
+    second = _dns_sigma_rule("sigma-distinct-2")
+
+    converted = convert_sigma_to_wazuh([first, second])
+
+    assert len(converted) == 2
+    assert len({rule.rule_id for rule in converted}) == 2
+
+
+def test_conflicting_sigma_rules_with_same_id_are_rejected() -> None:
+    first = SigmaRule(
+        title="First",
+        rule_id="sigma-conflict",
+        description="First",
+        logsource={"category": "dns_query", "product": "windows"},
+        detection={"selection": {"QueryName|contains": "first.example"}, "condition": "selection"},
+    )
+    second = SigmaRule(
+        title="Second",
+        rule_id="sigma-conflict",
+        description="Second",
+        logsource={"category": "dns_query", "product": "windows"},
+        detection={"selection": {"QueryName|contains": "second.example"}, "condition": "selection"},
+    )
+
+    with pytest.raises(ValueError, match="Conflicting Sigma rules"):
+        convert_sigma_to_wazuh([first, second])
+
+
+def test_known_sigma_field_supports_a_different_safe_match_modifier() -> None:
+    sigma_rule = SigmaRule(
+        title="Image contains",
+        rule_id="sigma-image-contains",
+        description="Image path contains a marker",
+        logsource={"category": "process_creation", "product": "windows"},
+        detection={"selection": {"Image|contains": "suspicious"}, "condition": "selection"},
+    )
+
+    converted = convert_sigma_to_wazuh([sigma_rule])
+
+    assert converted[0].fields == {"win.eventdata.image": "suspicious"}
+    assert converted[0].field_match_types == {"win.eventdata.image": "contains"}
 
 
 def test_empty_input_returns_empty_results_and_valid_group_xml() -> None:
@@ -383,5 +439,211 @@ def test_linux_sigma_rules_do_not_use_sysmon_or_win_eventdata() -> None:
     assert rule.group == "linux,network_connection,"
     assert "win.eventdata" not in xml_text
     assert "sysmon" not in xml_text.lower()
-    assert r'<field name="dstip">110\.37\.53\.25</field>' in xml_text
+    assert r'<field name="dstip" type="pcre2">(?i)^110\.37\.53\.25$</field>' in xml_text
     assert "Linux/generic" in rule.options["trace"]["conversion_reason"]
+
+
+def test_windows_non_process_rules_use_sysmon_parent_groups() -> None:
+    sigma_rules = [
+        SigmaRule(
+            title="File Rule",
+            rule_id="sigma-file-parent",
+            description="File written",
+            logsource={"category": "file_event", "product": "windows"},
+            detection={"selection": {"TargetFilename|contains": "C:\\Temp\\drop.exe"}, "condition": "selection"},
+        ),
+        SigmaRule(
+            title="Network Rule",
+            rule_id="sigma-network-parent",
+            description="Network connection",
+            logsource={"category": "network_connection", "product": "windows"},
+            detection={"selection": {"DestinationIp": "10.20.30.40"}, "condition": "selection"},
+        ),
+        SigmaRule(
+            title="Registry Rule",
+            rule_id="sigma-registry-parent",
+            description="Registry value changed",
+            logsource={"category": "registry_event", "product": "windows"},
+            detection={"selection": {"TargetObject|contains": "\\Software\\Microsoft\\Windows\\CurrentVersion\\Run"}, "condition": "selection"},
+        ),
+        SigmaRule(
+            title="DNS Rule",
+            rule_id="sigma-dns-parent",
+            description="DNS query",
+            logsource={"category": "dns_query", "product": "windows"},
+            detection={"selection": {"QueryName|contains": "example.test"}, "condition": "selection"},
+        ),
+    ]
+
+    rules = convert_sigma_to_wazuh(sigma_rules)
+    xml_text = wazuh_rules_to_xml(rules)
+
+    assert [rule.if_group for rule in rules] == ["sysmon_event_11", "sysmon_event3", None, "sysmon_event_22"]
+    assert rules[2].if_sid == "61614,61615,61616"
+    assert "win.system.eventID" not in rules[2].fields
+    assert "<if_sid>61614,61615,61616</if_sid>" in xml_text
+    assert all(rule.decoded_as is None for rule in rules)
+    assert "<decoded_as>json</decoded_as>" not in xml_text
+
+
+def test_wazuh_regex_preserves_sigma_match_semantics() -> None:
+    sigma_rule = SigmaRule(
+        title="Semantics",
+        rule_id="sigma-match-semantics",
+        description="Match semantics",
+        logsource={"category": "process_creation", "product": "windows"},
+        detection={
+            "selection": {
+                "Image|endswith": "tool.exe",
+                "CommandLine|contains": "--safe.mode",
+            },
+            "condition": "selection",
+        },
+    )
+
+    xml_text = wazuh_rule_to_xml(convert_sigma_to_wazuh([sigma_rule])[0])
+
+    assert '<field name="win.eventdata.image" type="pcre2">(?i)tool\\.exe$</field>' in xml_text
+    assert '<field name="win.eventdata.commandLine" type="pcre2">(?i)--safe\\.mode</field>' in xml_text
+
+
+def test_exact_image_path_is_not_reduced_to_a_basename() -> None:
+    sigma_rule = SigmaRule(
+        title="Exact image path",
+        rule_id="sigma-exact-image-path",
+        description="Exact system cmd path",
+        logsource={"category": "process_creation", "product": "windows"},
+        detection={"selection": {"Image": r"C:\Windows\System32\cmd.exe"}, "condition": "selection"},
+    )
+
+    converted = convert_sigma_to_wazuh([sigma_rule])[0]
+    xml_text = wazuh_rule_to_xml(converted)
+
+    assert converted.fields == {"win.eventdata.image": r"C:\Windows\System32\cmd.exe"}
+    assert converted.field_match_types == {"win.eventdata.image": "exact"}
+    assert r"(?i)^C:\\Windows\\System32\\cmd\.exe$" in xml_text
+
+
+def test_command_line_only_rule_does_not_infer_an_image_constraint() -> None:
+    command_line = r'"C:\Program Files\Tool\tool.exe" /x'
+    sigma_rule = SigmaRule(
+        title="Quoted command line",
+        rule_id="sigma-quoted-command-line",
+        description="Quoted executable path",
+        logsource={"category": "process_creation", "product": "windows"},
+        detection={"selection": {"CommandLine|contains": command_line}, "condition": "selection"},
+    )
+
+    converted = convert_sigma_to_wazuh([sigma_rule])[0]
+
+    assert converted.fields == {"win.eventdata.commandLine": command_line}
+    assert "win.eventdata.image" not in wazuh_rule_to_xml(converted)
+
+
+def test_shared_registry_prevents_ids_colliding_across_reports(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(wazuh_converter, "_deterministic_wazuh_id", lambda _: 100000)
+    registry: dict[str, int] = {}
+    ids: list[int] = []
+    for index in range(3):
+        sigma_rule = SigmaRule(
+            title=f"Rule {index}",
+            rule_id=f"sigma-registry-{index}",
+            description=f"Rule {index}",
+            logsource={"category": "dns_query", "product": "windows"},
+            detection={"selection": {"QueryName|contains": f"host{index}.example"}, "condition": "selection"},
+        )
+        ids.append(
+            convert_sigma_to_wazuh(
+                [sigma_rule],
+                id_registry=registry,
+                id_namespace=f"report-{index}",
+            )[0].rule_id
+        )
+
+    assert ids == [100000, 100001, 100002]
+    assert len(set(registry.values())) == 3
+
+
+def test_or_condition_creates_one_wazuh_rule_per_selector() -> None:
+    sigma_rule = SigmaRule(
+        title="Either Domain",
+        rule_id="sigma-or-domains",
+        description="Either domain queried",
+        logsource={"category": "dns_query", "product": "windows"},
+        detection={
+            "selection_a": {"QueryName|contains": "a.example"},
+            "selection_b": {"QueryName|contains": "b.example"},
+            "condition": "1 of selection_*",
+        },
+    )
+
+    converted = convert_sigma_to_wazuh([sigma_rule])
+
+    assert len(converted) == 2
+    assert len({rule.rule_id for rule in converted}) == 2
+    assert {rule.fields["win.eventdata.queryName"] for rule in converted} == {"a.example", "b.example"}
+    assert all(len(rule.options["trace"]["source_sigma_selectors"]) == 1 for rule in converted)
+
+
+@pytest.mark.parametrize(
+    "invalid_range",
+    [
+        range(100000, 100000),
+        range(0, 2),
+        range(100000, 100005, 2),
+    ],
+    ids=["empty", "nonpositive", "non-unit-step"],
+)
+def test_invalid_explicit_wazuh_id_ranges_are_rejected(invalid_range: range) -> None:
+    with pytest.raises(ValueError):
+        convert_sigma_to_wazuh([_dns_sigma_rule()], id_range=invalid_range)
+
+
+@pytest.mark.parametrize(
+    "invalid_registry",
+    [
+        {1: 100000},
+        {"": 100000},
+        {"rule": True},
+        {"rule": "100000"},
+        {"rule": 99999},
+        {"first": 100000, "second": 100000},
+    ],
+    ids=["non-string-key", "blank-key", "boolean", "non-integer", "out-of-range", "duplicate"],
+)
+def test_invalid_wazuh_id_registries_are_rejected(invalid_registry: dict[object, object]) -> None:
+    with pytest.raises(ValueError):
+        convert_sigma_to_wazuh(
+            [_dns_sigma_rule()],
+            id_registry=invalid_registry,  # type: ignore[arg-type]
+            id_range=range(100000, 100002),
+        )
+
+
+def test_sigma_list_selector_values_fail_loudly() -> None:
+    sigma_rule = _dns_sigma_rule()
+    sigma_rule.detection["selection"] = {"QueryName|contains": ["a.example", "b.example"]}
+
+    with pytest.raises(ValueError, match="list selector values"):
+        convert_sigma_to_wazuh([sigma_rule])
+
+
+@pytest.mark.parametrize(
+    "sigma_field",
+    ["CommandLine|contains|all", "CommandLine|contains|cased"],
+    ids=["all", "cased"],
+)
+def test_unsupported_sigma_field_modifiers_fail_loudly(sigma_field: str) -> None:
+    sigma_rule = SigmaRule(
+        title="Multiple Required Arguments",
+        rule_id="sigma-unsupported-all",
+        description="Command contains all required arguments",
+        logsource={"category": "process_creation", "product": "windows"},
+        detection={
+            "selection": {sigma_field: "--required"},
+            "condition": "selection",
+        },
+    )
+
+    with pytest.raises(ValueError, match="Unsupported Sigma field modifier"):
+        convert_sigma_to_wazuh([sigma_rule])

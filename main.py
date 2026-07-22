@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 from pathlib import Path
 from typing import Any
 
@@ -24,7 +25,7 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--report", help="Path to a single sandbox JSON report.")
     parser.add_argument("--input-dir", help="Directory containing sandbox JSON reports.")
     parser.add_argument("--sandbox", choices=["cuckoo", "cape", "anyrun", "auto"], default="auto")
-    parser.add_argument("--output", default="output", help="Output directory root.")
+    parser.add_argument("--output", help="Output directory root (defaults to config or OUTPUT_DIR).")
     parser.add_argument("--no-write", action="store_true", help="Run the pipeline without writing artifacts.")
     parser.add_argument("--enrich", action="store_true", help="Build local enrichment request descriptors for extracted IOCs.")
     parser.add_argument("--urlhaus-csv", help="Path to a local URLhaus CSV export for offline enrichment.")
@@ -56,29 +57,46 @@ def main(argv: list[str] | None = None) -> int:
     """Run the local pipeline in single-report or batch mode."""
     parser = _build_parser()
     args = parser.parse_args(argv)
-    config = _load_config()
-    wazuh_config = config.get("wazuh", {}) if isinstance(config.get("wazuh"), dict) else {}
-    integrations = config.get("integrations", {}) if isinstance(config.get("integrations"), dict) else {}
-    wazuh_id_start = args.wazuh_id_start if args.wazuh_id_start is not None else wazuh_config.get("custom_rule_id_start")
-    wazuh_id_end = args.wazuh_id_end if args.wazuh_id_end is not None else wazuh_config.get("custom_rule_id_end")
-    wazuh_offset = int(wazuh_config.get("custom_rule_id_offset", 0) or 0)
-    if wazuh_id_start is not None and wazuh_id_end is not None:
-        wazuh_id_start = int(wazuh_id_start) + wazuh_offset
-        wazuh_id_end = int(wazuh_id_end) + wazuh_offset
-    urlhaus_csv = args.urlhaus_csv or integrations.get("urlhaus_csv")
 
     if not args.report and not args.input_dir:
         parser.error("one of --report or --input-dir is required")
 
     try:
+        config = _load_config(os.getenv("CONFIG_PATH") or "config.yaml")
+        wazuh_config = config.get("wazuh", {}) if isinstance(config.get("wazuh"), dict) else {}
+        integrations = config.get("integrations", {}) if isinstance(config.get("integrations"), dict) else {}
+        paths_config = config.get("paths", {}) if isinstance(config.get("paths"), dict) else {}
+        output_dir = args.output or os.getenv("OUTPUT_DIR") or paths_config.get("output_dir") or "output"
+        wazuh_id_start = (
+            args.wazuh_id_start
+            if args.wazuh_id_start is not None
+            else os.getenv("WAZUH_RULE_ID_START") or wazuh_config.get("custom_rule_id_start")
+        )
+        wazuh_id_end = (
+            args.wazuh_id_end
+            if args.wazuh_id_end is not None
+            else os.getenv("WAZUH_RULE_ID_END") or wazuh_config.get("custom_rule_id_end")
+        )
+        wazuh_offset = int(os.getenv("WAZUH_RULE_ID_OFFSET") or wazuh_config.get("custom_rule_id_offset", 0) or 0)
+        if wazuh_id_start is not None and wazuh_id_end is not None:
+            wazuh_id_start = int(wazuh_id_start) + wazuh_offset
+            wazuh_id_end = int(wazuh_id_end) + wazuh_offset
+        urlhaus_csv = args.urlhaus_csv or os.getenv("URLHAUS_CSV") or integrations.get("urlhaus_csv")
+        virustotal_api_key = os.getenv("VIRUSTOTAL_API_KEY") or integrations.get("virustotal_api_key")
+        misp_url = os.getenv("MISP_URL") or integrations.get("misp_url")
+        misp_api_key = os.getenv("MISP_API_KEY") or integrations.get("misp_api_key")
+
         if args.report:
             result = run_pipeline(
                 args.report,
                 sandbox=args.sandbox,
-                output_dir=args.output,
+                output_dir=output_dir,
                 write_output=not args.no_write,
                 enrich=args.enrich,
                 urlhaus_csv=urlhaus_csv,
+                virustotal_api_key=virustotal_api_key,
+                misp_url=misp_url,
+                misp_api_key=misp_api_key,
                 wazuh_id_start=wazuh_id_start,
                 wazuh_id_end=wazuh_id_end,
             )
@@ -93,24 +111,29 @@ def main(argv: list[str] | None = None) -> int:
             raise FileNotFoundError(f"No JSON reports found in: {input_dir}")
 
         had_errors = False
+        batch_wazuh_registry: dict[str, int] | None = {} if args.no_write else None
         for report_path in report_paths:
             try:
                 result = run_pipeline(
                     report_path,
                     sandbox=args.sandbox,
-                    output_dir=args.output,
+                    output_dir=output_dir,
                     write_output=not args.no_write,
                     enrich=args.enrich,
                     urlhaus_csv=urlhaus_csv,
+                    virustotal_api_key=virustotal_api_key,
+                    misp_url=misp_url,
+                    misp_api_key=misp_api_key,
                     wazuh_id_start=wazuh_id_start,
                     wazuh_id_end=wazuh_id_end,
+                    wazuh_id_registry=batch_wazuh_registry,
                 )
                 _print_summary(result, verbose=args.verbose)
-            except (FileNotFoundError, ValueError) as exc:
+            except (OSError, ValueError) as exc:
                 had_errors = True
                 print(f"error: {exc}")
         return 1 if had_errors else 0
-    except (FileNotFoundError, ValueError) as exc:
+    except (OSError, ValueError, yaml.YAMLError) as exc:
         print(f"error: {exc}")
         return 1
 

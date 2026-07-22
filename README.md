@@ -4,7 +4,7 @@ Local malware behavior to detection-rule pipeline for sandbox JSON reports. The 
 
 ## Safety
 
-This project uses sandbox JSON reports only. It does not execute malware, does not launch samples, does not call enrichment APIs in the current implementation, and does not deploy rules to Wazuh.
+This project uses sandbox JSON reports only. It does not execute malware, launch samples, make enrichment network calls, or deploy rules to Wazuh. VirusTotal and MISP settings currently create local request descriptors only.
 
 ## Features
 
@@ -14,6 +14,8 @@ This project uses sandbox JSON reports only. It does not execute malware, does n
 - Extract local IOCs from normalized reports and behavior evidence
 - Map behaviors to MITRE ATT&CK techniques and generate ATT&CK Navigator layers
 - Generate Sigma rules and convert them to Wazuh rules and XML
+- Match Windows Wazuh rules beneath their corresponding Sysmon EventChannel parent rule or group
+- Preserve non-reused Wazuh ID assignments through a persistent local registry in sequential, single-writer runs
 - Validate generated rules and assign heuristic risk scores
 - Generate safe synthetic positive and negative test events
 - Apply local review metadata and deterministic version metadata
@@ -62,6 +64,8 @@ output/       Generated local artifacts
 python3 -m pip install --user -r requirements.txt --break-system-packages
 ```
 
+To install the packaged `malforge` command, run `python3 -m pip install .` from the repository root.
+
 If `pytest` is not on your shell `PATH`, use `python3 -m pytest`.
 
 ## Usage
@@ -103,6 +107,8 @@ The pipeline writes only under `output/`:
 - `output/iocs/*_iocs.txt`
 - `output/navigator/*_navigator_layer.json`
 
+Every artifact basename contains a 12-character canonical source-report fingerprint, which prevents routine overwrites when reports share a sample name. `output/wazuh/.rule_ids.json` preserves stable Wazuh IDs across sequential single-report and batch runs. Keep this registry with the output set, do not deploy it as a Wazuh rule file, and allow only one process at a time to write a given output directory.
+
 ## Testing
 
 ```bash
@@ -125,7 +131,7 @@ The current project does not automate any deployment to those systems.
 
 ## Internet-Derived Validation
 
-A 50-report validation corpus was generated from the public URLhaus recent CSV feed. This used public URL/IOC metadata only: no malware binaries, no detonation, and no live sample execution.
+A historical 50-report validation corpus was generated from the public URLhaus recent CSV feed. This used public URL/IOC metadata only: no malware binaries, no detonation, and no live sample execution. The checked-in artifact snapshot predates the persistent ID registry and fingerprinted filename format; use a fresh pipeline run for deployable content.
 
 Validation result:
 
@@ -145,12 +151,12 @@ Evidence files:
 
 This validates broad externally sourced URL/IOC report handling. It does not prove compatibility with every possible sandbox/vendor schema.
 
-The URLhaus validation set also includes a Mozi `elf/mips` sample-style report. For that case the pipeline now emits Linux/generic telemetry rules instead of Windows/Sysmon rules, treats raw IP values as network C2 evidence instead of DNS lookups or Remote Services lateral movement, preserves direct HTTP URL evidence as web-protocol behavior, tags non-standard ports with T1571, and reports missing payload hashes as source-data limitations when URL-only metadata does not include MD5/SHA1/SHA256 values.
+The URLhaus validation set also includes a Mozi `elf/mips` sample-style report. For that case the pipeline now emits Linux/generic telemetry rules instead of Windows/Sysmon rules, preserves raw IP values as generic network evidence without forcing an application-protocol or Remote Services mapping, preserves direct HTTP URL evidence as web-protocol behavior, tags non-standard ports with T1571, and reports missing payload hashes as source-data limitations when URL-only metadata does not include MD5/SHA1/SHA256 values.
 ## Current Limitations
 
-- Enrichment modules are scaffolded but not active
+- VirusTotal and MISP enrichment modules build local descriptors but do not make API calls
 - Sigma output uses YAML only if `PyYAML` is available; otherwise JSON fallback is used
-- ATT&CK mapping is rule-based and intentionally simple
+- ATT&CK mapping targets ATT&CK 19.1 and remains intentionally rule-based
 - Validation and risk scoring are heuristic, not vendor-native validation engines
 - Synthetic test events are local JSON-like dictionaries only
 - Pipeline output writing currently targets local files only
@@ -160,7 +166,7 @@ The URLhaus validation set also includes a Mozi `elf/mips` sample-style report. 
 - Enable IOC enrichment with optional local/offline caching
 - Expand ATT&CK mapping depth and confidence tuning
 - Improve Sigma selector fidelity and rule grouping
-- Add stronger Wazuh decoder/group customization
+- Add optional Wazuh deployment packaging and manager-side validation
 - Export consolidated pipeline manifests
 - Add optional packaging and CI workflow polish
 

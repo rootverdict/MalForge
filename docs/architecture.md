@@ -38,7 +38,8 @@ The project is a local analysis pipeline that turns sandbox JSON reports into de
 ### `converters/`
 
 - Converts `SigmaRule` objects into `WazuhRule` objects
-- Renders parseable Wazuh XML
+- Selects the corresponding Sysmon EventChannel parent/group for Windows telemetry
+- Renders parseable Wazuh XML and preserves non-reused IDs in a persistent registry for sequential, single-writer runs
 
 ### `quality/`
 
@@ -109,8 +110,11 @@ Raw sandbox JSON
 output/
   sigma/
   wazuh/
+    .rule_ids.json
   test_events/
   reports/
   iocs/
   navigator/
 ```
+
+Generated artifact names include a canonical raw source-report fingerprint. This prevents routine overwrites when unrelated inputs use the same sample filename.

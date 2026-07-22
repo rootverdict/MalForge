@@ -17,6 +17,9 @@ build/
 dist/
 *.egg-info/
 
+# Local generated handbook (large, not intended for GitHub)
+MALFORGE_COMPLETE_PROJECT_HANDBOOK.md
+
 # Generated project outputs
 output/sigma/*
 !output/sigma/.gitkeep

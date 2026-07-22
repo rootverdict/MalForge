@@ -82,8 +82,10 @@ class WazuhRule:
     description: str
     group: str = "malware_behavior_detection"
     decoded_as: str | None = None
-    if_sid: int | None = None
+    if_sid: int | str | None = None
+    if_group: str | None = None
     fields: dict[str, str] = field(default_factory=dict)
+    field_match_types: dict[str, str] = field(default_factory=dict)
     mitre_ids: list[str] = field(default_factory=list)
     options: dict[str, Any] = field(default_factory=dict)
 

@@ -5,7 +5,9 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from core.pipeline import run_pipeline
+import pytest
+
+from core.pipeline import run_pipeline, write_pipeline_outputs
 from main import main
 
 FIXTURES_DIR = Path(__file__).parent / "fixtures"
@@ -91,6 +93,26 @@ def test_cli_accepts_wazuh_id_override_args(tmp_path: Path, capsys) -> None:
     assert "wazuh=" in captured.out
 
 
+def test_cli_reports_wazuh_id_range_exhaustion_cleanly(capsys) -> None:
+    report_path = FIXTURES_DIR / "sample_cuckoo_report.json"
+
+    exit_code = main(
+        [
+            "--report",
+            str(report_path),
+            "--no-write",
+            "--wazuh-id-start",
+            "130000",
+            "--wazuh-id-end",
+            "130001",
+        ]
+    )
+    captured = capsys.readouterr()
+
+    assert exit_code == 1
+    assert "error: Wazuh rule ID space exhausted" in captured.out
+
+
 def test_batch_mode_handles_all_three_fixtures(tmp_path: Path, capsys) -> None:
     batch_dir = tmp_path / "batch"
     batch_dir.mkdir()
@@ -135,6 +157,18 @@ def test_no_write_does_not_create_artifacts(tmp_path: Path) -> None:
     assert not any(tmp_path.rglob("*"))
 
 
+def test_write_pipeline_outputs_sanitizes_caller_supplied_base_name(tmp_path: Path) -> None:
+    result = run_pipeline(FIXTURES_DIR / "sample_cuckoo_report.json", write_output=False)
+    output_root = tmp_path / "safe-output"
+
+    output_files = write_pipeline_outputs(result, output_root, base_name="../../escaped/report")
+
+    generated_paths = [Path(file_path).resolve() for files in output_files.values() for file_path in files]
+    assert generated_paths
+    assert all(path.is_relative_to(output_root.resolve()) for path in generated_paths)
+    assert not (tmp_path / "escaped").exists()
+
+
 def test_invalid_missing_report_path_returns_clean_error(capsys) -> None:
     exit_code = main(["--report", "missing-file.json", "--no-write"])
     captured = capsys.readouterr()
@@ -175,3 +209,81 @@ def test_pipeline_urlhaus_enrichment_tags_matching_iocs(tmp_path: Path) -> None:
 
     assert result.metadata["enrichment"]["urlhaus"]["match_count"] >= 1
     assert any("source:urlhaus" in item.tags for item in result.iocs if item.type in {"url", "domain"})
+
+
+def test_same_sample_name_does_not_overwrite_distinct_reports(tmp_path: Path) -> None:
+    first_report = {
+        "target": {"file": {"name": "same.exe"}},
+        "network": {"domains": [{"domain": "first.example"}]},
+    }
+    second_report = {
+        "target": {"file": {"name": "same.exe"}},
+        "network": {"domains": [{"domain": "second.example"}]},
+    }
+
+    first = run_pipeline(first_report, sandbox="cuckoo", output_dir=tmp_path, write_output=True)
+    second = run_pipeline(second_report, sandbox="cuckoo", output_dir=tmp_path, write_output=True)
+
+    first_summary = Path(first.metadata["output_files"]["reports"][1])
+    second_summary = Path(second.metadata["output_files"]["reports"][1])
+    assert first_summary != second_summary
+    assert first_summary.exists()
+    assert second_summary.exists()
+    assert {rule.rule_id for rule in first.wazuh_rules}.isdisjoint({rule.rule_id for rule in second.wazuh_rules})
+
+    registry = json.loads((tmp_path / "wazuh" / ".rule_ids.json").read_text(encoding="utf-8"))
+    assert len(registry) == len(set(registry.values()))
+
+
+def test_wazuh_registry_rejects_boolean_rule_ids(tmp_path: Path) -> None:
+    registry_path = tmp_path / "wazuh" / ".rule_ids.json"
+    registry_path.parent.mkdir(parents=True)
+    registry_path.write_text('{"report|rule": true}', encoding="utf-8")
+
+    with pytest.raises(ValueError, match="invalid entry"):
+        run_pipeline(
+            FIXTURES_DIR / "sample_cuckoo_report.json",
+            output_dir=tmp_path,
+            write_output=True,
+        )
+
+
+def test_configured_enrichment_credentials_are_reflected_without_network_calls() -> None:
+    report = {
+        "target": {"file": {"name": "sample.exe", "sha256": "a" * 64}},
+    }
+
+    result = run_pipeline(
+        report,
+        sandbox="cuckoo",
+        write_output=False,
+        enrich=True,
+        virustotal_api_key="configured-token",
+        misp_url="https://misp.example",
+        misp_api_key="configured-token",
+    )
+
+    virustotal = result.metadata["enrichment"]["virustotal"]
+    misp = result.metadata["enrichment"]["misp"]
+    assert virustotal and all(item["enabled"] for item in virustotal)
+    assert misp and all(item["enabled"] for item in misp)
+    assert all(not item["network_call_performed"] for item in [*virustotal, *misp])
+
+
+def test_custom_wazuh_range_does_not_leak_into_later_pipeline_runs() -> None:
+    report = {
+        "target": {"file": {"name": "sample.exe"}},
+        "network": {"domains": [{"domain": "example.test"}]},
+    }
+
+    custom = run_pipeline(
+        report,
+        sandbox="cuckoo",
+        write_output=False,
+        wazuh_id_start=130000,
+        wazuh_id_end=130010,
+    )
+    default = run_pipeline(report, sandbox="cuckoo", write_output=False)
+
+    assert all(130000 <= rule.rule_id <= 130010 for rule in custom.wazuh_rules)
+    assert all(100000 <= rule.rule_id <= 119999 for rule in default.wazuh_rules)

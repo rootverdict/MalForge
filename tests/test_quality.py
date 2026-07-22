@@ -211,3 +211,114 @@ def test_derive_risk_rationale_and_factors_populated() -> None:
     assert result.factors["rule_count"] == 2
     assert "p90_score" in result.factors
     assert "top_avg" in result.factors
+
+
+def test_validator_rejects_invalid_destination_ip() -> None:
+    rule = SigmaRule(
+        title="Invalid IP",
+        rule_id="sigma-invalid-ip",
+        description="Invalid destination",
+        logsource={"category": "network_connection", "product": "windows"},
+        detection={"selection": {"DestinationIp": "not-an-ip"}, "condition": "selection"},
+    )
+
+    result = validate_sigma_rule(rule)
+
+    assert result.is_valid is False
+    assert any("invalid IP" in error for error in result.errors)
+
+
+def test_list_validators_reject_duplicate_rule_ids() -> None:
+    sigma_rule = SigmaRule(
+        title="Duplicate",
+        rule_id="duplicate-id",
+        description="Duplicate",
+        logsource={"category": "dns_query", "product": "windows"},
+        detection={"selection": {"QueryName|contains": "example.test"}, "condition": "selection"},
+    )
+    wazuh_rule = WazuhRule(rule_id=100001, level=7, description="Duplicate")
+
+    sigma_results = validate_sigma_rules([sigma_rule, sigma_rule])
+    wazuh_results = validate_wazuh_rules([wazuh_rule, wazuh_rule])
+
+    assert all(not result.is_valid for result in sigma_results)
+    assert all(not result.is_valid for result in wazuh_results)
+    assert all(any("Duplicate" in error for error in result.errors) for result in [*sigma_results, *wazuh_results])
+
+
+def test_sigma_validator_handles_non_mapping_detection_without_crashing() -> None:
+    rule = SigmaRule(
+        title="Malformed detection",
+        rule_id="sigma-malformed-detection",
+        description="Malformed",
+        logsource={"category": "process_creation", "product": "windows"},
+        detection=[],  # type: ignore[arg-type]
+    )
+
+    result = validate_sigma_rule(rule)
+
+    assert result.is_valid is False
+    assert "Missing detection." in result.errors
+
+
+def test_sigma_validator_rejects_condition_with_unknown_selector() -> None:
+    rule = SigmaRule(
+        title="Unknown selector",
+        rule_id="sigma-unknown-selector",
+        description="Unknown selector",
+        logsource={"category": "dns_query", "product": "windows"},
+        detection={
+            "selection_known": {"QueryName|contains": "example.test"},
+            "condition": "selection_missing",
+        },
+    )
+
+    result = validate_sigma_rule(rule)
+
+    assert result.is_valid is False
+    assert any("Unsupported detection condition" in error for error in result.errors)
+
+
+@pytest.mark.parametrize("if_sid", ["garbage", "61603,invalid", "0", 0, 1000000, True])
+def test_wazuh_validator_rejects_invalid_parent_rule_metadata(if_sid: int | str | bool) -> None:
+    rule = WazuhRule(
+        rule_id=100001,
+        level=7,
+        description="Invalid parent",
+        if_sid=if_sid,
+        fields={"win.eventdata.image": "tool.exe"},
+    )
+
+    result = validate_wazuh_rule(rule)
+
+    assert result.is_valid is False
+    assert any("Parent rule metadata" in error for error in result.errors)
+
+
+def test_wazuh_validator_accepts_multiple_numeric_parent_rules() -> None:
+    rule = WazuhRule(
+        rule_id=100001,
+        level=7,
+        description="Registry parent",
+        if_sid="61614,61615,61616",
+        fields={"win.eventdata.targetObject": "Run"},
+        field_match_types={"win.eventdata.targetObject": "contains"},
+    )
+
+    assert validate_wazuh_rule(rule).is_valid is True
+
+
+def test_wazuh_validator_rejects_match_type_for_unknown_field() -> None:
+    rule = WazuhRule(
+        rule_id=100001,
+        level=7,
+        description="Unknown field metadata",
+        decoded_as="json",
+        fields={"dstip": "10.0.0.8"},
+        field_match_types={"missing": "exact"},
+    )
+
+    result = validate_wazuh_rule(rule)
+
+    assert result.is_valid is False
+    assert any("unknown fields" in error for error in result.errors)

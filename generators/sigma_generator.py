@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import ipaddress
+import json
 import re
 import uuid
 from collections import defaultdict
@@ -14,9 +15,20 @@ from core.models import AttackMapping, Behavior, SigmaRule
 GENERATOR_NAME = "malware-behavior-detection-generator"
 
 
-def _stable_rule_id(behavior: Behavior) -> str:
+def _stable_rule_id(
+    behavior: Behavior,
+    logsource: dict[str, str],
+    detection: dict[str, object],
+) -> str:
     namespace = uuid.UUID("6ba7b810-9dad-11d1-80b4-00c04fd430c8")
-    return str(uuid.uuid5(namespace, f"{behavior.category}|{behavior.description}"))
+    identity = {
+        "category": behavior.category,
+        "description": behavior.description,
+        "logsource": logsource,
+        "detection": detection,
+    }
+    canonical = json.dumps(identity, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    return str(uuid.uuid5(namespace, canonical))
 
 
 def _title_from_behavior(behavior: Behavior) -> str:
@@ -295,7 +307,7 @@ def generate_sigma_rules(behaviors: list[Behavior] | None, mappings: list[Attack
         rules.append(
             SigmaRule(
                 title=_title_from_behavior(behavior),
-                rule_id=_stable_rule_id(behavior),
+                rule_id=_stable_rule_id(behavior, logsource, detection),
                 description=behavior.description,
                 logsource=logsource,
                 detection=detection,

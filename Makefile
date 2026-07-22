@@ -18,4 +18,4 @@ tree:
 	find . -maxdepth 3 | sort
 
 clean:
-	find output -type f ! -name '.gitkeep' -delete
+	find output -type f ! -name '.gitkeep' ! -name '.rule_ids.json' -delete

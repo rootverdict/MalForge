@@ -6,6 +6,8 @@
 python3 -m pip install --user -r requirements.txt --break-system-packages
 ```
 
+To install the packaged command, run `python3 -m pip install .`; the CLI is then available as `malforge`.
+
 ## Run Tests
 
 ```bash
@@ -37,7 +39,7 @@ python3 main.py --report samples/cuckoo_sample.json --sandbox auto --no-write
 - `output/sigma/`
   Detection content in YAML when `PyYAML` is available, otherwise JSON
 - `output/wazuh/`
-  Wazuh XML output
+  Wazuh XML output plus the persistent `.rule_ids.json` allocation registry
 - `output/test_events/`
   Synthetic positive and negative log-like events
 - `output/reports/`
@@ -47,13 +49,15 @@ python3 main.py --report samples/cuckoo_sample.json --sandbox auto --no-write
 - `output/navigator/`
   ATT&CK Navigator layer JSON
 
+Artifact basenames end with a 12-character canonical source-report fingerprint to prevent routine overwrites when reports reuse a sample name. Preserve `output/wazuh/.rule_ids.json` between sequential runs so Wazuh IDs remain stable and non-reused. Only one process at a time may write a given output directory.
+
 ## Clean Output
 
 ```bash
 make clean
 ```
 
-This removes generated files under `output/` but keeps the directory structure and `.gitkeep` files.
+This removes generated artifacts under `output/` but keeps the directory structure, `.gitkeep` files, and `output/wazuh/.rule_ids.json`.
 
 ## Troubleshooting
 

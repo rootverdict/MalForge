@@ -2,15 +2,18 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 from dataclasses import asdict
 import re
 from pathlib import Path
-from typing import Any, Mapping
+from tempfile import NamedTemporaryFile
+from typing import Any, Mapping, MutableMapping
 
 from attck.mapper import map_behaviors_to_attack
 from attck.navigator import generate_navigator_layer
-from converters.wazuh_converter import configure_wazuh_id_range, convert_sigma_to_wazuh, wazuh_rules_to_xml
+from converters.wazuh_converter import convert_sigma_to_wazuh, wazuh_rules_to_xml
+from core.constants import WAZUH_RULE_ID_END, WAZUH_RULE_ID_START
 from core.models import PipelineResult, RiskScore
 from core.schema import detect_sandbox, load_json_report
 from extractor import extract_behaviors
@@ -116,6 +119,61 @@ def _valid_sha256(value: Any) -> str | None:
     return normalized if re.fullmatch(r"[a-f0-9]{64}", normalized) else None
 
 
+def _report_fingerprint(report: Mapping[str, Any]) -> str:
+    canonical = json.dumps(report, sort_keys=True, separators=(",", ":"), ensure_ascii=False, default=str)
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+
+
+def _output_base_name(sample_name: str, report_fingerprint: str) -> str:
+    return f"{_slugify(sample_name, max_length=63)}_{report_fingerprint[:12]}"
+
+
+def _wazuh_registry_path(output_dir: str | Path) -> Path:
+    return Path(output_dir) / "wazuh" / ".rule_ids.json"
+
+
+def _load_wazuh_id_registry(output_dir: str | Path) -> dict[str, int]:
+    path = _wazuh_registry_path(output_dir)
+    if not path.exists():
+        return {}
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise ValueError(f"Could not read Wazuh ID registry: {path}") from exc
+    if not isinstance(payload, dict):
+        raise ValueError(f"Wazuh ID registry must be a JSON object: {path}")
+    registry: dict[str, int] = {}
+    for key, value in payload.items():
+        if not isinstance(key, str) or isinstance(value, bool) or not isinstance(value, int) or value <= 0:
+            raise ValueError(f"Wazuh ID registry contains an invalid entry: {key!r}={value!r}")
+        registry[key] = value
+    if len(set(registry.values())) != len(registry):
+        raise ValueError(f"Wazuh ID registry contains duplicate numeric IDs: {path}")
+    return registry
+
+
+def _write_wazuh_id_registry(output_dir: str | Path, registry: Mapping[str, int]) -> None:
+    path = _wazuh_registry_path(output_dir)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary_path: Path | None = None
+    try:
+        with NamedTemporaryFile(
+            mode="w",
+            encoding="utf-8",
+            dir=path.parent,
+            prefix=f"{path.name}.",
+            suffix=".tmp",
+            delete=False,
+        ) as handle:
+            temporary_path = Path(handle.name)
+            json.dump(dict(sorted(registry.items())), handle, indent=2)
+            handle.write("\n")
+        temporary_path.replace(path)
+    finally:
+        if temporary_path is not None:
+            temporary_path.unlink(missing_ok=True)
+
+
 def _write_text(path: Path, content: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(content, encoding="utf-8")
@@ -135,6 +193,7 @@ def write_pipeline_outputs(
     """Write pipeline artifacts under the configured output directory only."""
     output_root = Path(output_dir)
     output_root.mkdir(parents=True, exist_ok=True)
+    safe_base_name = _slugify(str(base_name))
 
     file_map: dict[str, list[str]] = {
         "sigma": [],
@@ -149,37 +208,37 @@ def write_pipeline_outputs(
     for rule in result.sigma_rules:
         payload = rule_to_dict(rule)
         if yaml is not None:
-            sigma_path = sigma_dir / f"{base_name}_{rule.rule_id}.yml"
+            sigma_path = sigma_dir / f"{safe_base_name}_{rule.rule_id}.yml"
             _write_text(sigma_path, yaml.safe_dump(payload, sort_keys=False))
         else:
-            sigma_path = sigma_dir / f"{base_name}_{rule.rule_id}.json"
+            sigma_path = sigma_dir / f"{safe_base_name}_{rule.rule_id}.json"
             _write_json(sigma_path, payload)
         file_map["sigma"].append(str(sigma_path))
 
     if result.wazuh_rules:
-        wazuh_path = output_root / "wazuh" / f"{base_name}.xml"
+        wazuh_path = output_root / "wazuh" / f"{safe_base_name}.xml"
         _write_text(wazuh_path, wazuh_rules_to_xml(result.wazuh_rules))
         file_map["wazuh"].append(str(wazuh_path))
 
-    test_event_path = output_root / "test_events" / f"{base_name}.json"
+    test_event_path = output_root / "test_events" / f"{safe_base_name}.json"
     _write_json(test_event_path, result.metadata.get("test_events", {}))
     file_map["test_events"].append(str(test_event_path))
 
-    report_path = output_root / "reports" / f"{base_name}_report.md"
+    report_path = output_root / "reports" / f"{safe_base_name}_report.md"
     _write_text(report_path, str(result.metadata.get("markdown_report", "")))
     file_map["reports"].append(str(report_path))
 
-    summary_path = output_root / "reports" / f"{base_name}_summary.json"
+    summary_path = output_root / "reports" / f"{safe_base_name}_summary.json"
     _write_json(summary_path, result.metadata.get("summary", {}))
     file_map["reports"].append(str(summary_path))
 
-    iocs_json_path = output_root / "iocs" / f"{base_name}_iocs.json"
-    iocs_txt_path = output_root / "iocs" / f"{base_name}_iocs.txt"
+    iocs_json_path = output_root / "iocs" / f"{safe_base_name}_iocs.json"
+    iocs_txt_path = output_root / "iocs" / f"{safe_base_name}_iocs.txt"
     _write_json(iocs_json_path, [asdict(item) for item in result.iocs])
     _write_text(iocs_txt_path, "\n".join(f"{item.type}: {item.value}" for item in result.iocs))
     file_map["iocs"].extend([str(iocs_json_path), str(iocs_txt_path)])
 
-    navigator_path = output_root / "navigator" / f"{base_name}_navigator_layer.json"
+    navigator_path = output_root / "navigator" / f"{safe_base_name}_navigator_layer.json"
     _write_json(navigator_path, result.metadata.get("navigator_layer", {}))
     file_map["navigator"].append(str(navigator_path))
     return file_map
@@ -194,8 +253,12 @@ def run_pipeline(
     timestamp: str | None = None,
     enrich: bool = False,
     urlhaus_csv: str | Path | None = None,
+    virustotal_api_key: str | None = None,
+    misp_url: str | None = None,
+    misp_api_key: str | None = None,
     wazuh_id_start: int | None = None,
     wazuh_id_end: int | None = None,
+    wazuh_id_registry: MutableMapping[str, int] | None = None,
 ) -> PipelineResult:
     """Run the full local pipeline on a sandbox report."""
     raw_report, input_path = _resolve_report_input(report_input)
@@ -205,10 +268,16 @@ def run_pipeline(
     if sandbox_name not in PARSER_MAP:
         raise ValueError(f"Unsupported sandbox type: {sandbox_name}")
     run_timestamp = timestamp or _now_iso()
+    report_fingerprint = _report_fingerprint(raw_report)
     if wazuh_id_start is not None or wazuh_id_end is not None:
         if wazuh_id_start is None or wazuh_id_end is None:
             raise ValueError("Both wazuh_id_start and wazuh_id_end must be provided together")
-        configure_wazuh_id_range(wazuh_id_start, wazuh_id_end)
+        if wazuh_id_start <= 0 or wazuh_id_end <= wazuh_id_start:
+            raise ValueError("Wazuh rule ID range must satisfy start > 0 and end > start")
+    active_wazuh_id_range = range(
+        wazuh_id_start if wazuh_id_start is not None else WAZUH_RULE_ID_START,
+        (wazuh_id_end if wazuh_id_end is not None else WAZUH_RULE_ID_END) + 1,
+    )
 
     normalized_report = PARSER_MAP[sandbox_name](raw_report)
     behaviors = extract_behaviors(normalized_report)
@@ -225,7 +294,15 @@ def run_pipeline(
     sample_hash = _valid_sha256(normalized_report.get("sample", {}).get("hashes", {}).get("sha256"))
     sigma_rules = [rule for rule in version_rules(sigma_rules, timestamp=run_timestamp, source_report_hash=sample_hash) if hasattr(rule, "rule_id")]
 
-    wazuh_rules = convert_sigma_to_wazuh(sigma_rules)
+    active_wazuh_registry = wazuh_id_registry
+    if active_wazuh_registry is None and write_output:
+        active_wazuh_registry = _load_wazuh_id_registry(output_dir)
+    wazuh_rules = convert_sigma_to_wazuh(
+        sigma_rules,
+        id_registry=active_wazuh_registry,
+        id_namespace=report_fingerprint,
+        id_range=active_wazuh_id_range,
+    )
     wazuh_rules = [rule for rule in apply_review_to_rules(wazuh_rules, review_record) if hasattr(rule, "rule_id")]
     wazuh_rules = [rule for rule in version_rules(wazuh_rules, timestamp=run_timestamp, source_report_hash=sample_hash) if hasattr(rule, "rule_id")]
 
@@ -239,8 +316,8 @@ def run_pipeline(
     enrichment = {}
     if enrich:
         enrichment = {
-            "virustotal": [build_virustotal_lookup_request(item.type, item.value) for item in iocs],
-            "misp": [build_misp_lookup_request(item.type, item.value) for item in iocs],
+            "virustotal": [build_virustotal_lookup_request(item.type, item.value, virustotal_api_key) for item in iocs],
+            "misp": [build_misp_lookup_request(item.type, item.value, misp_url, misp_api_key) for item in iocs],
         }
         if urlhaus_csv:
             enrichment["urlhaus"] = enrich_iocs_with_urlhaus(iocs, urlhaus_csv)
@@ -279,16 +356,19 @@ def run_pipeline(
             "enrichment": enrichment,
             "review_records": [review_record],
             "risk_scores": [asdict(item) for item in risk_scores],
+            "report_fingerprint": report_fingerprint,
             "output_files": {},
         },
     )
 
     if write_output:
         sample_name = str(normalized_report.get("sample", {}).get("name") or Path(input_path or "report").stem)
+        if active_wazuh_registry is not None:
+            _write_wazuh_id_registry(output_dir, active_wazuh_registry)
         result.metadata["output_files"] = write_pipeline_outputs(
             result,
             output_dir,
-            base_name=_slugify(sample_name),
+            base_name=_output_base_name(sample_name, report_fingerprint),
         )
 
     return result

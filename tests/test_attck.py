@@ -74,7 +74,7 @@ def test_network_behaviors_map_to_network_related_techniques() -> None:
 
     assert "T1071.004" in technique_ids
     assert "T1071.001" in technique_ids
-    assert "T1071" in technique_ids
+    assert "T1071" not in technique_ids
     assert "T1571" in technique_ids
     assert "T1021" not in technique_ids
 
@@ -105,6 +105,22 @@ def test_navigator_layer_contains_expected_technique_ids() -> None:
     assert "T1071.004" in technique_ids
     assert "T1547.001" in technique_ids
     assert all("tactic" in item for item in layer["techniques"])
+    assert all(item["tactic"] != "defense-evasion" for item in layer["techniques"])
+
+
+def test_navigator_uses_attack_v19_split_tactic_names() -> None:
+    mappings = map_behaviors_to_attack(
+        [
+            Behavior(category="process", description="Suspicious rundll32 execution", source="cape"),
+            Behavior(category="registry", description="Registry key modified", source="cape"),
+        ]
+    )
+
+    layer = generate_navigator_layer(mappings)
+    tactic_by_technique = {item["techniqueID"]: item["tactic"] for item in layer["techniques"]}
+
+    assert tactic_by_technique["T1218.011"] == "stealth"
+    assert tactic_by_technique["T1112"] == "defense-impairment"
 
 
 def test_empty_inputs_return_empty_results_safely() -> None:
@@ -128,6 +144,17 @@ def test_remote_service_mapping_is_reserved_for_explicit_remote_service_evidence
     assert {item.technique_id for item in mappings} == {"T1021"}
 
 
+def test_bare_ip_and_tcp_connections_do_not_claim_an_application_protocol() -> None:
+    mappings = map_behaviors_to_attack(
+        [
+            Behavior(category="network", description="IP connection observed: 44.55.66.77", source="cuckoo", tags=["ip_connection"]),
+            Behavior(category="network", description="TCP connection observed: tcp://44.55.66.88:443", source="cuckoo", tags=["tcp_connection"]),
+        ]
+    )
+
+    assert mappings == []
+
+
 
 def test_http_non_standard_port_maps_to_web_protocol_and_t1571() -> None:
     mappings = map_behaviors_to_attack(
@@ -142,3 +169,35 @@ def test_http_non_standard_port_maps_to_web_protocol_and_t1571() -> None:
     )
 
     assert {item.technique_id for item in mappings} == {"T1071.001", "T1571"}
+
+
+def test_smb_and_tcp_non_standard_ports_preserve_t1571_mapping() -> None:
+    behaviors = [
+        Behavior(
+            category="network",
+            description="SMB connection observed: smb://fileserver:1445/share",
+            source="cuckoo",
+            tags=["smb_connection", "non_standard_port"],
+            technique_ids=["T1021.002", "T1571"],
+        ),
+        Behavior(
+            category="network",
+            description="TCP connection observed: tcp://44.55.66.99:58088",
+            source="cuckoo",
+            tags=["tcp_connection", "non_standard_port"],
+            technique_ids=["T1571"],
+        ),
+    ]
+
+    mappings = map_behaviors_to_attack(behaviors)
+    by_behavior = {
+        behavior.description: {
+            mapping.technique_id
+            for mapping in mappings
+            if mapping.source_behavior == behavior.description
+        }
+        for behavior in behaviors
+    }
+
+    assert by_behavior[behaviors[0].description] == {"T1021.002", "T1571"}
+    assert by_behavior[behaviors[1].description] == {"T1571"}

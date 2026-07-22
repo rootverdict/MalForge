@@ -2,7 +2,7 @@
 
 ## Strategy
 
-The current ATT&CK layer is local and rule-based. It maps extracted `Behavior` descriptions and categories to predefined techniques in `core/constants.py`.
+The current ATT&CK 19.1 layer is local and rule-based. It maps extracted `Behavior` descriptions and categories to predefined techniques in `core/constants.py`.
 
 ## Category Mapping
 
@@ -28,7 +28,10 @@ The current ATT&CK layer is local and rule-based. It maps extracted `Behavior` d
 
 - DNS lookup -> `T1071.004`
 - HTTP / web connection -> `T1071.001`
-- IP / remote service style connection -> `T1021`
+- FTP connection -> `T1071.002`
+- SMB connection -> `T1021.002`
+- Generic IP/TCP connection -> no ATT&CK technique without application-protocol or remote-service evidence
+- Explicit remote-service connection (for example RDP, SSH, or WinRM evidence) -> `T1021`
 
 ### Persistence
 

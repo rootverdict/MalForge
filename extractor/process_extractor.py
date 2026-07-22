@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from typing import Any, Mapping
 
 from core.constants import COMMON_ATTACK_MAPPINGS
@@ -34,6 +35,11 @@ def _process_name(process: Mapping[str, Any]) -> str:
     )
 
 
+def _process_basename(value: str) -> str:
+    parts = [part for part in re.split(r"[\\/]", value.strip()) if part]
+    return parts[-1] if parts else value.strip()
+
+
 def extract_behaviors(normalized_report: Mapping[str, Any]) -> list[Behavior]:
     """Extract process behaviors from a normalized report."""
     source = str(normalized_report.get("sandbox", "unknown"))
@@ -47,7 +53,8 @@ def extract_behaviors(normalized_report: Mapping[str, Any]) -> list[Behavior]:
         name = _process_name(process)
         command_line = str(process.get("command_line") or process.get("cmd") or "").strip()
         pid = process.get("pid")
-        suspicious = SUSPICIOUS_PROCESS_NAMES.get(name.lower())
+        suspicious_name = _process_basename(name).lower()
+        suspicious = SUSPICIOUS_PROCESS_NAMES.get(suspicious_name)
         description = f"Process created: {name}"
         if command_line:
             description = f"{description} ({command_line})"
@@ -73,7 +80,7 @@ def extract_behaviors(normalized_report: Mapping[str, Any]) -> list[Behavior]:
 
         if suspicious:
             suspicious_description, severity, tags = suspicious
-            technique_key = SUSPICIOUS_PROCESS_TECHNIQUE_KEYS.get(name.lower(), "process_create")
+            technique_key = SUSPICIOUS_PROCESS_TECHNIQUE_KEYS.get(suspicious_name, "process_create")
             behaviors.append(
                 Behavior(
                     category="process",

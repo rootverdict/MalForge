@@ -165,6 +165,7 @@ def test_network_domain_field_with_raw_ip_is_not_dns_lookup() -> None:
 
     assert "IP connection observed: 110.37.53.25" in descriptions
     assert not any(description.startswith("DNS lookup observed") for description in descriptions)
+    assert behaviors[0].technique_ids == []
 
 def test_ip_connection_on_non_standard_port_maps_to_t1571() -> None:
     report = {
@@ -188,3 +189,155 @@ def test_http_connection_on_non_standard_port_keeps_web_protocol_and_t1571() -> 
 
     assert behaviors[0].tags == ["http_connection", "non_standard_port"]
     assert behaviors[0].technique_ids == ["T1071.001", "T1571"]
+
+
+def test_invalid_network_indicators_do_not_generate_behaviors() -> None:
+    report = {
+        "sandbox": "cuckoo",
+        "network": [
+            {"ip": "not-an-ip"},
+            {"domain": "bad domain"},
+            {"url": "not a URL"},
+        ],
+    }
+
+    assert extract_network_behaviors(report) == []
+
+
+def test_malformed_url_or_host_is_rejected_without_aborting_report() -> None:
+    report = {
+        "sandbox": "cuckoo",
+        "network": [
+            {"url": "http://example.test:notaport/payload"},
+            {"url": "http://bad_domain/payload"},
+            {"url": "http://999.999.999.999/payload"},
+            {"url": "https://valid.example/payload"},
+        ],
+    }
+
+    behaviors = extract_network_behaviors(report)
+
+    assert len(behaviors) == 1
+    assert behaviors[0].description == "HTTP connection observed: https://valid.example/payload"
+    assert "non_standard_port" not in behaviors[0].tags
+
+
+def test_ftp_url_uses_file_transfer_protocol_mapping() -> None:
+    report = {
+        "sandbox": "cuckoo",
+        "network": [{"url": "ftp://files.example/payload"}],
+    }
+
+    behavior = extract_network_behaviors(report)[0]
+
+    assert behavior.description == "FTP connection observed: ftp://files.example/payload"
+    assert behavior.tags == ["ftp_connection"]
+    assert behavior.technique_ids == ["T1071.002"]
+
+
+def test_platform_markers_do_not_match_inside_windows_filename() -> None:
+    report = {
+        "sandbox": "cuckoo",
+        "sample": {"name": "charm.exe"},
+        "processes": [{"process_name": "cmd.exe", "command_line": "cmd.exe /c whoami"}],
+        "metadata": {"info": {"machine": "windows-11"}},
+    }
+
+    behaviors = extract_behaviors(report)
+
+    assert behaviors
+    assert all("platform_non_windows" not in behavior.tags for behavior in behaviors)
+    assert all("platform_linux_or_iot" not in behavior.tags for behavior in behaviors)
+
+
+def test_suspicious_process_detection_uses_basename_for_full_paths() -> None:
+    report = {
+        "sandbox": "cuckoo",
+        "processes": [
+            {
+                "image": "C:\\Windows\\System32\\cmd.exe",
+                "command_line": "cmd.exe /c whoami",
+            }
+        ],
+    }
+
+    behaviors = extract_process_behaviors(report)
+
+    assert len(behaviors) == 1
+    assert behaviors[0].description == "Suspicious command shell execution"
+    assert behaviors[0].severity == "high"
+    assert "cmd" in behaviors[0].tags
+
+
+def test_non_actionable_network_addresses_do_not_generate_behaviors() -> None:
+    report = {
+        "sandbox": "cuckoo",
+        "network": [
+            {"ip": "0.0.0.0"},
+            {"ip": "224.0.0.1"},
+            {"ipv6": "::"},
+            {"ipv6": "ff02::1"},
+        ],
+    }
+
+    assert extract_network_behaviors(report) == []
+
+
+def test_invalid_numeric_ip_lookalike_is_not_a_domain_behavior() -> None:
+    report = {"sandbox": "cuckoo", "network": [{"domain": "999.999.999.999"}]}
+
+    assert extract_network_behaviors(report) == []
+
+
+def test_smb_port_139_is_standard_but_1445_is_not() -> None:
+    report = {
+        "sandbox": "cuckoo",
+        "network": [
+            {"url": "smb://fileserver:139/share"},
+            {"url": "smb://fileserver:1445/share"},
+        ],
+    }
+
+    standard, non_standard = extract_network_behaviors(report)
+
+    assert standard.tags == ["smb_connection"]
+    assert standard.technique_ids == ["T1021.002"]
+    assert non_standard.tags == ["smb_connection", "non_standard_port"]
+    assert non_standard.technique_ids == ["T1021.002", "T1571"]
+
+
+def test_tcp_non_standard_port_preserves_t1571() -> None:
+    report = {
+        "sandbox": "cuckoo",
+        "network": [{"url": "tcp://44.55.66.99:58088"}],
+    }
+
+    behavior = extract_network_behaviors(report)[0]
+
+    assert behavior.tags == ["tcp_connection", "non_standard_port"]
+    assert behavior.technique_ids == ["T1571"]
+
+
+def test_generic_network_activity_has_no_unsupported_attack_mapping() -> None:
+    behavior = extract_network_behaviors({"sandbox": "cuckoo", "network": [{"bytes_sent": 42}]})[0]
+
+    assert behavior.description == "Network activity observed"
+    assert behavior.technique_ids == []
+
+
+def test_common_architecture_variants_receive_non_windows_context() -> None:
+    for marker in ("arm64", "mipsel", "mips64", "elf64"):
+        report = {
+            "sandbox": "cuckoo",
+            "sample": {"name": f"sample_{marker}.bin"},
+            "processes": [{"process_name": "worker", "command_line": "worker --run"}],
+        }
+
+        behavior = extract_behaviors(report)[0]
+
+        assert "platform_non_windows" in behavior.tags
+        assert "platform_linux_or_iot" in behavior.tags
+        if marker.startswith("mips"):
+            assert "arch_mips" in behavior.tags
+        if marker.startswith("elf"):
+            assert "format_elf" in behavior.tags

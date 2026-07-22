@@ -44,6 +44,13 @@ If your system Python is externally managed:
 python3 -m pip install --user -r requirements.txt --break-system-packages
 ```
 
+Install the packaged command from the repository root when desired:
+
+```bash
+python3 -m pip install .
+malforge --help
+```
+
 ## Project Layout
 
 ```text
@@ -144,6 +151,8 @@ Clean generated output files:
 make clean
 ```
 
+This preserves `output/wazuh/.rule_ids.json` so later sequential runs retain their existing Wazuh ID assignments.
+
 ## Testing
 
 Primary:
@@ -208,6 +217,10 @@ python3 main.py \
   --wazuh-id-end 139999
 ```
 
+Written runs keep stable, non-reused assignments in `output/wazuh/.rule_ids.json` when one process writes the output directory at a time. Preserve that file when adding more reports to the same output set, and do not run concurrent writers against that directory. If the configured range is exhausted, the run stops instead of reusing an ID.
+
+Windows process rules use the Wazuh Sysmon Event ID 1 parent rule. Registry rules use the Event ID 12, 13, and 14 parent rules; file, network, and DNS rules use the matching `sysmon_event*` group. Linux/generic rules continue to use JSON decoding.
+
 ## Output Files
 
 Generated files are written only under `output/`.
@@ -222,6 +235,26 @@ output/iocs/*_iocs.json
 output/iocs/*_iocs.txt
 output/navigator/*_navigator_layer.json
 ```
+
+Artifact names include a 12-character fingerprint of the canonical raw source report. This prevents routine overwrites when reports share a sample filename.
+
+## Environment Configuration
+
+The CLI accepts the following optional environment variables (CLI arguments take precedence):
+
+```text
+CONFIG_PATH
+OUTPUT_DIR
+WAZUH_RULE_ID_START
+WAZUH_RULE_ID_END
+WAZUH_RULE_ID_OFFSET
+URLHAUS_CSV
+VIRUSTOTAL_API_KEY
+MISP_URL
+MISP_API_KEY
+```
+
+VirusTotal and MISP credentials currently enable local lookup descriptors only; no network request is sent.
 
 ## Typical Workflow
 

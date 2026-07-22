@@ -12,3 +12,25 @@ dependencies = [
   "PyYAML>=6.0,<7.0",
   "pytest>=8.0,<10.0",
 ]
+
+[project.scripts]
+malforge = "main:main"
+
+[tool.setuptools]
+py-modules = ["main"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = [
+  "attck*",
+  "converters*",
+  "core*",
+  "enrichment*",
+  "extractor*",
+  "generators*",
+  "ingestion*",
+  "ioc*",
+  "quality*",
+  "reporting*",
+  "review*",
+]

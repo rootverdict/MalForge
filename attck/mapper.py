@@ -75,13 +75,29 @@ def _map_network_behavior(behavior: Behavior) -> list[AttackMapping]:
         if "non_standard_port" in tags:
             mappings.append(_build_mapping(behavior, _mapping_entry("network", "non_standard_port"), 0.8))
         return mappings
-    if "ip connection" in description:
+    if "ftp_connection" in tags or "ftp connection" in description:
+        mappings = [_build_mapping(behavior, _mapping_entry("network", "file_transfer_protocol"), 0.9)]
         if "non_standard_port" in tags:
-            return [_build_mapping(behavior, _mapping_entry("network", "non_standard_port"), 0.8)]
+            mappings.append(_build_mapping(behavior, _mapping_entry("network", "non_standard_port"), 0.8))
+        return mappings
+    if "smb_connection" in tags or "smb connection" in description:
+        mappings = [_build_mapping(behavior, _mapping_entry("network", "smb"), 0.9)]
+        if "non_standard_port" in tags:
+            mappings.append(_build_mapping(behavior, _mapping_entry("network", "non_standard_port"), 0.8))
+        return mappings
+    if "tcp_connection" in tags or "tcp connection" in description:
+        mappings: list[AttackMapping] = []
+        if "non_standard_port" in tags:
+            mappings.append(_build_mapping(behavior, _mapping_entry("network", "non_standard_port"), 0.8))
+        return mappings
+    if "ip connection" in description:
+        mappings = []
         if "remote_service" in tags or any(token in description for token in ("rdp", "ssh", "smb", "winrm", "remote service")):
-            return [_build_mapping(behavior, _mapping_entry("network", "remote_service"), 0.75)]
-        return [_build_mapping(behavior, _mapping_entry("network", "ip_connection"), 0.65)]
-    return [_build_mapping(behavior, _mapping_entry("network", "ip_connection"), 0.4)]
+            mappings.append(_build_mapping(behavior, _mapping_entry("network", "remote_service"), 0.75))
+        if "non_standard_port" in tags:
+            mappings.append(_build_mapping(behavior, _mapping_entry("network", "non_standard_port"), 0.8))
+        return mappings
+    return []
 
 
 def _map_persistence_behavior(behavior: Behavior) -> list[AttackMapping]:

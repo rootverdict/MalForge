@@ -183,6 +183,28 @@ def test_stable_rule_id_is_consistent_across_sandboxes_for_same_behavior() -> No
     assert rule_a.rule_id == rule_b.rule_id
 
 
+def test_stable_rule_id_changes_when_detection_content_changes() -> None:
+    behaviors = [
+        Behavior(
+            category="process",
+            description="Suspicious PowerShell execution",
+            source="cape",
+            evidence=[{"process_name": "powershell.exe", "command_line": "powershell.exe -enc AAA"}],
+        ),
+        Behavior(
+            category="process",
+            description="Suspicious PowerShell execution",
+            source="cape",
+            evidence=[{"process_name": "powershell.exe", "command_line": "powershell.exe -enc BBB"}],
+        ),
+    ]
+
+    rules = generate_sigma_rules(behaviors)
+
+    assert len(rules) == 2
+    assert len({rule.rule_id for rule in rules}) == 2
+
+
 def test_sigma_title_does_not_include_truncated_command_line_fragment() -> None:
     behavior = Behavior(
         category="process",

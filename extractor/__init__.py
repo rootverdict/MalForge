@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from typing import Any, Mapping
 
 from core.models import Behavior
@@ -24,6 +25,17 @@ _NON_WINDOWS_MARKERS = {
     "gafgyt",
     "mirai",
 }
+_MARKER_PATTERNS = {
+    "arm": r"arm(?:32|64|v[5-9](?:l)?)?",
+    "elf": r"elf(?:32|64)?",
+    "mips": r"mips(?:32|64)?(?:el|le)?",
+}
+
+
+def _contains_marker(text: str, marker: str) -> bool:
+    """Match platform markers as tokens instead of filename substrings."""
+    marker_pattern = _MARKER_PATTERNS.get(marker, re.escape(marker))
+    return re.search(rf"(?<![A-Za-z0-9])(?:{marker_pattern})(?![A-Za-z0-9])", text) is not None
 
 
 def _flatten_metadata_values(value: Any) -> list[str]:
@@ -54,13 +66,13 @@ def _platform_tags(normalized_report: Mapping[str, Any]) -> list[str]:
 
     text = " ".join(values).lower()
     tags: list[str] = []
-    if any(marker in text for marker in _NON_WINDOWS_MARKERS):
+    if any(_contains_marker(text, marker) for marker in _NON_WINDOWS_MARKERS):
         tags.extend(["platform_non_windows", "platform_linux_or_iot"])
-    if "mips" in text:
+    if _contains_marker(text, "mips"):
         tags.append("arch_mips")
-    if "elf" in text:
+    if _contains_marker(text, "elf"):
         tags.append("format_elf")
-    if "mozi" in text:
+    if _contains_marker(text, "mozi"):
         tags.append("family_mozi")
     return sorted(set(tags))
 

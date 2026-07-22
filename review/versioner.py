@@ -47,7 +47,9 @@ def _wazuh_hash_payload(rule: WazuhRule) -> dict[str, Any]:
         "group": rule.group,
         "decoded_as": rule.decoded_as,
         "if_sid": rule.if_sid,
+        "if_group": rule.if_group,
         "fields": rule.fields,
+        "field_match_types": rule.field_match_types,
         "mitre_ids": rule.mitre_ids,
     }
 
