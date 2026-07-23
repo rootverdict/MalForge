@@ -18,8 +18,11 @@ build/
 dist/
 *.egg-info/
 
-# Local generated handbook (large, not intended for GitHub)
+# Local handbook and generated code reference (not intended for GitHub)
 MALFORGE_COMPLETE_PROJECT_HANDBOOK.md
+MALFORGE_HANDBOOK.md
+MALFORGE_CODE_REFERENCE.md
+tools/
 .codex-handbook-deps/
 
 # Generated project outputs

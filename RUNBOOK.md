@@ -2,6 +2,8 @@
 
 Single reference file for setup, usage, testing, outputs, and troubleshooting.
 
+> Local interview prep: if `tools/generate_code_reference.py` exists, run `python tools/generate_code_reference.py` immediately before relying on generated symbol locations or line numbers.
+
 ## Project
 
 `malware-behavior-detection-generator`
