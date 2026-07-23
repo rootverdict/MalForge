@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 *.so
 .pytest_cache/
+.ruff_cache/
 .mypy_cache/
 .coverage
 htmlcov/
@@ -19,6 +20,7 @@ dist/
 
 # Local generated handbook (large, not intended for GitHub)
 MALFORGE_COMPLETE_PROJECT_HANDBOOK.md
+.codex-handbook-deps/
 
 # Generated project outputs
 output/sigma/*

@@ -98,7 +98,7 @@ def validate_sigma_rules(rules: list[SigmaRule] | None) -> list[ValidationResult
     rule_list = rules or []
     results = [validate_sigma_rule(rule) for rule in rule_list]
     duplicate_ids = {rule_id for rule_id, count in Counter(rule.rule_id for rule in rule_list).items() if count > 1}
-    for rule, result in zip(rule_list, results):
+    for rule, result in zip(rule_list, results, strict=True):
         if rule.rule_id in duplicate_ids:
             result.errors.append(f"Duplicate Sigma rule ID: {rule.rule_id}.")
             result.is_valid = False
@@ -173,7 +173,7 @@ def validate_wazuh_rules(rules: list[WazuhRule] | None) -> list[ValidationResult
     rule_list = rules or []
     results = [validate_wazuh_rule(rule) for rule in rule_list]
     duplicate_ids = {rule_id for rule_id, count in Counter(rule.rule_id for rule in rule_list).items() if count > 1}
-    for rule, result in zip(rule_list, results):
+    for rule, result in zip(rule_list, results, strict=True):
         if rule.rule_id in duplicate_ids:
             result.errors.append(f"Duplicate Wazuh rule ID: {rule.rule_id}.")
             result.is_valid = False

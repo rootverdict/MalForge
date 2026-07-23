@@ -49,7 +49,11 @@ def test_generated_handbook_is_ignored() -> None:
         if line.strip() and not line.lstrip().startswith("#")
     }
 
-    assert "MALFORGE_COMPLETE_PROJECT_HANDBOOK.md" in ignored_entries
+    assert {
+        "MALFORGE_COMPLETE_PROJECT_HANDBOOK.md",
+        ".codex-handbook-deps/",
+        ".ruff_cache/",
+    } <= ignored_entries
 
 
 def test_repository_has_an_mit_license() -> None:

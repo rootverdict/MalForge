@@ -13,8 +13,6 @@ from extractor import extract_behaviors
 from generators.sigma_generator import generate_sigma_rules
 from ioc.ioc_extractor import extract_all_iocs
 from ingestion.anyrun import parse_report as parse_anyrun_report
-from ingestion.cape import parse_report as parse_cape_report
-from ingestion.cuckoo import parse_report as parse_cuckoo_report
 from quality.risk_scorer import score_rule
 from quality.validator import validate_sigma_rules, validate_wazuh_rules
 from reporting.report_generator import generate_markdown_report

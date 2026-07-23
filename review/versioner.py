@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
-from dataclasses import asdict, replace
+from dataclasses import replace
 from datetime import datetime, timezone
 from typing import Any
 

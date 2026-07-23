@@ -8,10 +8,12 @@ import re
 from typing import MutableMapping
 import xml.etree.ElementTree as ET
 
-from core.constants import SIGMA_TO_WAZUH_LEVEL, WAZUH_CUSTOM_RULE_ID_RANGE, WAZUH_RULE_ID_END, WAZUH_RULE_ID_START
+from core.constants import SIGMA_TO_WAZUH_LEVEL, WAZUH_CUSTOM_RULE_ID_RANGE
 from core.models import SigmaRule, WazuhRule
 
 DEFAULT_GROUP_NAME = "malware_behavior_detection_generator,"
+WAZUH_RULE_ID_START = WAZUH_CUSTOM_RULE_ID_RANGE.start
+WAZUH_RULE_ID_END = WAZUH_CUSTOM_RULE_ID_RANGE.stop - 1
 
 WINDOWS_LOGSOURCE_MAPPING = {
     "process_creation": {"group": "sysmon,process_creation,", "decoded_as": None, "if_sid": 61603},
