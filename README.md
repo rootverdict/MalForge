@@ -176,7 +176,7 @@ The URLhaus validation set also includes a Mozi `elf/mips` sample-style report. 
 ## Current Limitations
 
 - VirusTotal and MISP enrichment modules build local descriptors but do not make API calls
-- Sigma output uses YAML only if `PyYAML` is available; otherwise JSON fallback is used
+- The CLI requires `PyYAML`; Sigma output is YAML in normal installs. The lower-level output helper can fall back to JSON only if reused without `PyYAML`.
 - ATT&CK mapping targets ATT&CK 19.1 and remains intentionally rule-based
 - Validation and risk scoring are heuristic, not vendor-native validation engines
 - Synthetic test events are local JSON-like dictionaries only

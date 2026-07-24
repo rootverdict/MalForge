@@ -55,7 +55,7 @@ python main.py --report samples/cuckoo_sample.json --sandbox auto --no-write
 ## Interpret Output Files
 
 - `output/sigma/`
-  Detection content in YAML when `PyYAML` is available, otherwise JSON
+  Detection content in YAML for normal CLI installs; the lower-level output helper can fall back to JSON only if reused without `PyYAML`
 - `output/wazuh/`
   Wazuh XML output plus the persistent `.rule_ids.json` allocation registry
 - `output/test_events/`
@@ -86,4 +86,4 @@ This removes generated artifacts under `output/` but keeps the directory structu
 - No output files appear
   Make sure `--no-write` is not set
 - Output is JSON instead of YAML in `output/sigma/`
-  `PyYAML` may be unavailable; the pipeline falls back to JSON safely
+  The normal CLI install includes `PyYAML`; JSON output means the lower-level output helper is being reused without that dependency
