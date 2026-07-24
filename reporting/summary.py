@@ -16,7 +16,7 @@ from core.models import (
     WazuhRule,
 )
 
-TOOL_NAME = "malware-behavior-detection-generator"
+TOOL_NAME = "MalForge"
 TOOL_VERSION = "0.1.0"
 
 

@@ -1,10 +1,10 @@
-# MBDG Runbook
+# MalForge Runbook
 
 Single reference file for setup, usage, testing, outputs, and troubleshooting.
 
 ## Project
 
-`malware-behavior-detection-generator`
+`malforge`
 
 Local pipeline that:
 - reads sandbox JSON reports only
@@ -282,7 +282,7 @@ VirusTotal and MISP credentials currently enable local lookup descriptors only; 
 
 Validated lab proof:
 
-`Generated Wazuh rule 116767 fired successfully in the lab from MBDG-Win10 Sysmon Event ID 1 using parent rule 61603.`
+`Generated Wazuh rule 116767 fired successfully in the lab from a Windows endpoint Sysmon Event ID 1 using parent rule 61603.`
 
 ## Troubleshooting
 

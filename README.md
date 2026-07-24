@@ -145,7 +145,7 @@ Suggested lab layout for a portfolio demo:
 - `Wazuh VM`: receives generated XML only in later manual lab stages
 - `Windows 10 endpoint`: source of log format assumptions such as Sysmon-style process, file, registry, and network telemetry
 
-Generated Wazuh rule `116767` fired successfully in the lab from `MBDG-Win10` Sysmon Event ID `1` using parent rule `61603`.
+Generated Wazuh rule `116767` fired successfully in the lab from a Windows endpoint Sysmon Event ID `1` using parent rule `61603`.
 
 The current project does not automate any deployment to those systems.
 

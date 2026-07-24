@@ -3,9 +3,9 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "malware-behavior-detection-generator"
+name = "malforge"
 version = "0.1.0"
-description = "Scaffold for a malware behavior to detection rule generator."
+description = "Local sandbox JSON to detection artifact pipeline."
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [

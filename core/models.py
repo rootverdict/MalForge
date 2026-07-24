@@ -62,7 +62,7 @@ class SigmaRule:
     detection: dict[str, Any]
     level: str = "medium"
     status: str = "experimental"
-    author: str = "malware-behavior-detection-generator"
+    author: str = "MalForge"
     tags: list[str] = field(default_factory=list)
     references: list[str] = field(default_factory=list)
     falsepositives: list[str] = field(default_factory=list)

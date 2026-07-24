@@ -85,7 +85,7 @@ def test_version_metadata_contains_expected_keys() -> None:
     wazuh_version = versioned_wazuh.options["version"]
 
     for payload in (sigma_version, wazuh_version):
-        assert payload["tool_name"] == "malware-behavior-detection-generator"
+        assert payload["tool_name"] == "MalForge"
         assert payload["tool_version"] == "0.1.0"
         assert payload["rule_version"] == "2.1.0"
         assert payload["generated_at"] == timestamp

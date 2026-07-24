@@ -10,7 +10,7 @@ from typing import Any
 
 from core.models import SigmaRule, WazuhRule
 
-TOOL_NAME = "malware-behavior-detection-generator"
+TOOL_NAME = "MalForge"
 TOOL_VERSION = "0.1.0"
 
 
