@@ -133,7 +133,7 @@ Every artifact basename contains a 12-character canonical source-report fingerpr
 
 ```bash
 python -m pytest
-python -m compileall .
+python -m compileall -q attck converters core enrichment extractor generators ingestion ioc quality reporting review tests main.py
 make test
 ```
 

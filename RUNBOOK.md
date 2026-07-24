@@ -28,28 +28,34 @@ Local pipeline that:
 
 ## Requirements
 
-- `python3`
+- Python 3.11 or newer
 - `pip`
-- Linux/macOS shell or equivalent terminal
+- Windows PowerShell, Linux/macOS shell, or equivalent terminal
 
 ## Install
 
-Preferred:
+Windows PowerShell:
 
-```bash
-python3 -m pip install -r requirements.txt
+```powershell
+py -3 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
 ```
 
-If your system Python is externally managed:
+Linux/macOS:
 
 ```bash
-python3 -m pip install --user -r requirements.txt --break-system-packages
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
 ```
 
 Install the packaged command from the repository root when desired:
 
 ```bash
-python3 -m pip install .
+python -m pip install .
 malforge --help
 ```
 
@@ -79,25 +85,25 @@ output/                 generated artifacts
 Run one sample report:
 
 ```bash
-python3 main.py --report samples/cuckoo_sample.json --sandbox auto --output output
+python main.py --report samples/cuckoo_sample.json --sandbox auto --output output
 ```
 
 Run without writing files:
 
 ```bash
-python3 main.py --report samples/cuckoo_sample.json --sandbox auto --no-write
+python main.py --report samples/cuckoo_sample.json --sandbox auto --no-write
 ```
 
 Run all sample reports:
 
 ```bash
-python3 main.py --input-dir samples --sandbox auto --output output
+python main.py --input-dir samples --sandbox auto --output output
 ```
 
 Verbose run:
 
 ```bash
-python3 main.py --report samples/cuckoo_sample.json --sandbox auto --output output --verbose
+python main.py --report samples/cuckoo_sample.json --sandbox auto --output output --verbose
 ```
 
 ## CLI Options
@@ -160,19 +166,19 @@ This preserves `output/wazuh/.rule_ids.json` so later sequential runs retain the
 Primary:
 
 ```bash
-python3 -m pytest
+python -m pytest
 ```
 
-If `pytest` is not on `PATH`, always use:
+If `pytest` is not on `PATH`, use the activated virtual environment:
 
 ```bash
-python3 -m pytest
+python -m pytest
 ```
 
 Compile validation:
 
 ```bash
-python3 -m compileall .
+python -m compileall -q attck converters core enrichment extractor generators ingestion ioc quality reporting review tests main.py
 ```
 
 ## Offline Enrichment
@@ -183,7 +189,7 @@ Current supported offline enrichment:
 Example:
 
 ```bash
-python3 main.py \
+python main.py \
   --report samples/cape_sample.json \
   --sandbox auto \
   --enrich \
@@ -213,7 +219,7 @@ Default configured range:
 Override from CLI:
 
 ```bash
-python3 main.py \
+python main.py \
   --report samples/cuckoo_sample.json \
   --wazuh-id-start 130000 \
   --wazuh-id-end 139999
@@ -267,7 +273,7 @@ VirusTotal and MISP credentials currently enable local lookup descriptors only; 
    - `output/reports/*_summary.json`
    - `output/sigma/`
    - `output/wazuh/`
-4. Run `python3 -m pytest`
+4. Run `python -m pytest`
 5. If needed, rerun with:
    - `--no-write`
    - `--verbose`
@@ -287,7 +293,7 @@ Validated lab proof:
 Use:
 
 ```bash
-python3 -m pytest
+python -m pytest
 ```
 
 `Could not detect sandbox type from report`
@@ -356,23 +362,23 @@ Not implemented:
 Run one report:
 
 ```bash
-python3 main.py --report samples/cuckoo_sample.json --sandbox auto --output output
+python main.py --report samples/cuckoo_sample.json --sandbox auto --output output
 ```
 
 Run tests:
 
 ```bash
-python3 -m pytest
+python -m pytest
 ```
 
 Run offline enrichment:
 
 ```bash
-python3 main.py --report samples/cape_sample.json --enrich --urlhaus-csv /path/to/urlhaus.csv
+python main.py --report samples/cape_sample.json --enrich --urlhaus-csv /path/to/urlhaus.csv
 ```
 
 Use a custom Wazuh ID range:
 
 ```bash
-python3 main.py --report samples/cuckoo_sample.json --wazuh-id-start 130000 --wazuh-id-end 139999
+python main.py --report samples/cuckoo_sample.json --wazuh-id-start 130000 --wazuh-id-end 139999
 ```

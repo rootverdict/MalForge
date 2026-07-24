@@ -2,36 +2,54 @@
 
 ## Install Dependencies
 
-```bash
-python3 -m pip install --user -r requirements.txt --break-system-packages
+Requirements:
+
+- Python 3.11 or newer
+
+Windows PowerShell:
+
+```powershell
+py -3 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
 ```
 
-To install the packaged command, run `python3 -m pip install .`; the CLI is then available as `malforge`.
+Linux/macOS:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+```
+
+To install the packaged command, run `python -m pip install .`; the CLI is then available as `malforge`.
 
 ## Run Tests
 
 ```bash
-python3 -m pytest
+python -m pytest
 ```
 
-If `pytest` is not on your shell `PATH`, this `python3 -m pytest` form is the expected command in this environment.
+If `pytest` is not on your shell `PATH`, use `python -m pytest` from the activated virtual environment.
 
 ## Run a Sample Report
 
 ```bash
-python3 main.py --report samples/cuckoo_sample.json --sandbox auto --output output
+python main.py --report samples/cuckoo_sample.json --sandbox auto --output output
 ```
 
 ## Run Batch Mode
 
 ```bash
-python3 main.py --input-dir samples --sandbox auto --output output
+python main.py --input-dir samples --sandbox auto --output output
 ```
 
 ## Run Without Writing Artifacts
 
 ```bash
-python3 main.py --report samples/cuckoo_sample.json --sandbox auto --no-write
+python main.py --report samples/cuckoo_sample.json --sandbox auto --no-write
 ```
 
 ## Interpret Output Files
@@ -62,7 +80,7 @@ This removes generated artifacts under `output/` but keeps the directory structu
 ## Troubleshooting
 
 - `pytest: command not found`
-  Use `python3 -m pytest`
+  Use `python -m pytest` from the activated virtual environment
 - `error: Report path does not exist`
   Check the `--report` path or use `--input-dir`
 - No output files appear

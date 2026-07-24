@@ -77,6 +77,7 @@ V2 starts only after the V1 boundary is stable. It should improve usefulness wit
 - Richer report sections for analyst triage and QA review.
 - Expanded sandbox schema coverage when real fixtures exist.
 - More realistic synthetic test event fixtures.
+- Maintainability refactors for complex helpers, including IOC extraction, validation, and report rendering.
 - Release packaging and artifact publishing automation.
 
 ## Later Versions
@@ -100,4 +101,3 @@ Later versions can include larger product shifts:
 - If a change increases safety risk, it needs an explicit design note before implementation.
 - If a change makes output nondeterministic, it should stay out of V1 unless there is a deterministic fallback.
 - If the answer is unclear, default to V2 and keep V1 moving.
-
