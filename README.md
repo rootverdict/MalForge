@@ -62,38 +62,56 @@ output/       Generated local artifacts
 
 ## Setup
 
-```bash
-python3 -m pip install --user -r requirements.txt --break-system-packages
+Requirements:
+
+- Python 3.11 or newer
+
+Windows PowerShell:
+
+```powershell
+py -3 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
 ```
 
-To install the packaged `malforge` command, run `python3 -m pip install .` from the repository root.
+Linux/macOS:
 
-If `pytest` is not on your shell `PATH`, use `python3 -m pytest`.
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+```
+
+To install the packaged `malforge` command, run `python -m pip install .` from the repository root.
+
+If `pytest` is not on your shell `PATH`, use `python -m pytest`.
 
 ## Usage
 
 Single report:
 
 ```bash
-python3 main.py --report samples/cuckoo_sample.json --sandbox auto --output output
+python main.py --report samples/cuckoo_sample.json --sandbox auto --output output
 ```
 
 Batch mode:
 
 ```bash
-python3 main.py --input-dir samples --sandbox auto --output output
+python main.py --input-dir samples --sandbox auto --output output
 ```
 
 No-write mode:
 
 ```bash
-python3 main.py --report samples/cuckoo_sample.json --sandbox auto --no-write
+python main.py --report samples/cuckoo_sample.json --sandbox auto --no-write
 ```
 
 Verbose mode:
 
 ```bash
-python3 main.py --report samples/cuckoo_sample.json --sandbox auto --output output --verbose
+python main.py --report samples/cuckoo_sample.json --sandbox auto --output output --verbose
 ```
 
 ## Output Files
@@ -114,8 +132,8 @@ Every artifact basename contains a 12-character canonical source-report fingerpr
 ## Testing
 
 ```bash
-python3 -m pytest
-python3 -m compileall .
+python -m pytest
+python -m compileall .
 make test
 ```
 
@@ -165,6 +183,8 @@ The URLhaus validation set also includes a Mozi `elf/mips` sample-style report. 
 - Pipeline output writing currently targets local files only
 
 ## Roadmap
+
+Version boundaries are tracked in [`docs/version_scope.md`](docs/version_scope.md). V1 is intentionally limited to the safe local CLI pipeline; V2 collects practical analyst workflow improvements after that base is stable.
 
 - Enable IOC enrichment with optional local/offline caching
 - Expand ATT&CK mapping depth and confidence tuning
