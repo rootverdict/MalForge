@@ -71,6 +71,18 @@ def test_cli_single_report_mode_works(tmp_path: Path, capsys) -> None:
     assert "behaviors=" in captured.out
 
 
+def test_cli_verbose_prints_validation_warning_details(tmp_path: Path, capsys) -> None:
+    report_path = FIXTURES_DIR / "sample_cuckoo_report.json"
+
+    exit_code = main(["--report", str(report_path), "--output", str(tmp_path), "--no-write", "--verbose"])
+    captured = capsys.readouterr()
+
+    assert exit_code == 0
+    assert "warnings=2" in captured.out
+    assert "validation warnings:" in captured.out
+    assert "Missing ATT&CK" in captured.out
+
+
 def test_cli_accepts_wazuh_id_override_args(tmp_path: Path, capsys) -> None:
     report_path = FIXTURES_DIR / "sample_cape_report.json"
 
@@ -147,6 +159,13 @@ def test_pipeline_with_unknown_sandbox_returns_clear_error() -> None:
         assert "Could not detect sandbox type" in str(exc)
     else:
         raise AssertionError("Expected unknown sandbox input to raise ValueError")
+
+
+def test_pipeline_rejects_forced_sandbox_mismatch() -> None:
+    report_path = FIXTURES_DIR / "sample_cuckoo_report.json"
+
+    with pytest.raises(ValueError, match="Forced sandbox type 'anyrun' does not match detected report type 'cuckoo'"):
+        run_pipeline(report_path, sandbox="anyrun", write_output=False)
 
 
 def test_no_write_does_not_create_artifacts(tmp_path: Path) -> None:

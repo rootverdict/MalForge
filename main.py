@@ -35,6 +35,20 @@ def _build_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def _validation_warning_lines(result, *, limit: int = 5) -> list[str]:
+    lines: list[str] = []
+    for validation_result in result.validation_results:
+        rule_id = validation_result.details.get("rule_id")
+        label = validation_result.validator
+        if rule_id is not None:
+            label = f"{label} {rule_id}"
+        for warning in validation_result.warnings:
+            lines.append(f"{label}: {warning}")
+            if len(lines) >= limit:
+                return lines
+    return lines
+
+
 def _print_summary(result, *, verbose: bool = False) -> None:
     summary = result.metadata["summary"]
     counts = summary["counts"]
@@ -49,6 +63,14 @@ def _print_summary(result, *, verbose: bool = False) -> None:
         f"warnings={warning_count}"
     )
     print(line)
+    if verbose and warning_count:
+        warning_lines = _validation_warning_lines(result)
+        print("  validation warnings:")
+        for warning_line in warning_lines:
+            print(f"    - {warning_line}")
+        remaining_count = warning_count - len(warning_lines)
+        if remaining_count > 0:
+            print(f"    - ... {remaining_count} more")
     if verbose and result.metadata.get("output_files"):
         print(f"  wrote: {result.metadata['output_files']}")
 

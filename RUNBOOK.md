@@ -116,7 +116,7 @@ python main.py --report samples/cuckoo_sample.json --sandbox auto --output outpu
 --urlhaus-csv PATH       Local URLhaus CSV for offline URL/domain enrichment
 --wazuh-id-start N       Override Wazuh custom rule ID start
 --wazuh-id-end N         Override Wazuh custom rule ID end
---verbose                Print additional output details
+--verbose                Print output details and validation warning hints
 ```
 
 ## Useful Commands

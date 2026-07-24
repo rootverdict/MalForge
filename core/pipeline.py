@@ -262,7 +262,15 @@ def run_pipeline(
 ) -> PipelineResult:
     """Run the full local pipeline on a sandbox report."""
     raw_report, input_path = _resolve_report_input(report_input)
-    sandbox_name = sandbox if sandbox != "auto" else detect_sandbox(raw_report)
+    detected_sandbox = detect_sandbox(raw_report)
+    if sandbox == "auto":
+        sandbox_name = detected_sandbox
+    else:
+        if detected_sandbox != "unknown" and detected_sandbox != sandbox:
+            raise ValueError(
+                f"Forced sandbox type '{sandbox}' does not match detected report type '{detected_sandbox}'"
+            )
+        sandbox_name = sandbox
     if sandbox_name == "unknown":
         raise ValueError("Could not detect sandbox type from report")
     if sandbox_name not in PARSER_MAP:
