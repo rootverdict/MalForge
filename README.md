@@ -21,6 +21,7 @@ This project uses sandbox JSON reports only. It does not execute malware, launch
 - Validate generated rules and assign heuristic risk scores
 - Generate safe synthetic positive and negative test events
 - Apply local review metadata and deterministic version metadata
+- Trace every generated rule back to its source behavior, evidence, and ATT&CK IDs
 - Match URL and domain IOCs against a local URLhaus CSV export, without downloading it
 - Build JSON summaries and Markdown reports
 - Run single-report and batch pipelines from the CLI

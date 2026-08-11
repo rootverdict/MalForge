@@ -30,6 +30,9 @@ Sandbox JSON report
 - Assign deterministic local risk scores.
 - Generate safe synthetic positive and negative test events.
 - Apply local review and deterministic version metadata.
+- Record a per-rule trace linking every Sigma and Wazuh rule back to its source
+  behavior, evidence, ATT&CK IDs, and selector reason, and render it as the
+  report's `Rule Generation Rationale` section.
 - Generate JSON summaries and Markdown analyst reports.
 - Build offline enrichment request descriptors for VirusTotal and MISP under
   `--enrich`, without sending any request.

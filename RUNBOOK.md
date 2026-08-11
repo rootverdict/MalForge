@@ -347,6 +347,7 @@ Implemented:
 - validation
 - risk scoring
 - synthetic test events
+- explainability traces
 - reporting
 - offline URLhaus hook
 

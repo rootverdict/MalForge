@@ -19,11 +19,12 @@ build/
 dist/
 *.egg-info/
 
-# Local handbook and generated code reference (not intended for GitHub)
+# Local handbook and generated code reference (not intended for GitHub).
+# tools/ is deliberately NOT ignored: it holds the generator source, which is
+# versioned even though the reference it writes is not.
 MALFORGE_COMPLETE_PROJECT_HANDBOOK.md
 MALFORGE_HANDBOOK.md
 MALFORGE_CODE_REFERENCE.md
-tools/
 .codex-handbook-deps/
 
 # Generated validation corpus artifacts.

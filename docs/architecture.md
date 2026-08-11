@@ -35,6 +35,7 @@ The project is a local analysis pipeline that turns sandbox JSON reports into de
 ### `generators/`
 
 - Generates `SigmaRule` objects from extracted behavior and ATT&CK context
+- Records a trace on each rule linking it back to its source behavior, evidence, and ATT&CK IDs
 
 ### `converters/`
 
