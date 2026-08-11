@@ -12,7 +12,7 @@ This project uses sandbox JSON reports only. It does not execute malware, launch
 
 - Parse Cuckoo, CAPE, and ANY.RUN JSON reports
 - Normalize report artifacts into a common schema
-- Extract process, registry, file, network, and persistence behaviors
+- Extract process, registry, file, network, and persistence behaviors, plus behaviors implied by sandbox signatures
 - Extract local IOCs from normalized reports and behavior evidence
 - Map behaviors to MITRE ATT&CK techniques and generate ATT&CK Navigator layers
 - Generate Sigma rules and convert them to Wazuh rules and XML
@@ -21,6 +21,7 @@ This project uses sandbox JSON reports only. It does not execute malware, launch
 - Validate generated rules and assign heuristic risk scores
 - Generate safe synthetic positive and negative test events
 - Apply local review metadata and deterministic version metadata
+- Match URL and domain IOCs against a local URLhaus CSV export, without downloading it
 - Build JSON summaries and Markdown reports
 - Run single-report and batch pipelines from the CLI
 
@@ -55,6 +56,7 @@ converters/   Wazuh rule conversion and XML rendering
 quality/      Validation, scoring, and synthetic test events
 review/       Review metadata and version stamping
 reporting/    JSON summaries and Markdown reporting
+enrichment/   Offline enrichment helpers, no network calls
 samples/      Safe example sandbox reports
 tests/        Unit and pipeline coverage
 output/       Generated local artifacts
@@ -84,7 +86,7 @@ python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
-To install the packaged `malforge` command, run `python -m pip install .` from the repository root.
+To install the packaged `malforge` command, run `python -m pip install .` from the repository root. Runtime needs only `PyYAML`; use `python -m pip install ".[dev]"` to also pull in `pytest` for the test suite.
 
 If `pytest` is not on your shell `PATH`, use `python -m pytest`.
 
@@ -113,6 +115,20 @@ Verbose mode:
 ```bash
 python main.py --report samples/cuckoo_sample.json --sandbox auto --output output --verbose
 ```
+
+Offline enrichment:
+
+```bash
+python main.py --report samples/cape_sample.json --enrich --urlhaus-csv /path/to/urlhaus.csv
+```
+
+Custom Wazuh ID range:
+
+```bash
+python main.py --report samples/cuckoo_sample.json --wazuh-id-start 130000 --wazuh-id-end 139999
+```
+
+The full option list is in [`docs/usage.md`](docs/usage.md) and [`RUNBOOK.md`](RUNBOOK.md).
 
 ## Output Files
 
@@ -151,20 +167,30 @@ The current project does not automate any deployment to those systems.
 
 ## Internet-Derived Validation
 
-A historical 50-report validation corpus was generated from the public URLhaus recent CSV feed. This used public URL/IOC metadata only: no malware binaries, no detonation, and no live sample execution. The checked-in artifact snapshot predates the persistent ID registry and fingerprinted filename format; use a fresh pipeline run for deployable content.
+A 50-report validation corpus derived from the public URLhaus recent CSV feed. This used public URL/IOC metadata only: no malware binaries, no detonation, and no live sample execution.
 
-Validation result:
+The corpus is reproducible offline and pinned to the same 50 indicators, so re-running it after a code change shows exactly what changed:
 
-- Input reports generated: 50
+```bash
+python validation/rebuild_corpus.py
+```
+
+Current result:
+
+- Input reports: 50
 - Successful CLI runs: 50
 - Failed CLI runs: 0
 - Markdown reports generated: 50
 - Sigma rules generated: 200
-- Wazuh rules generated: 200
-- Validation warnings: 0
+- Wazuh rules generated: 200 (200 unique IDs)
+- Structural validation errors: 0
+- Validation warnings: 40 (advisory `Missing ATT&CK tags` on generic IP-connection rules)
 
-Evidence files:
+Two rebuilds are byte-identical, and the script exits non-zero if any rule fails structural validation.
 
+Evidence files, with reconstruction details in [`validation/README.md`](validation/README.md):
+
+- `validation/rebuild_corpus.py`
 - `validation/internet_validation_manifest_50.json`
 - `validation/internet_validation_summary_50.json`
 - `validation/internet_validation_summary_50.md`
@@ -177,10 +203,12 @@ The URLhaus validation set also includes a Mozi `elf/mips` sample-style report. 
 
 - VirusTotal and MISP enrichment modules build local descriptors but do not make API calls
 - The CLI requires `PyYAML`; Sigma output is YAML in normal installs. The lower-level output helper can fall back to JSON only if reused without `PyYAML`.
-- ATT&CK mapping targets ATT&CK 19.1 and remains intentionally rule-based
-- Validation and risk scoring are heuristic, not vendor-native validation engines
-- Synthetic test events are local JSON-like dictionaries only
+- ATT&CK mapping targets ATT&CK 19.1 and remains intentionally rule-based. Techniques use the v19 `Stealth` (TA0005) and `Defense Impairment` (TA0112) tactics that replaced `Defense Evasion`, so Navigator layers require a v19-aware Navigator build.
+- Validation and risk scoring are heuristic, not vendor-native validation engines. Rules are not checked against `pysigma` or the Wazuh rule tester.
+- Sigma selectors are derived from single evidence values, so command-line selectors stay sample-specific and are not generalized into behavioral patterns
+- Synthetic test events are local JSON-like dictionaries only. Negative events are constructed not to collide with the observed value, but they are not executed against a rule engine.
 - Pipeline output writing currently targets local files only
+- Only `paths.output_dir`, `wazuh.*`, and `integrations.*` in `config.yaml` are read; output subdirectory names are fixed by the pipeline
 
 ## Roadmap
 

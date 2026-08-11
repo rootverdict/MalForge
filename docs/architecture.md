@@ -20,6 +20,7 @@ The project is a local analysis pipeline that turns sandbox JSON reports into de
   - file
   - network
   - persistence
+  - sandbox signature
 
 ### `ioc/`
 
@@ -57,10 +58,17 @@ The project is a local analysis pipeline that turns sandbox JSON reports into de
 - Builds machine-readable summary dictionaries
 - Builds Markdown analyst reports
 
+### `enrichment/`
+
+- Builds local VirusTotal and MISP lookup descriptors without performing any network call
+- Matches URL and domain IOCs against an offline URLhaus CSV export when one is supplied
+- Contains no HTTP client of any kind; enrichment is opt-in via `--enrich`
+
 ### `core/`
 
 - Shared models
 - Schema helpers
+- Sigma value escaping helpers shared by generation and conversion
 - Pipeline orchestration
 - Local output writing helpers
 
@@ -101,6 +109,7 @@ Raw sandbox JSON
 - Synthetic test events: `quality/test_event_generator.py`
 - Review records: `review/reviewer.py`
 - Version metadata: `review/versioner.py`
+- Local enrichment descriptors: `enrichment/*`
 - Summary and Markdown: `reporting/summary.py`, `reporting/report_generator.py`
 - End-to-end orchestration: `core/pipeline.py`
 

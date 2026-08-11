@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 from typing import Any, Mapping
 
-from core.constants import MAX_REPORT_SIZE_BYTES, SUPPORTED_SANDBOXES
+from core.constants import MAX_REPORT_SIZE_BYTES
 
 UNIFIED_REPORT_VERSION = "1.0"
 REQUIRED_NORMALIZED_KEYS = (
@@ -131,48 +131,3 @@ def finalize_unified_report(normalized_report: Mapping[str, Any], source: str) -
     finalized["schema_version"] = UNIFIED_REPORT_VERSION
     finalized["sandbox"] = source
     return finalized
-
-
-def normalize_report(
-    report: Mapping[str, Any],
-    source: str | None = None,
-) -> dict[str, Any]:
-    """Normalize a sandbox report into a unified, safe schema."""
-    sandbox = source or detect_sandbox(report)
-    if sandbox not in SUPPORTED_SANDBOXES and sandbox != "unknown":
-        raise ValueError(f"Unsupported sandbox source: {sandbox}")
-
-    behavior = ensure_mapping(report.get("behavior"))
-    summary = ensure_mapping(behavior.get("summary"))
-    network = ensure_mapping(report.get("network"))
-    fallback_network = report.get("network")
-    if isinstance(fallback_network, Mapping):
-        fallback_network = None
-
-    normalized = empty_unified_report(sandbox)
-    normalized["sample"] = ensure_mapping(report.get("target") or report.get("sample"))
-    normalized["processes"] = ensure_list(
-        behavior.get("processes")
-        or report.get("processes")
-        or get_nested(report, "analysis", "processes")
-    )
-    normalized["registry"] = ensure_list(summary.get("keys") or report.get("registry"))
-    normalized["files"] = ensure_list(summary.get("files") or report.get("files"))
-    normalized["network"] = ensure_list(
-        [
-            *ensure_list(network.get("hosts")),
-            *ensure_list(network.get("domains")),
-            *ensure_list(network.get("http")),
-            *ensure_list(fallback_network),
-            *ensure_list(get_nested(report, "analysis", "network")),
-        ]
-    )
-    normalized["persistence"] = ensure_list(report.get("persistence"))
-    normalized["iocs"] = ensure_list(report.get("iocs"))
-    normalized["signatures"] = ensure_list(report.get("signatures"))
-    normalized["attack"] = ensure_list(report.get("attack"))
-    normalized["metadata"] = {
-        "info": ensure_mapping(report.get("info")),
-        "raw_keys": sorted(report.keys()),
-    }
-    return finalize_unified_report(normalized, sandbox)

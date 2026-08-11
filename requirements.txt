@@ -1,2 +1,4 @@
+# Development install. Runtime needs only PyYAML; pytest runs the test suite.
+# Equivalent to: python -m pip install ".[dev]"
 pyyaml>=6.0,<7.0
 pytest>=8.0,<10.0

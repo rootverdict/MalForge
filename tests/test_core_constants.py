@@ -1,4 +1,4 @@
-﻿"""Tests for shared project constants."""
+"""Tests for shared project constants."""
 
 from core.constants import (
     ATTACK_VERSION,

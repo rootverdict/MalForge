@@ -1,4 +1,4 @@
-﻿"""Rule-based ATT&CK mapping for extracted behaviors."""
+"""Rule-based ATT&CK mapping for extracted behaviors."""
 
 from __future__ import annotations
 

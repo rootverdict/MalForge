@@ -1,4 +1,4 @@
-﻿"""Sigma rule generation from behaviors and ATT&CK mappings."""
+"""Sigma rule generation from behaviors and ATT&CK mappings."""
 
 from __future__ import annotations
 
@@ -11,6 +11,7 @@ from dataclasses import asdict
 from urllib.parse import urlparse
 
 from core.models import AttackMapping, Behavior, SigmaRule
+from core.sigma_syntax import escape_sigma_value, sigma_field_name
 
 GENERATOR_NAME = "malware-behavior-detection-generator"
 
@@ -62,6 +63,16 @@ def _is_ip_address(value: str) -> bool:
 def _basename(value: str) -> str:
     parts = [part for part in re.split(r"[\\/]", value.strip()) if part]
     return parts[-1] if parts else value.strip()
+
+
+def _selector_field_names(selection: dict[str, str]) -> list[str]:
+    """List the plain log field names behind a selector, without Sigma modifiers."""
+    names: list[str] = []
+    for key in selection:
+        name = sigma_field_name(key)
+        if name not in names:
+            names.append(name)
+    return names
 
 
 def _mapping_tags_for_behavior(
@@ -139,10 +150,10 @@ def _build_process_rule(behavior: Behavior) -> tuple[dict[str, str], dict[str, o
         detection: dict[str, object] = {}
         fields: list[str] = []
         if process_name:
-            detection["selection_exe"] = {"exe|endswith": _basename(process_name)}
+            detection["selection_exe"] = {"exe|endswith": escape_sigma_value(_basename(process_name))}
             fields.append("exe")
         if command_line:
-            detection["selection_cmdline"] = {"cmdline|contains": command_line}
+            detection["selection_cmdline"] = {"cmdline|contains": escape_sigma_value(command_line)}
             fields.append("cmdline")
         detection["condition"] = "all of them" if len(detection) > 1 else next(iter(detection), "selection")
         if not fields:
@@ -154,10 +165,10 @@ def _build_process_rule(behavior: Behavior) -> tuple[dict[str, str], dict[str, o
     detection = {}
     fields = []
     if process_name:
-        detection["selection_image"] = {"Image|endswith": process_name}
+        detection["selection_image"] = {"Image|endswith": escape_sigma_value(process_name)}
         fields.append("Image")
     if command_line:
-        detection["selection_cmdline"] = {"CommandLine|contains": command_line}
+        detection["selection_cmdline"] = {"CommandLine|contains": escape_sigma_value(command_line)}
         fields.append("CommandLine")
     if "selection_image" in detection and "selection_cmdline" in detection:
         detection["condition"] = "all of them"
@@ -175,7 +186,7 @@ def _build_registry_rule(behavior: Behavior) -> tuple[dict[str, str], dict[str, 
     evidence = behavior.evidence[0] if behavior.evidence else {}
     key = str(evidence.get("key") or "").strip()
     logsource = {"category": "registry_event", "product": "windows"}
-    selection = {"TargetObject|contains": key} if key else {}
+    selection = {"TargetObject|contains": escape_sigma_value(key)} if key else {}
     return logsource, {"selection": selection, "condition": "selection"}, ["TargetObject"] if key else []
 
 
@@ -185,10 +196,10 @@ def _build_file_rule(behavior: Behavior) -> tuple[dict[str, str], dict[str, obje
     if _is_non_windows_behavior(behavior):
         value = _basename(path) if path else ""
         logsource = {"category": "file_event", "product": "linux", "service": "auditd"}
-        selection = {"file.path|contains": value} if value else {}
+        selection = {"file.path|contains": escape_sigma_value(value)} if value else {}
         return logsource, {"selection": selection, "condition": "selection"}, ["file.path"] if value else []
     logsource = {"category": "file_event", "product": "windows"}
-    selection = {"TargetFilename|contains": path} if path else {}
+    selection = {"TargetFilename|contains": escape_sigma_value(path)} if path else {}
     return logsource, {"selection": selection, "condition": "selection"}, ["TargetFilename"] if path else []
 
 
@@ -202,30 +213,35 @@ def _build_network_rule(behavior: Behavior) -> tuple[dict[str, str], dict[str, o
             key = "destination.ip" if non_windows else "DestinationIp"
             category = "network_connection"
             product = "linux" if non_windows else "windows"
-            return {"category": category, "product": product}, {"selection": {key: value} if value else {}, "condition": "selection"}, [key] if value else []
+            selection = {key: escape_sigma_value(value)} if value else {}
+            return {"category": category, "product": product}, {"selection": selection, "condition": "selection"}, _selector_field_names(selection)
         key = "query|contains" if non_windows else "QueryName|contains"
         product = "linux" if non_windows else "windows"
-        return {"category": "dns_query", "product": product}, {"selection": {key: value} if value else {}, "condition": "selection"}, [key] if value else []
+        selection = {key: escape_sigma_value(value)} if value else {}
+        return {"category": "dns_query", "product": product}, {"selection": selection, "condition": "selection"}, _selector_field_names(selection)
 
     if "uri" in evidence or "url" in evidence:
         value = str(evidence.get("uri") or evidence.get("url") or "").strip()
         hostname = urlparse(value).hostname or value
         if non_windows:
-            selection: dict[str, str] = {"url|contains": value} if value else {}
+            selection = {"url|contains": escape_sigma_value(value)} if value else {}
             if hostname and _is_ip_address(hostname):
-                selection["destination.ip"] = hostname
+                selection["destination.ip"] = escape_sigma_value(hostname)
             elif hostname:
-                selection["destination.domain|contains"] = hostname
-            return {"category": "network_connection", "product": "linux"}, {"selection": selection, "condition": "selection"}, list(selection.keys())
+                selection["destination.domain|contains"] = escape_sigma_value(hostname)
+            return {"category": "network_connection", "product": "linux"}, {"selection": selection, "condition": "selection"}, _selector_field_names(selection)
         if hostname and _is_ip_address(hostname):
-            return {"category": "network_connection", "product": "windows"}, {"selection": {"DestinationIp": hostname}, "condition": "selection"}, ["DestinationIp"]
-        return {"category": "network_connection", "product": "windows"}, {"selection": {"DestinationHostname|contains": hostname} if hostname else {}, "condition": "selection"}, ["DestinationHostname"] if hostname else []
+            selection = {"DestinationIp": escape_sigma_value(hostname)}
+            return {"category": "network_connection", "product": "windows"}, {"selection": selection, "condition": "selection"}, _selector_field_names(selection)
+        selection = {"DestinationHostname|contains": escape_sigma_value(hostname)} if hostname else {}
+        return {"category": "network_connection", "product": "windows"}, {"selection": selection, "condition": "selection"}, _selector_field_names(selection)
 
     if "ip" in evidence or "ipv6" in evidence:
         value = str(evidence.get("ip") or evidence.get("ipv6") or "").strip()
         key = "destination.ip" if non_windows else "DestinationIp"
         product = "linux" if non_windows else "windows"
-        return {"category": "network_connection", "product": product}, {"selection": {key: value} if value else {}, "condition": "selection"}, [key] if value else []
+        selection = {key: escape_sigma_value(value)} if value else {}
+        return {"category": "network_connection", "product": product}, {"selection": selection, "condition": "selection"}, _selector_field_names(selection)
 
     product = "linux" if non_windows else "windows"
     return {"category": "network_connection", "product": product}, {"selection": {}, "condition": "selection"}, []
@@ -236,11 +252,11 @@ def _build_persistence_rule(behavior: Behavior) -> tuple[dict[str, str], dict[st
     persistence_type = str(evidence.get("type") or evidence.get("method") or "").strip().lower()
 
     if "task" in persistence_type:
-        return {"category": "process_creation", "product": "windows"}, {"selection": {"Image|endswith": "schtasks.exe"}, "condition": "selection"}, ["Image"]
+        return {"category": "process_creation", "product": "windows"}, {"selection": {"Image|endswith": escape_sigma_value("schtasks.exe")}, "condition": "selection"}, ["Image"]
     if "service" in persistence_type:
-        return {"category": "process_creation", "product": "windows"}, {"selection": {"Image|endswith": "sc.exe"}, "condition": "selection"}, ["Image"]
+        return {"category": "process_creation", "product": "windows"}, {"selection": {"Image|endswith": escape_sigma_value("sc.exe")}, "condition": "selection"}, ["Image"]
     if "startup" in persistence_type or "run" in persistence_type:
-        return {"category": "registry_event", "product": "windows"}, {"selection": {"TargetObject|contains": "Run"}, "condition": "selection"}, ["TargetObject"]
+        return {"category": "registry_event", "product": "windows"}, {"selection": {"TargetObject|contains": escape_sigma_value("\\Run")}, "condition": "selection"}, ["TargetObject"]
     return {"category": "process_creation", "product": "windows"}, {"selection": {}, "condition": "selection"}, []
 
 

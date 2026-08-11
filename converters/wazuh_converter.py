@@ -1,4 +1,4 @@
-﻿"""Conversion from Sigma rules to Wazuh rules and XML."""
+"""Conversion from Sigma rules to Wazuh rules and XML."""
 
 from __future__ import annotations
 
@@ -10,6 +10,7 @@ import xml.etree.ElementTree as ET
 
 from core.constants import SIGMA_TO_WAZUH_LEVEL, WAZUH_CUSTOM_RULE_ID_RANGE
 from core.models import SigmaRule, WazuhRule
+from core.sigma_syntax import unescape_sigma_value
 
 DEFAULT_GROUP_NAME = "malware_behavior_detection_generator,"
 WAZUH_RULE_ID_START = WAZUH_CUSTOM_RULE_ID_RANGE.start
@@ -52,16 +53,6 @@ FIELD_NAME_MAPPING = {
     "url|contains": "url",
     "query|contains": "dns.query",
 }
-
-
-def configure_wazuh_id_range(start: int, end: int) -> None:
-    """Update the active Wazuh custom rule ID range for this process."""
-    global WAZUH_CUSTOM_RULE_ID_RANGE, WAZUH_RULE_ID_START, WAZUH_RULE_ID_END
-    if start <= 0 or end <= start:
-        raise ValueError("Wazuh rule ID range must satisfy start > 0 and end > start")
-    WAZUH_RULE_ID_START = start
-    WAZUH_RULE_ID_END = end
-    WAZUH_CUSTOM_RULE_ID_RANGE = range(start, end + 1)
 
 
 def _validated_wazuh_id_range(id_range: range | None) -> range:
@@ -121,7 +112,7 @@ def _selector_mappings(detection: dict[str, object]) -> list[tuple[str, dict[str
     return selectors
 
 
-def _selector_groups(detection: dict[str, object]) -> list[list[tuple[str, dict[str, object]]]]:
+def selector_groups(detection: dict[str, object]) -> list[list[tuple[str, dict[str, object]]]]:
     selectors = _selector_mappings(detection)
     if not selectors:
         return []
@@ -187,9 +178,11 @@ def _convert_selector_group(selectors: list[tuple[str, dict[str, object]]]) -> t
                     None,
                 )
             if not field_name:
-                continue
+                raise ValueError(
+                    f"Sigma field has no Wazuh equivalent and cannot be dropped silently: {sigma_field}"
+                )
             match_type = match_modifiers[0] if match_modifiers else "exact"
-            normalized_value = str(value)
+            normalized_value = unescape_sigma_value(value)
             if field_name in fields and (
                 fields[field_name] != normalized_value or match_types[field_name] != match_type
             ):
@@ -200,7 +193,7 @@ def _convert_selector_group(selectors: list[tuple[str, dict[str, object]]]) -> t
 
 
 def _convert_detection_fields(detection: dict[str, object]) -> tuple[dict[str, str], dict[str, str]]:
-    groups = _selector_groups(detection)
+    groups = selector_groups(detection)
     if not groups:
         return {}, {}
     if len(groups) != 1:
@@ -309,8 +302,8 @@ def convert_sigma_to_wazuh(
         mapping = _mapping_for_rule(sigma_rule)
         if not mapping:
             continue
-        selector_groups = _selector_groups(sigma_rule.detection)
-        for selector_group in selector_groups:
+        rule_selector_groups = selector_groups(sigma_rule.detection)
+        for selector_group in rule_selector_groups:
             if product == "windows" and category == "process_creation":
                 fields, field_match_types = _process_creation_fields(selector_group)
             else:
@@ -335,7 +328,7 @@ def convert_sigma_to_wazuh(
             base_registry_key = f"{id_namespace}|{sigma_rule.rule_id}" if id_namespace else sigma_rule.rule_id
             selector_names = [name for name, _ in selector_group]
             registry_key = base_registry_key
-            if len(selector_groups) > 1:
+            if len(rule_selector_groups) > 1:
                 registry_key = f"{base_registry_key}|branch:{'+'.join(selector_names)}"
             registered_id = id_registry.get(registry_key) if id_registry is not None else None
             wazuh_id = registered_id if registered_id is not None else _allocate_wazuh_id(
@@ -385,42 +378,29 @@ def convert_sigma_to_wazuh(
 def wazuh_rule_to_xml(rule: WazuhRule) -> str:
     """Serialize a single WazuhRule to parseable XML."""
     rule_element = ET.Element("rule", id=str(rule.rule_id), level=str(rule.level))
-    process_creation_shape = bool(rule.if_sid == 61603 and rule.fields and not rule.decoded_as)
 
-    if process_creation_shape:
+    if rule.if_group:
+        if_group = ET.SubElement(rule_element, "if_group")
+        if_group.text = rule.if_group
+
+    if rule.decoded_as:
+        decoded_as = ET.SubElement(rule_element, "decoded_as")
+        decoded_as.text = rule.decoded_as
+
+    if rule.if_sid is not None:
         if_sid = ET.SubElement(rule_element, "if_sid")
         if_sid.text = str(rule.if_sid)
-        for name, value in sorted(rule.fields.items()):
-            field = ET.SubElement(rule_element, "field", name=name, type="pcre2")
-            field.text = _escape_field_value(value, rule.field_match_types.get(name, "contains"))
-        description = ET.SubElement(rule_element, "description")
-        description.text = rule.description
-        if rule.group:
-            group = ET.SubElement(rule_element, "group")
-            group.text = rule.group
-    else:
-        if rule.if_group:
-            if_group = ET.SubElement(rule_element, "if_group")
-            if_group.text = rule.if_group
 
-        if rule.decoded_as:
-            decoded_as = ET.SubElement(rule_element, "decoded_as")
-            decoded_as.text = rule.decoded_as
+    for name, value in sorted(rule.fields.items()):
+        field = ET.SubElement(rule_element, "field", name=name, type="pcre2")
+        field.text = _escape_field_value(value, rule.field_match_types.get(name, "contains"))
 
-        if rule.if_sid is not None:
-            if_sid = ET.SubElement(rule_element, "if_sid")
-            if_sid.text = str(rule.if_sid)
+    description = ET.SubElement(rule_element, "description")
+    description.text = rule.description
 
-        for name, value in sorted(rule.fields.items()):
-            field = ET.SubElement(rule_element, "field", name=name, type="pcre2")
-            field.text = _escape_field_value(value, rule.field_match_types.get(name, "contains"))
-
-        description = ET.SubElement(rule_element, "description")
-        description.text = rule.description
-
-        if rule.group:
-            group = ET.SubElement(rule_element, "group")
-            group.text = rule.group
+    if rule.group:
+        group = ET.SubElement(rule_element, "group")
+        group.text = rule.group
 
     if rule.mitre_ids:
         mitre = ET.SubElement(rule_element, "mitre")

@@ -121,6 +121,10 @@ python main.py --report samples/cuckoo_sample.json --sandbox auto --output outpu
 
 ## Useful Commands
 
+The `make` targets below need GNU `make`, `python3`, and `find`, so they run on
+Linux, macOS, or WSL. On plain Windows PowerShell, use the direct `python`
+commands shown elsewhere in this runbook instead.
+
 Install dependencies:
 
 ```bash
@@ -343,7 +347,6 @@ Implemented:
 - validation
 - risk scoring
 - synthetic test events
-- explainability traces
 - reporting
 - offline URLhaus hook
 

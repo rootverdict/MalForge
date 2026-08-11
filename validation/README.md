@@ -73,7 +73,8 @@ Regenerating also cleared three defects the old snapshot had baked in:
 - `internet_validation_manifest_50.json` — per-report input manifest (the source of truth)
 - `internet_validation_summary_50.json` / `.md` — aggregate counts, rewritten by each rebuild
 - `report_names_and_findings_50.md` — per-report notes from the original run
-- `internet_outputs_50/` — the generated artifact tree
+- `internet_outputs_50/` — the generated artifact tree. Not checked in: it is
+  550 reproducible files, so run `rebuild_corpus.py` to materialize it locally.
 
 ## Scope
 

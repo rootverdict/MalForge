@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 import yaml
+from core.constants import SUPPORTED_SANDBOXES
 from core.pipeline import run_pipeline
 
 
@@ -24,7 +25,7 @@ def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Run the malware behavior detection generator locally.")
     parser.add_argument("--report", help="Path to a single sandbox JSON report.")
     parser.add_argument("--input-dir", help="Directory containing sandbox JSON reports.")
-    parser.add_argument("--sandbox", choices=["cuckoo", "cape", "anyrun", "auto"], default="auto")
+    parser.add_argument("--sandbox", choices=[*SUPPORTED_SANDBOXES, "auto"], default="auto")
     parser.add_argument("--output", help="Output directory root (defaults to config or OUTPUT_DIR).")
     parser.add_argument("--no-write", action="store_true", help="Run the pipeline without writing artifacts.")
     parser.add_argument("--enrich", action="store_true", help="Build local enrichment request descriptors for extracted IOCs.")

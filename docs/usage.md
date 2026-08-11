@@ -52,6 +52,31 @@ python main.py --input-dir samples --sandbox auto --output output
 python main.py --report samples/cuckoo_sample.json --sandbox auto --no-write
 ```
 
+## All CLI Options
+
+```text
+--report PATH            Run a single sandbox JSON report
+--input-dir PATH         Run every .json report in a directory
+--sandbox NAME           cuckoo | cape | anyrun | auto (default: auto)
+--output PATH            Output directory root (default: output)
+--no-write               Run the pipeline without writing artifacts
+--enrich                 Build local enrichment descriptors for extracted IOCs
+--urlhaus-csv PATH       Offline URLhaus CSV export for URL/domain matching
+--wazuh-id-start N       Override the starting Wazuh custom rule ID
+--wazuh-id-end N         Override the ending Wazuh custom rule ID
+--verbose                Print artifact paths and validation warning details
+```
+
+`--wazuh-id-start` and `--wazuh-id-end` must be supplied together. Enrichment
+never performs a network call: `--enrich` builds local request descriptors, and
+`--urlhaus-csv` matches against a file you already downloaded.
+
+## Run Offline Enrichment
+
+```bash
+python main.py --report samples/cape_sample.json --enrich --urlhaus-csv /path/to/urlhaus.csv
+```
+
 ## Interpret Output Files
 
 - `output/sigma/`

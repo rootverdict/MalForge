@@ -2,25 +2,43 @@
 
 from __future__ import annotations
 
+import hashlib
+
 from core.models import SigmaRule, WazuhRule
+from core.sigma_syntax import sigma_field_name, unescape_sigma_value
+
+_BENIGN_FALLBACK = "benign-value"
+_BENIGN_BY_FIELD = (
+    (("image",), "notepad.exe"),
+    (("commandline",), "notepad.exe C:\\notes.txt"),
+    (("targetobject",), "HKCU\\Software\\BenignApp"),
+    (("targetfilename", "file.path"), "C:\\Users\\Public\\notes.txt"),
+    (("destinationip", "dstip", "destination.ip"), "127.0.0.1"),
+    (("queryname", "dns.query", "query"), "localhost.localdomain"),
+    (("destinationhostname", "dsthost", "destination.domain"), "localhost.localdomain"),
+    (("url",), "http://localhost/benign"),
+    (("exe",), "/usr/bin/cat"),
+    (("cmdline", "audit.command"), "/usr/bin/cat /etc/hostname"),
+)
 
 
-def _negative_value(field_name: str) -> str:
-    if field_name.endswith("image") or "Image" in field_name:
-        return "notepad.exe"
-    if field_name.endswith("commandLine") or "CommandLine" in field_name:
-        return "notepad.exe C:\\notes.txt"
-    if "TargetObject" in field_name or field_name.endswith("targetObject"):
-        return "HKCU\\Software\\BenignApp"
-    if "TargetFilename" in field_name or field_name.endswith("targetFilename"):
-        return "C:\\Users\\Public\\notes.txt"
-    if "DestinationIp" in field_name or field_name.endswith("destinationIp"):
-        return "127.0.0.1"
-    if "QueryName" in field_name or field_name.endswith("queryName"):
-        return "localhost.localdomain"
-    if "DestinationHostname" in field_name or field_name.endswith("destinationHostname"):
-        return "localhost.localdomain"
-    return "benign-value"
+def _negative_value(field_name: str, positive_value: str = "") -> str:
+    """Pick a benign value for a field that does not collide with the observed one."""
+    normalized = field_name.strip().lower()
+    candidate = _BENIGN_FALLBACK
+    for markers, benign in _BENIGN_BY_FIELD:
+        if any(normalized.endswith(marker) or marker in normalized for marker in markers):
+            candidate = benign
+            break
+
+    observed = positive_value.strip().lower()
+    if not observed:
+        return candidate
+    # A negative event must not satisfy the selector it is meant to fail.
+    if observed in candidate.lower() or candidate.lower().endswith(observed):
+        digest = hashlib.sha256(observed.encode("utf-8")).hexdigest()[:8]
+        return f"{_BENIGN_FALLBACK}-{digest}"
+    return candidate
 
 
 def generate_sigma_test_events(rule: SigmaRule) -> dict[str, list[dict[str, object]]]:
@@ -35,9 +53,10 @@ def generate_sigma_test_events(rule: SigmaRule) -> dict[str, list[dict[str, obje
 
     for selection in selections:
         for key, value in selection.items():
-            field_name = str(key).split("|", 1)[0]
-            positive_event[field_name] = value
-            negative_event[field_name] = _negative_value(field_name)
+            field_name = sigma_field_name(key)
+            literal_value = unescape_sigma_value(value)
+            positive_event[field_name] = literal_value
+            negative_event[field_name] = _negative_value(field_name, literal_value)
 
     return {"positive": [positive_event], "negative": [negative_event]}
 
@@ -49,7 +68,7 @@ def generate_wazuh_test_events(rule: WazuhRule) -> dict[str, list[dict[str, obje
 
     for field_name, value in rule.fields.items():
         positive_event[field_name] = value
-        negative_event[field_name] = _negative_value(field_name)
+        negative_event[field_name] = _negative_value(field_name, str(value))
 
     return {"positive": [positive_event], "negative": [negative_event]}
 

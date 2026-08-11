@@ -1,4 +1,4 @@
-﻿"""Network behavior extraction from normalized sandbox reports."""
+"""Network behavior extraction from normalized sandbox reports."""
 
 from __future__ import annotations
 
@@ -7,7 +7,7 @@ from typing import Any, Mapping
 from core.constants import COMMON_ATTACK_MAPPINGS
 from core.models import Behavior
 from core.schema import ensure_list, ensure_mapping
-from ioc.ioc_extractor import _normalize_network_host, _parse_network_url
+from ioc.ioc_extractor import normalize_network_host, parse_network_url
 
 _COMMON_STANDARD_PORTS = {20, 21, 22, 25, 53, 80, 110, 123, 143, 443, 445, 465, 587, 853, 993, 995}
 _PROTOCOL_STANDARD_PORTS = {
@@ -31,7 +31,7 @@ def _extract_port(network_item: Mapping[str, Any]) -> int | None:
             return port
     uri = str(network_item.get("uri") or network_item.get("url") or "").strip()
     if uri:
-        parsed_url = _parse_network_url(uri)
+        parsed_url = parse_network_url(uri)
         if parsed_url:
             return parsed_url[1].port
     return None
@@ -70,7 +70,7 @@ def extract_behaviors(normalized_report: Mapping[str, Any]) -> list[Behavior]:
 
         domain = str(network_item.get("domain") or "").strip()
         if domain:
-            normalized_host = _normalize_network_host(domain)
+            normalized_host = normalize_network_host(domain)
             if normalized_host and normalized_host[0] in {"ipv4", "ipv6"}:
                 normalized_ip = normalized_host[1]
                 behaviors.append(
@@ -96,7 +96,7 @@ def extract_behaviors(normalized_report: Mapping[str, Any]) -> list[Behavior]:
 
         if "uri" in network_item or "url" in network_item:
             uri = str(network_item.get("uri") or network_item.get("url") or "").strip()
-            parsed_url = _parse_network_url(uri)
+            parsed_url = parse_network_url(uri)
             if parsed_url:
                 normalized_uri, parsed_uri, normalized_host = parsed_url
                 scheme = parsed_uri.scheme.lower()
@@ -147,7 +147,7 @@ def extract_behaviors(normalized_report: Mapping[str, Any]) -> list[Behavior]:
 
         if "ip" in network_item or "ipv6" in network_item:
             ip = str(network_item.get("ip") or network_item.get("ipv6") or "").strip()
-            normalized_ip = _normalize_network_host(ip) if ip else None
+            normalized_ip = normalize_network_host(ip) if ip else None
             if normalized_ip and normalized_ip[0] in {"ipv4", "ipv6"}:
                 behaviors.append(_ip_behavior(normalized_ip[1], source, network_item))
         elif not any(key in network_item for key in ("domain", "uri", "url")):

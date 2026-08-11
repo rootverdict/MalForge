@@ -7,8 +7,15 @@ import ipaddress
 import re
 import xml.etree.ElementTree as ET
 
-from converters.wazuh_converter import _selector_groups, wazuh_rule_to_xml
+from converters.wazuh_converter import selector_groups, wazuh_rule_to_xml
 from core.models import SigmaRule, ValidationResult, WazuhRule
+from core.sigma_syntax import (
+    has_ambiguous_escape,
+    has_dangling_escape,
+    sigma_field_name,
+    unescape_sigma_value,
+    unescaped_wildcards,
+)
 
 GENERIC_PROCESS_IMAGES = {
     "cmd.exe",
@@ -27,10 +34,26 @@ def _warn_for_sigma_rule(rule: SigmaRule) -> list[str]:
         for name, selection in rule.detection.items():
             if not name.startswith("selection") or not isinstance(selection, dict) or len(selection) != 1:
                 continue
-            only_value = next(iter(selection.values()), "")
-            if str(only_value).strip().lower() in GENERIC_PROCESS_IMAGES:
+            only_value = unescape_sigma_value(next(iter(selection.values()), ""))
+            if only_value.strip().lower() in GENERIC_PROCESS_IMAGES:
                 warnings.append("Selector may be overly broad for a common process image.")
                 break
+
+        for name, selection in rule.detection.items():
+            if not name.startswith("selection") or not isinstance(selection, dict):
+                continue
+            for key, value in selection.items():
+                wildcards = unescaped_wildcards(value)
+                if wildcards:
+                    warnings.append(
+                        f"Selector {key} contains unescaped wildcard(s) {wildcards}; "
+                        "escape them if the observed value was meant literally."
+                    )
+                if has_ambiguous_escape(value):
+                    warnings.append(
+                        f"Selector {key} contains raw backslashes; escape them as "
+                        "double backslashes so path separators are not read as escapes."
+                    )
 
     if not any(tag.startswith("attack.") for tag in rule.tags):
         warnings.append("Missing ATT&CK tags.")
@@ -62,23 +85,29 @@ def validate_sigma_rule(rule: SigmaRule) -> ValidationResult:
             if selector:
                 populated_selectors += 1
             for key, value in selector.items():
-                if not str(value).strip():
+                literal_value = unescape_sigma_value(value)
+                if not literal_value.strip():
                     errors.append(f"Selector value is empty for {key}.")
-                base_field = str(key).split("|", 1)[0]
+                if has_dangling_escape(value):
+                    errors.append(f"Selector value ends in a lone backslash for {key}.")
+                base_field = sigma_field_name(key)
                 if base_field in {"DestinationIp", "destination.ip"}:
                     try:
-                        ipaddress.ip_address(str(value).strip().strip("[]"))
+                        ipaddress.ip_address(literal_value.strip().strip("[]"))
                     except ValueError:
                         errors.append(f"Selector contains an invalid IP address for {key}.")
         if populated_selectors == 0:
             errors.append("Detection has no populated selectors.")
         elif str(rule.detection.get("condition") or "").strip():
             try:
-                _selector_groups(rule.detection)
+                selector_groups(rule.detection)
             except ValueError as exc:
                 errors.append(f"Unsupported detection condition: {exc}")
     if not rule.level.strip():
         errors.append("Missing level.")
+    for field in rule.fields:
+        if "|" in str(field):
+            errors.append(f"Field list must hold plain log field names, not modifiers: {field}.")
 
     warnings = _warn_for_sigma_rule(rule)
     is_valid = not errors

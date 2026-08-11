@@ -2,11 +2,19 @@
 
 from __future__ import annotations
 
+import re
 from typing import Any, Mapping
 
 from core.constants import COMMON_ATTACK_MAPPINGS
 from core.models import Behavior
 from core.schema import ensure_list, ensure_mapping
+
+# Matched as whole path segments so names like "template.dll" or "publications"
+# are not mistaken for user-writable drop locations.
+_DROP_PATH_SEGMENTS = ("temp", "tmp", "public", "roaming", "local", "programdata", "startup")
+_DROP_PATH_PATTERN = re.compile(
+    r"(?<![a-z0-9])(?:" + "|".join(_DROP_PATH_SEGMENTS) + r")(?![a-z0-9])"
+)
 
 
 def _file_path(item: Any) -> str:
@@ -29,7 +37,7 @@ def extract_behaviors(normalized_report: Mapping[str, Any]) -> list[Behavior]:
         technique_ids = [COMMON_ATTACK_MAPPINGS["file"]["file_create"]["technique_id"]]
         severity = "medium"
 
-        if any(token in lowered for token in ("temp", "tmp", "public", "appdata\\roaming", "appdata\\local", "programdata", "startup")):
+        if _DROP_PATH_PATTERN.search(lowered):
             description = f"File dropped to user-accessible path: {path}"
             tags = ["file_drop"]
             severity = "high"

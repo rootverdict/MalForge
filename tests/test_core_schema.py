@@ -2,6 +2,7 @@
 
 import json
 
+from ingestion.cuckoo import parse_report as parse_cuckoo_report
 from core.schema import (
     REQUIRED_NORMALIZED_KEYS,
     detect_sandbox,
@@ -10,7 +11,6 @@ from core.schema import (
     ensure_mapping,
     get_nested,
     load_json_report,
-    normalize_report,
 )
 
 
@@ -53,49 +53,6 @@ def test_detect_sandbox_does_not_false_positive_anyrun_for_cuckoo_like_task_and_
     assert detect_sandbox(report) == "cuckoo"
 
 
-def test_normalize_report_for_cuckoo_shape() -> None:
-    report = {
-        "info": {"id": 7},
-        "target": {"file": {"name": "sample.exe"}},
-        "behavior": {
-            "processes": [{"process_name": "cmd.exe"}],
-            "summary": {
-                "files": [r"C:\\temp\\dropper.dll"],
-                "keys": [r"HKCU\\Software\\Run"],
-            },
-        },
-        "network": {"hosts": [{"ip": "8.8.8.8"}]},
-        "signatures": [{"name": "drops_executable"}],
-    }
-
-    normalized = normalize_report(report)
-
-    assert normalized["sandbox"] == "cuckoo"
-    assert normalized["sample"]["file"]["name"] == "sample.exe"
-    assert normalized["processes"][0]["process_name"] == "cmd.exe"
-    assert normalized["files"] == [r"C:\\temp\\dropper.dll"]
-    assert normalized["registry"] == [r"HKCU\\Software\\Run"]
-    assert normalized["network"] == [{"ip": "8.8.8.8"}]
-    assert normalized["signatures"][0]["name"] == "drops_executable"
-
-
-def test_normalize_report_for_anyrun_shape() -> None:
-    report = {
-        "task": {"id": "task-1"},
-        "analysis": {
-            "processes": [{"name": "powershell.exe"}],
-            "network": [{"domain": "example.test"}],
-        },
-        "sample": {"sha256": "abc123"},
-        "iocs": [{"type": "domain", "value": "example.test"}],
-    }
-
-    normalized = normalize_report(report)
-
-    assert normalized["sandbox"] == "anyrun"
-    assert normalized["processes"][0]["name"] == "powershell.exe"
-    assert normalized["network"][0]["domain"] == "example.test"
-    assert normalized["iocs"][0]["type"] == "domain"
 
 
 def test_empty_unified_report_has_expected_shape() -> None:
@@ -107,8 +64,8 @@ def test_empty_unified_report_has_expected_shape() -> None:
     assert tuple(empty.keys()) == REQUIRED_NORMALIZED_KEYS
 
 
-def test_normalized_report_contains_required_keys() -> None:
-    normalized = normalize_report({})
+def test_parsed_report_contains_required_keys_in_order() -> None:
+    normalized = parse_cuckoo_report({})
 
     assert tuple(normalized.keys()) == REQUIRED_NORMALIZED_KEYS
 

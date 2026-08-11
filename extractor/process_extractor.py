@@ -77,8 +77,7 @@ def extract_behaviors(normalized_report: Mapping[str, Any]) -> list[Behavior]:
                     technique_ids=[COMMON_ATTACK_MAPPINGS["process"]["process_create"]["technique_id"]],
                 )
             )
-
-        if suspicious:
+        else:
             suspicious_description, severity, tags = suspicious
             technique_key = SUSPICIOUS_PROCESS_TECHNIQUE_KEYS.get(suspicious_name, "process_create")
             behaviors.append(

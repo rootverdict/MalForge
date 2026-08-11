@@ -1,4 +1,4 @@
-﻿"""Cuckoo sandbox report normalization helpers."""
+"""Cuckoo sandbox report normalization helpers."""
 
 from __future__ import annotations
 

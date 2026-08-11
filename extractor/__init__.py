@@ -38,6 +38,12 @@ def _contains_marker(text: str, marker: str) -> bool:
     return re.search(rf"(?<![A-Za-z0-9])(?:{marker_pattern})(?![A-Za-z0-9])", text) is not None
 
 
+def is_non_windows_text(text: str) -> bool:
+    """Report whether free text carries a non-Windows platform marker."""
+    lowered = str(text).lower()
+    return any(_contains_marker(lowered, marker) for marker in _NON_WINDOWS_MARKERS)
+
+
 def _flatten_metadata_values(value: Any) -> list[str]:
     if value is None:
         return []
@@ -66,7 +72,7 @@ def _platform_tags(normalized_report: Mapping[str, Any]) -> list[str]:
 
     text = " ".join(values).lower()
     tags: list[str] = []
-    if any(_contains_marker(text, marker) for marker in _NON_WINDOWS_MARKERS):
+    if is_non_windows_text(text):
         tags.extend(["platform_non_windows", "platform_linux_or_iot"])
     if _contains_marker(text, "mips"):
         tags.append("arch_mips")

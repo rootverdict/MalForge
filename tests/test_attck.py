@@ -1,4 +1,4 @@
-﻿"""Tests for ATT&CK mapping and Navigator layer generation."""
+"""Tests for ATT&CK mapping and Navigator layer generation."""
 
 from __future__ import annotations
 

@@ -1,27 +1,11 @@
-project:
-  name: malware-behavior-detection-generator
-  environment: development
-  tool_version: 0.1.0
+# MalForge local configuration.
+# Every key below is read by main.py. CLI arguments and environment variables
+# take precedence over these values.
 
 paths:
-  samples_dir: samples
-  docs_dir: docs
+  # Root directory for generated artifacts. Subdirectories (sigma/, wazuh/,
+  # test_events/, reports/, iocs/, navigator/) are fixed by the pipeline.
   output_dir: output
-  tests_dir: tests
-
-sandboxes:
-  supported:
-    - cuckoo
-    - cape
-    - anyrun
-
-artifacts:
-  sigma_dir: output/sigma
-  wazuh_dir: output/wazuh
-  test_events_dir: output/test_events
-  reports_dir: output/reports
-  iocs_dir: output/iocs
-  navigator_dir: output/navigator
 
 wazuh:
   custom_rule_id_start: 100000
@@ -29,7 +13,10 @@ wazuh:
   custom_rule_id_offset: 0
 
 integrations:
+  # Offline URLhaus CSV export used for local URL/domain IOC matching.
   urlhaus_csv: ""
+  # Credentials below only enable local lookup descriptors. No network request
+  # is ever sent by this project.
   virustotal_api_key: ""
   misp_url: ""
   misp_api_key: ""

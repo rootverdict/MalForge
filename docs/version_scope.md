@@ -20,7 +20,7 @@ Sandbox JSON report
 - Parse Cuckoo, CAPE, and ANY.RUN JSON reports from local files.
 - Auto-detect sandbox source when possible.
 - Normalize sandbox data into shared report models.
-- Extract process, registry, file, network, persistence, and IOC evidence.
+- Extract process, registry, file, network, persistence, sandbox signature, and IOC evidence.
 - Map extracted behavior to MITRE ATT&CK with deterministic rule-based logic.
 - Generate ATT&CK Navigator layers.
 - Generate Sigma rules from extracted behavior.
@@ -31,6 +31,10 @@ Sandbox JSON report
 - Generate safe synthetic positive and negative test events.
 - Apply local review and deterministic version metadata.
 - Generate JSON summaries and Markdown analyst reports.
+- Build offline enrichment request descriptors for VirusTotal and MISP under
+  `--enrich`, without sending any request.
+- Match URL and domain IOCs against a local URLhaus CSV export supplied with
+  `--urlhaus-csv`, without downloading it.
 - Support single-report and batch CLI execution.
 - Write artifacts only to local output folders.
 - Keep the project safe: no malware execution, no sample detonation, no deployment automation, and no required network calls.
@@ -41,7 +45,8 @@ Sandbox JSON report
 - Live malware execution or sample detonation.
 - Automatic rule deployment to Wazuh, SIEMs, EDRs, or cloud platforms.
 - Vendor-native rule validation engines.
-- Live VirusTotal, MISP, URLhaus, or other enrichment API calls.
+- Live VirusTotal, MISP, URLhaus, or other enrichment API calls, including any
+  automatic download of enrichment data such as the URLhaus CSV export.
 - Web UI, dashboard, or hosted service mode.
 - Multi-user workflow, authentication, permissions, or collaboration features.
 - Database-backed persistence.
@@ -61,6 +66,26 @@ V1 is considered complete when:
 - Output writing stays local and deterministic.
 - README, usage docs, and architecture docs describe the implemented workflow accurately.
 - Current limitations are explicit and match the V1 exclusions above.
+
+### Status
+
+All criteria above are met. A completion audit closed the following defects,
+each now covered by a regression test in `tests/test_regressions.py`:
+
+- Markdown reports filed behavior counts under `Source Data Limitations`
+  instead of `Behavior Summary`.
+- Sigma selector values were emitted unescaped, so `*` and `?` in observed
+  paths, command lines, and URLs were read as wildcards.
+- The Sigma `fields:` list carried modifiers (`QueryName|contains`) instead of
+  plain log field names.
+- Wazuh conversion silently dropped Sigma fields with no Wazuh equivalent,
+  widening the converted rule relative to its source.
+- `build_summary` raised `NameError` when called without an explicit timestamp.
+- Drop-path and Run-key detection matched bare substrings, so `template.dll`
+  and `\Runtime` produced false positives.
+
+Anything discovered after this point that is not required for the local CLI
+pipeline to work end to end belongs in V2.
 
 ## V2: Practical Analyst Expansion
 

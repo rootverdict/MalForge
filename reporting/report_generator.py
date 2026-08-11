@@ -71,8 +71,6 @@ def generate_markdown_report(
                 ("Generated at", summary.get("generated_at", "n/a")),
             ]
         )),
-        "",
-        "## Behavior Summary",
     ]
 
     hash_status = sample.get("hash_status", {})
@@ -86,6 +84,7 @@ def generate_markdown_report(
             ]
         )
 
+    lines.extend(["", "## Behavior Summary"])
     behavior_counts = counts.get("behaviors_by_category", {})
     if behavior_counts:
         lines.extend(f"- {category}: {count}" for category, count in behavior_counts.items())

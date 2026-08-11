@@ -1,4 +1,4 @@
-﻿"""IOC extraction from normalized reports and behaviors."""
+"""IOC extraction from normalized reports and behaviors."""
 
 from __future__ import annotations
 
@@ -60,7 +60,7 @@ def _normalize_ipv6(value: Any) -> str | None:
     return str(address).lower()
 
 
-def _normalize_network_host(
+def normalize_network_host(
     value: Any,
     *,
     allow_single_label: bool = True,
@@ -105,13 +105,13 @@ def _normalize_network_host(
 
 
 def _normalize_domain(value: Any) -> str | None:
-    normalized = _normalize_network_host(value, allow_single_label=False)
+    normalized = normalize_network_host(value, allow_single_label=False)
     if not normalized or normalized[0] != "domain":
         return None
     return normalized[1]
 
 
-def _parse_network_url(value: Any) -> tuple[str, ParseResult, tuple[str, str]] | None:
+def parse_network_url(value: Any) -> tuple[str, ParseResult, tuple[str, str]] | None:
     """Parse a supported URL only when its port and host are valid."""
     normalized = _normalize_text(value)
     if not normalized:
@@ -129,7 +129,7 @@ def _parse_network_url(value: Any) -> tuple[str, ParseResult, tuple[str, str]] |
         or (port is not None and not 1 <= port <= 65535)
     ):
         return None
-    normalized_host = _normalize_network_host(hostname)
+    normalized_host = normalize_network_host(hostname)
     if not normalized_host:
         return None
     host_type, host_value = normalized_host
@@ -148,7 +148,7 @@ def _parse_network_url(value: Any) -> tuple[str, ParseResult, tuple[str, str]] |
 
 
 def _normalize_url(value: Any) -> str | None:
-    parsed = _parse_network_url(value)
+    parsed = parse_network_url(value)
     return parsed[0] if parsed else None
 
 
@@ -351,7 +351,7 @@ def extract_iocs_from_report(normalized_report: Mapping[str, Any]) -> list[IOC]:
                     IOC(type="ipv4", value=domain_ip_value, source=source, confidence=0.7, context={"source_section": "network.domain", "raw": network_item}, tags=["network"])
                 )
 
-        parsed_url = _parse_network_url(network_item.get("uri") or network_item.get("url"))
+        parsed_url = parse_network_url(network_item.get("uri") or network_item.get("url"))
         if parsed_url:
             url_value, _, normalized_host = parsed_url
             collected.append(
@@ -435,7 +435,7 @@ def extract_iocs_from_behaviors(behaviors: list[Behavior] | None) -> list[IOC]:
                         IOC(type="ipv4", value=domain_ip_value, source=source, confidence=0.6, context={"behavior": behavior.description, "category": behavior.category}, tags=[behavior.category])
                     )
 
-            parsed_url = _parse_network_url(evidence_map.get("uri") or evidence_map.get("url"))
+            parsed_url = parse_network_url(evidence_map.get("uri") or evidence_map.get("url"))
             if parsed_url:
                 url_value, _, normalized_host = parsed_url
                 collected.append(

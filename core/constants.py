@@ -1,8 +1,11 @@
-﻿"""Shared constants for safe sandbox report processing."""
+"""Shared constants for safe sandbox report processing."""
 
 from __future__ import annotations
 
 from pathlib import Path
+
+TOOL_NAME = "MalForge"
+TOOL_VERSION = "0.1.0"
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 OUTPUT_DIR = PROJECT_ROOT / "output"
@@ -25,6 +28,11 @@ OUTPUT_PATHS = {
     "iocs": IOCS_OUTPUT_DIR,
     "navigator": NAVIGATOR_OUTPUT_DIR,
 }
+
+# Subdirectory names relative to any chosen output root. `OUTPUT_PATHS` pins
+# them under the repository default; this pins them for --output overrides so
+# both stay in step.
+OUTPUT_SUBDIRECTORIES = {key: path.name for key, path in OUTPUT_PATHS.items()}
 
 SIGMA_TO_WAZUH_LEVEL = {
     "informational": 2,

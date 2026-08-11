@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from core.models import RiskScore, SigmaRule, WazuhRule
+from core.sigma_syntax import unescape_sigma_value
 
 SIGMA_SEVERITY_SCORE = {
     "informational": 10.0,
@@ -41,7 +42,7 @@ def _score_sigma_rule(rule: SigmaRule) -> RiskScore:
 
     for field_name, value in selection_items:
         normalized_field = str(field_name)
-        normalized_value = str(value).strip()
+        normalized_value = unescape_sigma_value(value).strip()
         if any(token in normalized_field for token in ("CommandLine", "TargetObject", "TargetFilename", "DestinationIp", "QueryName", "DestinationHostname")):
             factors["selector_specificity"] += 12.0
             rationale.append(f"Specific selector present: {normalized_field}.")

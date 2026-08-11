@@ -2,11 +2,16 @@
 
 from __future__ import annotations
 
+import re
 from typing import Any, Mapping
 
 from core.constants import COMMON_ATTACK_MAPPINGS
 from core.models import Behavior
 from core.schema import ensure_list, ensure_mapping
+
+# Match Run/RunOnce as a full key segment so "\Runtime" or "\Running" do not
+# register as autostart persistence.
+_RUN_KEY_PATTERN = re.compile(r"\\run(?:once)?(?![a-z0-9])")
 
 
 def _registry_key(item: Any) -> str:
@@ -28,7 +33,7 @@ def extract_behaviors(normalized_report: Mapping[str, Any]) -> list[Behavior]:
         technique_ids = [COMMON_ATTACK_MAPPINGS["registry"]["registry_modification"]["technique_id"]]
         description = f"Registry key modified: {key}"
 
-        if "\\run" in lowered or "\\runonce" in lowered:
+        if _RUN_KEY_PATTERN.search(lowered):
             tags = ["registry_run_key", "persistence"]
             technique_ids = [COMMON_ATTACK_MAPPINGS["registry"]["run_key"]["technique_id"]]
             description = f"Registry run key modified: {key}"

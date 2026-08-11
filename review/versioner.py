@@ -5,17 +5,13 @@ from __future__ import annotations
 import hashlib
 import json
 from dataclasses import replace
-from datetime import datetime, timezone
 from typing import Any
 
+from core.clock import now_iso
+from core.constants import TOOL_NAME, TOOL_VERSION
 from core.models import SigmaRule, WazuhRule
 
-TOOL_NAME = "MalForge"
-TOOL_VERSION = "0.1.0"
-
-
-def _now_iso() -> str:
-    return datetime.now(timezone.utc).replace(microsecond=0).isoformat()
+__all__ = ["TOOL_NAME", "TOOL_VERSION", "version_rule", "version_rules"]
 
 
 def _stable_content_hash(payload: dict[str, Any]) -> str:
@@ -62,7 +58,7 @@ def version_rule(
     source_report_hash: str | None = None,
 ) -> SigmaRule | WazuhRule:
     """Return a copy of a rule with deterministic version metadata."""
-    generated_at = timestamp or _now_iso()
+    generated_at = timestamp or now_iso()
 
     if isinstance(rule, SigmaRule):
         version_metadata = {

@@ -1,4 +1,4 @@
-﻿"""Tests for Sigma to Wazuh conversion."""
+"""Tests for Sigma to Wazuh conversion."""
 
 from __future__ import annotations
 

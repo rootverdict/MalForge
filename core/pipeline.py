@@ -13,7 +13,8 @@ from typing import Any, Mapping, MutableMapping
 from attck.mapper import map_behaviors_to_attack
 from attck.navigator import generate_navigator_layer
 from converters.wazuh_converter import convert_sigma_to_wazuh, wazuh_rules_to_xml
-from core.constants import WAZUH_RULE_ID_END, WAZUH_RULE_ID_START
+from core.clock import now_iso
+from core.constants import OUTPUT_SUBDIRECTORIES, WAZUH_RULE_ID_END, WAZUH_RULE_ID_START
 from core.models import PipelineResult, RiskScore
 from core.schema import detect_sandbox, load_json_report
 from extractor import extract_behaviors
@@ -28,7 +29,6 @@ from quality.validator import validate_sigma_rules, validate_wazuh_rules
 from reporting.report_generator import generate_markdown_report
 from reporting.summary import build_summary
 from review.reviewer import apply_review_to_rules, create_review_record
-from review.versioner import _now_iso
 from review.versioner import version_rules
 from enrichment.virustotal import build_lookup_request as build_virustotal_lookup_request
 from enrichment.misp import build_lookup_request as build_misp_lookup_request
@@ -129,7 +129,7 @@ def _output_base_name(sample_name: str, report_fingerprint: str) -> str:
 
 
 def _wazuh_registry_path(output_dir: str | Path) -> Path:
-    return Path(output_dir) / "wazuh" / ".rule_ids.json"
+    return Path(output_dir) / OUTPUT_SUBDIRECTORIES["wazuh"] / ".rule_ids.json"
 
 
 def _load_wazuh_id_registry(output_dir: str | Path) -> dict[str, int]:
@@ -195,16 +195,10 @@ def write_pipeline_outputs(
     output_root.mkdir(parents=True, exist_ok=True)
     safe_base_name = _slugify(str(base_name))
 
-    file_map: dict[str, list[str]] = {
-        "sigma": [],
-        "wazuh": [],
-        "test_events": [],
-        "reports": [],
-        "iocs": [],
-        "navigator": [],
-    }
+    directories = {key: output_root / name for key, name in OUTPUT_SUBDIRECTORIES.items()}
+    file_map: dict[str, list[str]] = {key: [] for key in OUTPUT_SUBDIRECTORIES}
 
-    sigma_dir = output_root / "sigma"
+    sigma_dir = directories["sigma"]
     for rule in result.sigma_rules:
         payload = rule_to_dict(rule)
         if yaml is not None:
@@ -216,29 +210,29 @@ def write_pipeline_outputs(
         file_map["sigma"].append(str(sigma_path))
 
     if result.wazuh_rules:
-        wazuh_path = output_root / "wazuh" / f"{safe_base_name}.xml"
+        wazuh_path = directories["wazuh"] / f"{safe_base_name}.xml"
         _write_text(wazuh_path, wazuh_rules_to_xml(result.wazuh_rules))
         file_map["wazuh"].append(str(wazuh_path))
 
-    test_event_path = output_root / "test_events" / f"{safe_base_name}.json"
+    test_event_path = directories["test_events"] / f"{safe_base_name}.json"
     _write_json(test_event_path, result.metadata.get("test_events", {}))
     file_map["test_events"].append(str(test_event_path))
 
-    report_path = output_root / "reports" / f"{safe_base_name}_report.md"
+    report_path = directories["reports"] / f"{safe_base_name}_report.md"
     _write_text(report_path, str(result.metadata.get("markdown_report", "")))
     file_map["reports"].append(str(report_path))
 
-    summary_path = output_root / "reports" / f"{safe_base_name}_summary.json"
+    summary_path = directories["reports"] / f"{safe_base_name}_summary.json"
     _write_json(summary_path, result.metadata.get("summary", {}))
     file_map["reports"].append(str(summary_path))
 
-    iocs_json_path = output_root / "iocs" / f"{safe_base_name}_iocs.json"
-    iocs_txt_path = output_root / "iocs" / f"{safe_base_name}_iocs.txt"
+    iocs_json_path = directories["iocs"] / f"{safe_base_name}_iocs.json"
+    iocs_txt_path = directories["iocs"] / f"{safe_base_name}_iocs.txt"
     _write_json(iocs_json_path, [asdict(item) for item in result.iocs])
     _write_text(iocs_txt_path, "\n".join(f"{item.type}: {item.value}" for item in result.iocs))
     file_map["iocs"].extend([str(iocs_json_path), str(iocs_txt_path)])
 
-    navigator_path = output_root / "navigator" / f"{safe_base_name}_navigator_layer.json"
+    navigator_path = directories["navigator"] / f"{safe_base_name}_navigator_layer.json"
     _write_json(navigator_path, result.metadata.get("navigator_layer", {}))
     file_map["navigator"].append(str(navigator_path))
     return file_map
@@ -275,7 +269,7 @@ def run_pipeline(
         raise ValueError("Could not detect sandbox type from report")
     if sandbox_name not in PARSER_MAP:
         raise ValueError(f"Unsupported sandbox type: {sandbox_name}")
-    run_timestamp = timestamp or _now_iso()
+    run_timestamp = timestamp or now_iso()
     report_fingerprint = _report_fingerprint(raw_report)
     if wazuh_id_start is not None or wazuh_id_end is not None:
         if wazuh_id_start is None or wazuh_id_end is None:
@@ -298,9 +292,9 @@ def run_pipeline(
 
     review_record = create_review_record("unreviewed")
     sigma_rules = generate_sigma_rules(behaviors, attack_mappings)
-    sigma_rules = [rule for rule in apply_review_to_rules(sigma_rules, review_record) if hasattr(rule, "rule_id")]
+    sigma_rules = apply_review_to_rules(sigma_rules, review_record)
     sample_hash = _valid_sha256(normalized_report.get("sample", {}).get("hashes", {}).get("sha256"))
-    sigma_rules = [rule for rule in version_rules(sigma_rules, timestamp=run_timestamp, source_report_hash=sample_hash) if hasattr(rule, "rule_id")]
+    sigma_rules = version_rules(sigma_rules, timestamp=run_timestamp, source_report_hash=sample_hash)
 
     active_wazuh_registry = wazuh_id_registry
     if active_wazuh_registry is None and write_output:
@@ -311,8 +305,8 @@ def run_pipeline(
         id_namespace=report_fingerprint,
         id_range=active_wazuh_id_range,
     )
-    wazuh_rules = [rule for rule in apply_review_to_rules(wazuh_rules, review_record) if hasattr(rule, "rule_id")]
-    wazuh_rules = [rule for rule in version_rules(wazuh_rules, timestamp=run_timestamp, source_report_hash=sample_hash) if hasattr(rule, "rule_id")]
+    wazuh_rules = apply_review_to_rules(wazuh_rules, review_record)
+    wazuh_rules = version_rules(wazuh_rules, timestamp=run_timestamp, source_report_hash=sample_hash)
 
     validation_results = validate_sigma_rules(sigma_rules) + validate_wazuh_rules(wazuh_rules)
     risk_scores = [score_rule(rule) for rule in [*sigma_rules, *wazuh_rules]]

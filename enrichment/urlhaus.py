@@ -17,9 +17,11 @@ def load_urlhaus_indicators(csv_path: str | Path) -> tuple[set[str], set[str]]:
     with path.open("r", encoding="utf-8", newline="") as handle:
         reader = csv.reader(line for line in handle if not line.startswith("#"))
         for row in reader:
-            if len(row) < 2:
+            # URLhaus exports the indicator in column 3 (id,dateadded,url,...).
+            # Shorter rows are malformed and are skipped rather than guessed at.
+            if len(row) < 3:
                 continue
-            url_value = row[2].strip() if len(row) > 2 else row[1].strip()
+            url_value = row[2].strip()
             if not url_value:
                 continue
             urls.add(url_value)

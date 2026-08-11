@@ -4,12 +4,16 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "malforge"
-version = "0.1.0"
+dynamic = ["version"]
 description = "Local sandbox JSON to detection artifact pipeline."
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
   "PyYAML>=6.0,<7.0",
+]
+
+[project.optional-dependencies]
+dev = [
   "pytest>=8.0,<10.0",
 ]
 
@@ -18,6 +22,10 @@ malforge = "main:main"
 
 [tool.setuptools]
 py-modules = ["main"]
+
+# core/constants.py is the single source of truth for the tool version.
+[tool.setuptools.dynamic]
+version = { attr = "core.constants.TOOL_VERSION" }
 
 [tool.setuptools.packages.find]
 where = ["."]
