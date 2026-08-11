@@ -1,3 +1,0 @@
-ipv4: 110.37.53.25
-url: http://110.37.53.25:58088/i
-file_path: /tmp/urlhaus_01_i

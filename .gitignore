@@ -8,6 +8,7 @@ __pycache__/
 .coverage
 htmlcov/
 .venv/
+.venv*/
 venv/
 
 # Environment
@@ -24,6 +25,10 @@ MALFORGE_HANDBOOK.md
 MALFORGE_CODE_REFERENCE.md
 tools/
 .codex-handbook-deps/
+
+# Generated validation corpus artifacts.
+# Reproduce locally with: python validation/rebuild_corpus.py
+validation/internet_outputs_50/
 
 # Generated project outputs
 output/sigma/*
