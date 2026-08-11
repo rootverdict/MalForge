@@ -211,6 +211,15 @@ The URLhaus validation set also includes a Mozi `elf/mips` sample-style report. 
 - Pipeline output writing currently targets local files only
 - Only `paths.output_dir`, `wazuh.*`, and `integrations.*` in `config.yaml` are read; output subdirectory names are fixed by the pipeline
 
+## Documentation
+
+- [`docs/usage.md`](docs/usage.md) — install, CLI options, output files, troubleshooting
+- [`docs/architecture.md`](docs/architecture.md) — layers, pipeline flow, artifact generation points
+- [`docs/attack_mapping.md`](docs/attack_mapping.md) — technique table, signature mappings, confidence logic
+- [`docs/version_scope.md`](docs/version_scope.md) — what belongs in V1, V2, and later
+- [`RUNBOOK.md`](RUNBOOK.md) — single-file setup, usage, and troubleshooting reference
+- [`validation/README.md`](validation/README.md) — the URLhaus validation corpus and how to rebuild it
+
 ## Roadmap
 
 Version boundaries are tracked in [`docs/version_scope.md`](docs/version_scope.md). V1 is intentionally limited to the safe local CLI pipeline; V2 collects practical analyst workflow improvements after that base is stable.

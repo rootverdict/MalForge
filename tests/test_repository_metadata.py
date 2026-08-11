@@ -71,4 +71,4 @@ def test_ci_runs_tests_and_compilation_on_supported_python_versions() -> None:
     assert 'python-version: ["3.11", "3.14"]' in workflow
     assert "python -m pytest -q" in workflow
     assert "python -m compileall -q" in workflow
-    assert "quality reporting review tests main.py" in workflow
+    assert "quality reporting review tests tools main.py" in workflow

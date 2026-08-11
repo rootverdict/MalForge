@@ -43,4 +43,4 @@ jobs:
         run: >-
           python -m compileall -q
           attck converters core enrichment extractor generators ingestion ioc
-          quality reporting review tests main.py
+          quality reporting review tests tools main.py

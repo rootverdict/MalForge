@@ -32,12 +32,38 @@ The current ATT&CK 19.1 layer is local and rule-based. It maps extracted `Behavi
 - SMB connection -> `T1021.002`
 - Generic IP/TCP connection -> no ATT&CK technique without application-protocol or remote-service evidence
 - Explicit remote-service connection (for example RDP, SSH, or WinRM evidence) -> `T1021`
+- Non-standard port -> `T1571`, added alongside the HTTP, FTP, SMB, TCP, or IP
+  mapping rather than replacing it, so one behavior can carry both
 
 ### Persistence
 
 - Scheduled task -> `T1053.005`
 - Windows service -> `T1543.003`
 - Startup / run-key style persistence -> `T1547.001`
+
+### Sandbox Signature
+
+`extractor/signature_extractor.py` assigns techniques directly on the behavior,
+before the mapper runs, by matching the sandbox signature name:
+
+- `inject`, `injection`, or `process_hollow` -> `T1055` (severity `high`)
+- `drop`, `file`, or `payload` -> `T1105`
+- `api`, `network`, `contact`, `dns`, or `http` -> `T1071.001`
+- `service`, `task`, `startup`, `runkey`, or `run_key` -> `T1547.001`
+
+A signature matching none of these produces no behavior.
+
+### Defined But Not Emitted
+
+`COMMON_ATTACK_MAPPINGS` also defines `T1036` (Masquerading) and `T1070.004`
+(File Deletion). Nothing currently produces either one; they are reserved for
+future file-extraction rules.
+
+## Tactics
+
+Techniques use ATT&CK v19 tactic names. `Stealth` (TA0005) and `Defense
+Impairment` (TA0112) replaced `Defense Evasion`, so Navigator layers need a
+v19-aware Navigator build.
 
 ## Confidence Logic
 
